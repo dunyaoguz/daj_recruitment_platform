@@ -9,5 +9,6 @@
     <h1>Welcome to the Job Portal!</h1>
     <a href='./Login/'>Login</a>
     <a href='./SignUp/'>Sign Up</a>
+    <a href='../'>Back</a>
 </body>
 </html>
