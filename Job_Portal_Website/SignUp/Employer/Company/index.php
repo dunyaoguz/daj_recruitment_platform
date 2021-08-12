@@ -1,10 +1,11 @@
-<?php require_once '../database.php';
+<?php require_once '/nfs/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/database.php';
 //Update this for the new Database Attributes
 //Need to make sure email not in use before Query made
 
 //1.Insert user
-$user = $conn->prepare("INSERT INTO ric55311.users (user_type, login_name, 
-password, phone, email) VALUES (:user_type, :login_name, :password, :phone, :email);");
+if(isset($_POST["user_type"]) && isset($_POST["login_name"])&& isset($_POST["password"])&& isset($_POST["phone"])&& isset($_POST["email"]) ){
+$user = $conn->prepare("INSERT INTO ric55311.users (user_type, login_name,
+password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :email);");
     $user->bindParam(':user_type', $_POST["user_type"]);
     $user->bindParam(':login_name', $_POST["login_name"]);
     $user->bindParam(':password', $_POST["password"]);
@@ -13,57 +14,59 @@ password, phone, email) VALUES (:user_type, :login_name, :password, :phone, :ema
 
     //checking if email already exists
     $email = ':email';
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE email=?");
-    $stmt->execute([$email]); 
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
+    $stmt->execute([$email]);
     $check = $stmt->fetch();
     if ($check) {
-        echo "<h2>You already have an active account. Please login.</h2>";
-        header("Location: ./Login");
+      //Need to fix the logic with what happens when email in use
+        print("<h2>You already have an active account. Please login.</h2>");
+        header("Location: /nfs/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/Login");
         exit();
-    } 
-    if($user->execute()){
-        echo "<h2>User creation successful</h2>";
     }
-//2.insert employeee (check credentials)
-//need to get the userID and resulting membership_ID so we can enter the Employer
+    if($user->execute()){
+        print ("<h2>User creation successful</h2>");
+    }
+}
+// //2.insert employeee (check credentials)
+// //need to get the userID and resulting membership_ID so we can enter the Employer
 $employer = $conn->prepare("INSERT INTO ric55311.employers (user_id,
-name, membership_id) VALUES (:user_id, :name, membership_id,);");
-    $user_id = $pdo->prepare("SELECT id FROM users WHERE email=:email");
-    $employer->bindParam(':user_id', $user_id);
+name, membership_id) VALUES (:user_id, :name, :membership_id);");
+    $user_id = $conn->prepare("SELECT id FROM users WHERE email=:email");
+    $employer->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $employer->bindParam(':name', $_POST["name"]);
-    $employer->bindParam(':membership_id', $_POST["membership_id"]);
+    $employer->bindParam(':membership_id', $_POST["membership_id"], PDO::PARAM_INT);
 
     if($employer->execute()){
-        echo "<h2>Employer Creation Successful</h2>";
+        print("<h2>Employer Creation Successful</h2>");
     }
 
-//4.create payment method
-if(isset($_POST["membership_type"]) && isset($_POST["payment_method_type"])){
-    $payment = $conn->prepare("INSERT INTO ric55311.payment_methods (account_id, payment_method_type,
-    billing_address, postal_code, card_number, security_code, expiration_month, expiration_year,
-    withdrawal_method)
-    VALUES (:account_id, :payment_method_type,
-    :billing_address, :postal_code, :card_number, :security_code, :expiration_month, :expiration_year,
-    :withdrawal_method);");
-    $account_id = $pdo->prepare("SELECT id FROM accounts WHERE user_id=:user_id");
-    $payment->bindParam(':account_id', $account_id);
-    $payment->bindParam(':payment_method_type', $_POST["payment_method_type"]);
-    $payment->bindParam(':billing_address', $_POST["billing_address"]);
-    $payment->bindParam(':postal_code', $_POST["postal_code"]);
-    $payment->bindParam(':card_number', $_POST["card_number"]);
-    $payment->bindParam(':security_code', $_POST["security_code"]);
-    $payment->bindParam(':expiration_month', $_POST["expiration_month"]);
-    $payment->bindParam(':expiration_year', $_POST["expiration_year"]);
-    $payment->bindParam(':withdrawal_method', $_POST["withdrawal_method"]);
+// //3.create payment method
+// if(isset($_POST["membership_type"]) && isset($_POST["payment_method_type"])){
+//     $payment = $conn->prepare("INSERT INTO ric55311.payment_methods (account_id, payment_method_type,
+//     billing_address, postal_code, card_number, security_code, expiration_month, expiration_year,
+//     withdrawal_method)
+//     VALUES (:account_id, :payment_method_type,
+//     :billing_address, :postal_code, :card_number, :security_code, :expiration_month, :expiration_year,
+//     :withdrawal_method);");
+//     $account_id = $pdo->prepare("SELECT id FROM accounts WHERE user_id=:user_id");
+//     $payment->bindParam(':account_id', $account_id);
+//     $payment->bindParam(':payment_method_type', $_POST["payment_method_type"]);
+//     $payment->bindParam(':billing_address', $_POST["billing_address"]);
+//     $payment->bindParam(':postal_code', $_POST["postal_code"]);
+//     $payment->bindParam(':card_number', $_POST["card_number"]);
+//     $payment->bindParam(':security_code', $_POST["security_code"]);
+//     $payment->bindParam(':expiration_month', $_POST["expiration_month"]);
+//     $payment->bindParam(':expiration_year', $_POST["expiration_year"]);
+//     $payment->bindParam(':withdrawal_method', $_POST["withdrawal_method"]);
+//
+//     if($payment->execute()){
+//         print("<h2>Your the mayment method for account " . $account_id . " was successfuly added</h2>");
+//         header("Location: ./Login");
+//     }
+// }
 
-    if($payment->execute()){
-        echo "<h2>Your the mayment method for account " . $account_id . " was successfuly added</h2>";
-        header("Location: ./Login");
-    }
-}   
-
-$statement = $conn->prepare('SELECT * FROM Bookstore.books AS books');
-$statement->execute();
+// $statement = $conn->prepare('SELECT * FROM Bookstore.books AS books');
+// $statement->execute();
 ?>
 
 
@@ -77,15 +80,17 @@ $statement->execute();
 <body>
 <h1>Sign Up</h1>
 <!-- Update the Form to match the database -->
-    <form action="./Login" method="POST">
+    <form action="" method="POST">
         <label for="name">Company</label><br>
         <input type = "text" name="name" id="name" required> <br>
         <label for="email">Email</label><br>
         <input type = "text" name="email" id="email" required> <br>
         <label for="login_name">Login Name</label><br>
         <input type = "text" name="login_name" id="login_name" required> <br>
+        <label for="phone">Phone Number</label><br>
+        <input type = "text" name="phone" id="phone" required> <br>
         <label for="password">Password (minimum 8 characters)</label><br>
-        <input type="hidden" id="user_type" name="user_type" value="Employer">
+        <input type="hidden" name="user_type" id="user_type" value="Employer">
         <input type = "password" name="password" id="password" minlength="8" required> <br>
         <br>
         <br>

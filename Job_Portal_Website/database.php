@@ -1,4 +1,5 @@
 <?php
+session_start();
 $server = 'ric5531.encs.concordia.ca:3306';
 $username ='ric55311';
 $password = 'YKWTFGO';
