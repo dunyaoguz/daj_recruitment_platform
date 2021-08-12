@@ -3,7 +3,21 @@
 //Need to make sure email not in use before Query made
 
 //1.Insert user
-if(isset($_POST["user_type"]) && isset($_POST["login_name"])&& isset($_POST["password"])&& isset($_POST["phone"])&& isset($_POST["email"]) ){
+if(isset($_POST["user_type"])){
+  print("<h2>Test 1</h2>");
+};
+if (isset($_POST["login_name"])){
+  print("<h2>Test 2.</h2>");
+};
+if ( isset($_POST["password"])){
+  print("<h2>Test 3.</h2>");
+};
+if ( isset($_POST["phone"])){
+  print("<h2>Test 4</h2>");
+};
+if (isset($_POST["email"])){
+print("<h2>Test 5</h2>");
+};
 $user = $conn->prepare("INSERT INTO ric55311.users (user_type, login_name,
 password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :email);");
     $user->bindParam(':user_type', $_POST["user_type"]);
@@ -13,8 +27,8 @@ password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :em
     $user->bindParam(':email', $_POST["email"]);
 
     //checking if email already exists
-    $email = ':email';
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
+    $email = $_POST["email"];
+    $stmt = $conn->prepare("SELECT * FROM ric55311.users WHERE email=?;");
     $stmt->execute([$email]);
     $check = $stmt->fetch();
     if ($check) {
@@ -26,12 +40,15 @@ password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :em
     if($user->execute()){
         print ("<h2>User creation successful</h2>");
     }
-}
+
 // //2.insert employeee (check credentials)
 // //need to get the userID and resulting membership_ID so we can enter the Employer
 $employer = $conn->prepare("INSERT INTO ric55311.employers (user_id,
 name, membership_id) VALUES (:user_id, :name, :membership_id);");
-    $user_id = $conn->prepare("SELECT id FROM users WHERE email=:email");
+
+    $query = $conn->prepare("SELECT id FROM ric55311.users WHERE email=?;");
+    $query->execute([$email]);
+    $user_id = $query->fetch();
     $employer->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $employer->bindParam(':name', $_POST["name"]);
     $employer->bindParam(':membership_id', $_POST["membership_id"], PDO::PARAM_INT);
@@ -41,29 +58,31 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
     }
 
 // //3.create payment method
-// if(isset($_POST["membership_type"]) && isset($_POST["payment_method_type"])){
-//     $payment = $conn->prepare("INSERT INTO ric55311.payment_methods (account_id, payment_method_type,
-//     billing_address, postal_code, card_number, security_code, expiration_month, expiration_year,
-//     withdrawal_method)
-//     VALUES (:account_id, :payment_method_type,
-//     :billing_address, :postal_code, :card_number, :security_code, :expiration_month, :expiration_year,
-//     :withdrawal_method);");
-//     $account_id = $pdo->prepare("SELECT id FROM accounts WHERE user_id=:user_id");
-//     $payment->bindParam(':account_id', $account_id);
-//     $payment->bindParam(':payment_method_type', $_POST["payment_method_type"]);
-//     $payment->bindParam(':billing_address', $_POST["billing_address"]);
-//     $payment->bindParam(':postal_code', $_POST["postal_code"]);
-//     $payment->bindParam(':card_number', $_POST["card_number"]);
-//     $payment->bindParam(':security_code', $_POST["security_code"]);
-//     $payment->bindParam(':expiration_month', $_POST["expiration_month"]);
-//     $payment->bindParam(':expiration_year', $_POST["expiration_year"]);
-//     $payment->bindParam(':withdrawal_method', $_POST["withdrawal_method"]);
-//
-//     if($payment->execute()){
-//         print("<h2>Your the mayment method for account " . $account_id . " was successfuly added</h2>");
-//         header("Location: ./Login");
-//     }
-// }
+if(isset($_POST["membership_type"]) && isset($_POST["payment_method_type"])){
+print("<h2>Payment checker</h2>");
+}
+    $payment = $conn->prepare("INSERT INTO ric55311.payment_methods (account_id, payment_method_type,
+    billing_address, postal_code, card_number, security_code, expiration_month, expiration_year,
+    withdrawal_method)
+    VALUES (:account_id, :payment_method_type,
+    :billing_address, :postal_code, :card_number, :security_code, :expiration_month, :expiration_year,
+    :withdrawal_method);");
+    $account_id = $conn->prepare("SELECT id FROM ric55311.accounts WHERE user_id=:user_id;");
+    $account_id->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $payment->bindParam(':account_id', $account_id, PDO::PARAM_INT);
+    $payment->bindParam(':payment_method_type', $_POST["payment_method_type"]);
+    $payment->bindParam(':billing_address', $_POST["billing_address"]);
+    $payment->bindParam(':postal_code', $_POST["postal_code"]);
+    $payment->bindParam(':card_number', $_POST["card_number"]);
+    $payment->bindParam(':security_code', $_POST["security_code"]);
+    $payment->bindParam(':expiration_month', $_POST["expiration_month"]);
+    $payment->bindParam(':expiration_year', $_POST["expiration_year"]);
+    $payment->bindParam(':withdrawal_method', $_POST["withdrawal_method"]);
+
+    if($payment->execute()){
+        print("<h2>Your the mayment method for account " . $account_id . " was successfuly added</h2>");
+    }
+
 
 // $statement = $conn->prepare('SELECT * FROM Bookstore.books AS books');
 // $statement->execute();
