@@ -1,4 +1,4 @@
-<?php require_once '/nfs/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/database.php';
+<!-- <?php require_once '/nfs/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/database.php';
 //Update this for the new Database Attributes
 //Need to make sure email not in use before Query made
 
@@ -67,72 +67,115 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
 
 // $statement = $conn->prepare('SELECT * FROM Bookstore.books AS books');
 // $statement->execute();
-?>
-
+?> -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company Sign Up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/../../../style.css">
+    <title>Employer Sign Up</title>
 </head>
 <body>
-<h1>Sign Up</h1>
+  <nav class="navbar navbar-light bg-light">
+    <span class="navbar-brand mb-0 h1">DAJ Recruitment Platform</span>
+    <span class="logo-image"><img src="/../../../logo.png" class="logo"></span>
+  </nav>
+  <h2>Sign Up</h2>
+  <h6>Fill the form below to sign up for a membership.</h6>
 <!-- Update the Form to match the database -->
-    <form action="" method="POST">
+  <form action="" method="POST">
+      <div class="form-group">
         <label for="name">Company</label><br>
-        <input type = "text" name="name" id="name" required> <br>
+        <input type="text" class="form-control" name="name" id="name" required>
+      </div>
+      <div class="form-group">
         <label for="email">Email</label><br>
-        <input type = "text" name="email" id="email" required> <br>
+        <input type="text" class="form-control" name="email" id="email" required>
+      </div>
+      <div class="form-group">
         <label for="login_name">Login Name</label><br>
-        <input type = "text" name="login_name" id="login_name" required> <br>
+        <input type="text" class="form-control" name="login_name" id="login_name" required>
+      </div>
+      <div class="form-group">
         <label for="phone">Phone Number</label><br>
-        <input type = "text" name="phone" id="phone" required> <br>
+        <input type="text" class="form-control" name="phone" id="phone" required>
+      </div>
+      <div class="form-group">
         <label for="password">Password (minimum 8 characters)</label><br>
-        <input type="hidden" name="user_type" id="user_type" value="Employer">
-        <input type = "password" name="password" id="password" minlength="8" required> <br>
-        <br>
-        <br>
-        <p>What kind of account would you like?</p>
-        <!-- //Update these numeric values to match the table -->
-        <input type="radio" id="Prime" name="membership_id" value="1">
-        <label for="Prime">Prime ($50 a month/5 monthly postings)</label><br>
-        <input type="radio" id="Gold" name="membership_id" value="2">
-        <label for="Gold">Gold ($100 a month/Unlimited postings)</label><br>
-        <br>
-        <br>
-        <p>Next we will ned some payment info</p>
-        <p>Are you using a credit card or debit card?</p>
-        <input type="radio" id="Credit" name="payment_method_type" value="Credit">
-        <label for="Credit">Credit Card</label><br>
-        <input type="radio" id="Debit" name="payment_method_type" value="Debit">
-        <label for="Debit">Chequing Account</label><br>
-        <br>
+        <input type="password" class="form-control" name="password" id="password" minlength="8" required>
+      </div>
+      <!-- <div class="form-group">
+        <label for="membership">Which membership would you like?</label>
+        <select class="form-control" id="membership">
+          <option id="prime">Prime ($50 a month, comes with 5 monthly postings)</option>
+          <option id="gold">Gold ($100 a month, comes with unlimited postings)</option>
+       </select>
+     </div> -->
+     <p>Which membership would you like?</p>
+     <div class="form-check form-check-inline">
+       <input class="form-check-input" type="radio" name="membership" id="Prime" value="Prime">
+       <label class="form-check-label" for="Prime">Prime ($50/month, 5 postings/month)</label>
+     </div>
+     <div class="form-check form-check-inline">
+       <input class="form-check-input" type="radio" name="membership" id="Gold" value="Gold">
+       <label class="form-check-label" for="Gold">Gold (100$/month, Unlimited postings)</label>
+     </div>
+
+      <h3>Payment information</h3>
+      <h6>Let us know how you'd like to pay for your membership.</h6>
+
+      <p>Are you paying with a credit card or a debit card?</p>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="payment" id="Credit" value="Credit">
+        <label class="form-check-label" for="Credit">Credit Card</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="payment" id="Debit" value="Debit">
+        <label class="form-check-label" for="Debit">Debit Card</label>
+      </div>
+      <div class="form-group">
         <label for="card_number">Card Number</label><br>
-        <input type = "text" card_number="card_number" id="card_number" required> <br>
+        <input type="text" class="form-control" card_number="card_number" id="card_number" required>
+      </div>
+      <div class="form-group">
         <label for="security_code">Security Code</label><br>
-        <input type = "text" card_number="security_code" id="security_code" required> <br>
-        <label for="expiration_month">Expiration Month (ex: 01=January, 02 =February, etc)</label><br>
-        <input type = "text" expiration_month="expiration_month" id="expiration_month" required> <br>
-        <label for="expiration_year">Expiration Year (ex: 2020, 2023, etc)</label><br>
-        <input type = "text" expiration_month="expiration_year" id="expiration_year" required> <br>
+        <input type="text" class="form-control" card_number="security_code" id="security_code" required>
+      </div>
+      <div class="form-group">
+        <label for="expiration_month">Expiration Month</label><br>
+        <input type="text" class="form-control" expiration_month="expiration_month" id="expiration_month" required>
+      </div>
+      <div class="form-group">
+        <label for="expiration_year">Expiration Year</label><br>
+        <input type="text" class="form-control" expiration_month="expiration_year" id="expiration_year" required>
+      </div>
+      <div class="form-group">
         <label for="billing_address">Billing Address</label><br>
-        <input type = "text" name="billing_address" id="billing_address" required> <br>
+        <input type="text" class="form-control" name="billing_address" id="billing_address" required>
+      </div>
+      <div class="form-group">
         <label for="postal_code">Postal Code</label><br>
-        <input type = "text" name="postal_code" id="postal_code" required> <br>
-        <br>
-        <br>
-        <p>Would you like your payments made manually or automatically?</p>
-        <input type="radio" id="Automatic" name="withdrawal_method" value="Automatic" required>
-        <label for="Automatic">Automatic</label><br>
-        <input type="radio" id="Debit" name="withdrawal_method" value="Manual" required>
-        <label for="Manual">Manual</label><br>
+        <input type = "text" class="form-control" name="postal_code" id="postal_code" required>
+      </div>
+      <p>Would you like your payments made manually or automatically?</p>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="withdrawal_method" value="Automatic" required>
+        <label class="form-check-label" for="Automatic">Automatic</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="withdrawal_method" value="Manual" required>
+        <label class="form-check-label" for="Manual">Manual</label>
+      </div>
 
-
-
-        <button type="submit">Submit</button>
+      <p><button type="submit" class="btn btn-outline-success">Submit</button></p>
+      <br>
     </form>
-    <a href='../Employer'>Back</a>
+
+    <div class="footer">
+      © 2021 Copyright: Dunya Oguz, Azman Akhter, John Purcell
+    </div>
 </body>
 </html>
