@@ -12,7 +12,7 @@ $result = $employeerInfoStmt->fetch();
 $employeerName = $result['name'];
 $employeerId = $result['id'];
 
-$jobListingStmt = $conn->prepare("SELECT recruiter_id, date_posted, title, description, required_experience, status FROM jobs WHERE employer_id = ?");
+$jobListingStmt = $conn->prepare("SELECT id, recruiter_id, date_posted, title, description, required_experience, status FROM jobs WHERE employer_id = ?");
 $jobListingStmt->execute([$employeerId]);
 ?>
 
@@ -38,8 +38,8 @@ $jobListingStmt->execute([$employeerId]);
         <table align = "centre", border = "1px", style = "width:600px; line-height:40px">
             <thead>
                 <tr>
+                    <td>Job ID</td>    
                     <td>Recruiter ID</td>
-                    <td>Job ID</td>
                     <td>Date Posted</td>
                     <td>Job Title</td>
                     <td>Description</td>
@@ -52,8 +52,8 @@ $jobListingStmt->execute([$employeerId]);
             <tbody>
                 <?php while ($row = $jobListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
                     <tr>
-                    <td> <?php echo $row['recruiter_id']; ?> </td>
                     <td> <?php echo $row['id']; ?> </td>
+                    <td> <?php echo $row['recruiter_id']; ?> </td>
                     <td> <?php echo $row['date_posted']; ?> </td>
                     <td> <?php echo $row['title']; ?> </td>
                     <td> <?php echo $row['description']; ?> </td>

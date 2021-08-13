@@ -4,9 +4,9 @@ include_once('../../database.php');
 //$user_id = $_SESSION['userId'];
 $user_id = "1";
 
-if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POST["job_experienceRequired"]) && isset($_POST["job_city"]) && isset($_POST["job_province"]) && isset($_POST["job_country"]) && isset($_POST["job_remoteAvaliable"])){
-    $job = $conn->prepare("INSERT INTO jobs (employer_id, recruiter_id, title, description, required_experience, city, province, country, is_remote_eligible)
-                            VALUES (:employer_id, :recruiter_id, :title, :description, :required_experience, :city, :province, :country, :is_remote_eligible))");
+if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POST["job_experienceRequired"]) && isset($_POST["job_city"]) && isset($_POST["job_province"]) && isset($_POST["job_country"])){
+    $job = $conn->prepare("INSERT INTO jobs (employer_id, recruiter_id, title, description, required_experience, city, province, country)
+                            VALUES (:employer_id, :recruiter_id, :title, :description, :required_experience, :city, :province, :country))");
     
     $job->bindParam(':title', $_POST["job_title"]);
     $job->bindParam(':description', $_POST["job_description"]);
@@ -14,13 +14,6 @@ if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POS
     $job->bindParam(':city', $_POST["job_city"]);
     $job->bindParam(':province', $_POST["job_province"]);
     $job->bindParam(':country', $_POST["job_country"]);
-    
-    if($_POST["job_remoteAvaliable"] == "Yes" || $_POST["job_remoteAvaliable"] == "yes"){
-        $job->bindParam(':is_remote_eligible', 1);
-    }else{
-        $job->bindParam(':is_remote_eligible', 0);
-    }
-
 
     $getIdStmt = $conn->prepare("SELECT employer_id, id FROM recruiters WHERE user_id = ?");
     $getIdStmt->execute([$user_id]);
@@ -75,9 +68,6 @@ if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POS
 
         <label for="job_country">Country</label><br>
         <input type="text" name = "job_country" id = "job_country"><br>
-
-        <label for="job_remoteAvaliable">Remote Avaliable</label><br>
-        <input type="text" name = "job_remoteAvaliable" id = "job_remoteAvaliable"><br>
 
         <button type = "submit">Add</button>
     
