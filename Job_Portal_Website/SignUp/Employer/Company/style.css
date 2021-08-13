@@ -1,0 +1,67 @@
+body {
+  background-color: white;
+  /* opacity: 0.3; */
+}
+h1 {
+  color: black;
+  /* font-size: 200%; */
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 25px;
+}
+h2 {
+  margin-top: 25px;
+  margin-left: 10px;
+}
+h3 {
+  margin-left: 10px;
+  margin-top: 25px;
+}
+h6 {
+  margin-left: 10px;
+  margin-bottom: 25px;
+}
+.copyright {
+  text-align: center;
+  margin-top: 300px;
+  font-size: 70%
+}
+p {
+  margin-left: 10px;
+}
+a {
+  /* color: pink; */
+  display: flex;
+  justify-content: center;
+}
+.left {
+  float: left;
+  margin-right:10px;
+}
+.right{
+  float: left;
+  margin-left: 10px;
+}
+.logo {
+  width: 50px;
+  height: 50px;
+}
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: black;
+  color: white;
+  font-size: 80%;
+  text-align: center;
+}
+.form-group {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.form-check {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
