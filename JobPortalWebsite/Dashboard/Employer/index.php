@@ -1,9 +1,9 @@
 
 <?php 
-include_once('/nfs/groups/r/ri_comp5531_1/COMP5531_final_project/JobPortalWebsite/database.php');
+include_once('../../database.php');
 //session_start();
 
-//$user_id = $_SESSION['userID'];
+//$user_id = $_SESSION['userId'];
 $user_id = "1";
 
 
@@ -31,13 +31,15 @@ $jobListingResult = $jobListingStmt->fetchAll();
         <link rel="stylesheet" href="">
     </head>
     <body>
-        <h1> <?php echo (Welcome . $employeerName); ?> </h1>
+        <h4><a href="../../index.php"></a></h4>
+
+        <h4> <?php echo "Welcome " . $employeerName;?> </h4>
 
         <br>
 
         <table align = "centre", border = "1px", style = "width:600px; line-height:40px">
             <tr>
-                <th> <<h2>Job Listing</h2> </th>
+                <th> <h2>Job Listing</h2> </th>
             </tr>
             <t>
                 <th>Recruiter ID</th>
