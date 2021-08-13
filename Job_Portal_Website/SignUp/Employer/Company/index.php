@@ -1,25 +1,12 @@
-<!-- <?php require_once '/nfs/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/database.php';
+<?php require_once '/www/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/database.php';
 //Update this for the new Database Attributes
 //Need to make sure email not in use before Query made
 
 //1.Insert user
-if(isset($_POST["user_type"])){
-  print("<h2>Test 1</h2>");
-};
-if (isset($_POST["login_name"])){
-  print("<h2>Test 2.</h2>");
-};
-if ( isset($_POST["password"])){
-  print("<h2>Test 3.</h2>");
-};
-if ( isset($_POST["phone"])){
-  print("<h2>Test 4</h2>");
-};
-if (isset($_POST["email"])){
-print("<h2>Test 5</h2>");
-};
+
 $user = $conn->prepare("INSERT INTO ric55311.users (user_type, login_name,
-password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :email);");
+password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :email)
+;");
     $user->bindParam(':user_type', $_POST["user_type"]);
     $user->bindParam(':login_name', $_POST["login_name"]);
     $user->bindParam(':password', $_POST["password"]);
@@ -40,16 +27,17 @@ password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :em
     if($user->execute()){
         print ("<h2>User creation successful</h2>");
     }
-
+   
 // //2.insert employeee (check credentials)
 // //need to get the userID and resulting membership_ID so we can enter the Employer
 $employer = $conn->prepare("INSERT INTO ric55311.employers (user_id,
 name, membership_id) VALUES (:user_id, :name, :membership_id);");
 
-    $query = $conn->prepare("SELECT id FROM ric55311.users WHERE email=?;");
-    $query->execute([$email]);
-    $user_id = $query->fetch();
-    $employer->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $query = $conn->prepare("SELECT id FROM ric55311.users WHERE email=:email;");
+    $query->bindParam(":email",$email);
+    $query->execute();
+    $user_id=$query->fetch();
+    $employer->bindParam(':user_id', $user_id["id"], PDO::PARAM_INT);
     $employer->bindParam(':name', $_POST["name"]);
     $employer->bindParam(':membership_id', $_POST["membership_id"], PDO::PARAM_INT);
 
@@ -84,9 +72,7 @@ print("<h2>Payment checker</h2>");
     }
 
 
-// $statement = $conn->prepare('SELECT * FROM Bookstore.books AS books');
-// $statement->execute();
-?> -->
+?> 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -94,18 +80,19 @@ print("<h2>Payment checker</h2>");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="/../../../style.css">
+    <link rel="stylesheet" href="style.css">
     <title>Employer Sign Up</title>
 </head>
 <body>
   <nav class="navbar navbar-light bg-light">
     <span class="navbar-brand mb-0 h1">DAJ Recruitment Platform</span>
-    <span class="logo-image"><img src="/../../../logo.png" class="logo"></span>
+    <span class="logo-image"><img src="logo.png" class="logo"></span>
   </nav>
   <h2>Sign Up</h2>
   <h6>Fill the form below to sign up for a membership.</h6>
 <!-- Update the Form to match the database -->
   <form action="" method="POST">
+      <input type="hidden" name="user_type" id="user_type" value="Employer">
       <div class="form-group">
         <label for="name">Company</label><br>
         <input type="text" class="form-control" name="name" id="name" required>
@@ -126,20 +113,13 @@ print("<h2>Payment checker</h2>");
         <label for="password">Password (minimum 8 characters)</label><br>
         <input type="password" class="form-control" name="password" id="password" minlength="8" required>
       </div>
-      <!-- <div class="form-group">
-        <label for="membership">Which membership would you like?</label>
-        <select class="form-control" id="membership">
-          <option id="prime">Prime ($50 a month, comes with 5 monthly postings)</option>
-          <option id="gold">Gold ($100 a month, comes with unlimited postings)</option>
-       </select>
-     </div> -->
      <p>Which membership would you like?</p>
      <div class="form-check form-check-inline">
-       <input class="form-check-input" type="radio" name="membership" id="Prime" value="Prime">
+       <input class="form-check-input" type="radio" name="membership_id" id="Prime" value="1">
        <label class="form-check-label" for="Prime">Prime ($50/month, 5 postings/month)</label>
      </div>
      <div class="form-check form-check-inline">
-       <input class="form-check-input" type="radio" name="membership" id="Gold" value="Gold">
+       <input class="form-check-input" type="radio" name="membership_id" id="Gold" value="2">
        <label class="form-check-label" for="Gold">Gold (100$/month, Unlimited postings)</label>
      </div>
 
@@ -148,11 +128,11 @@ print("<h2>Payment checker</h2>");
 
       <p>Are you paying with a credit card or a debit card?</p>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="payment" id="Credit" value="Credit">
+        <input class="form-check-input" type="radio" name="payment_method_type" id="Credit" value="Credit">
         <label class="form-check-label" for="Credit">Credit Card</label>
       </div>
       <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="payment" id="Debit" value="Debit">
+        <input class="form-check-input" type="radio" name="payment_method_type" id="Debit" value="Debit">
         <label class="form-check-label" for="Debit">Debit Card</label>
       </div>
       <div class="form-group">
