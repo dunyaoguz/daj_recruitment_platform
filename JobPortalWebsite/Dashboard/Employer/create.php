@@ -18,11 +18,9 @@ if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POS
     $getIdStmt = $conn->prepare("SELECT employer_id, id FROM recruiters WHERE user_id = ?");
     $getIdStmt->execute([$user_id]);
     $result = $getIdStmt->fetch();
-    $employeerId = $result['employer_id'];
-    $recruiterId = $result['id'];
 
-    $job->bindParam(':employer_id', $employeerId);
-    $job->bindParam(':employer_id', $recruiterId);
+    $job->bindParam(':employer_id', $result['employer_id']);
+    $job->bindParam(':recruiter_id', $result['id']);
 
     if ($job->execute()){
         header("Location: .");
