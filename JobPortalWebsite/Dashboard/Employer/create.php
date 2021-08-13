@@ -6,7 +6,7 @@ $user_id = "1";
 
 if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POST["job_experienceRequired"]) && isset($_POST["job_city"]) && isset($_POST["job_province"]) && isset($_POST["job_country"])){
     $job = $conn->prepare("INSERT INTO jobs (employer_id, recruiter_id, title, description, required_experience, city, province, country)
-                            VALUES (:employer_id, :recruiter_id, :title, :description, :required_experience, :city, :province, :country))");
+                            VALUES (:employer_id, :recruiter_id, :title, :description, :required_experience, :city, :province, :country)");
     
     $job->bindParam(':title', $_POST["job_title"]);
     $job->bindParam(':description', $_POST["job_description"]);
@@ -24,6 +24,8 @@ if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POS
 
     if ($job->execute()){
         header("Location: .");
+    }else{
+        echo "This didn't work";
     }
 
     
