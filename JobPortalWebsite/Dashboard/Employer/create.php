@@ -10,7 +10,7 @@ if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POS
     
     $job->bindParam(':title', $_POST["job_title"]);
     $job->bindParam(':description', $_POST["job_description"]);
-    $job->bindParam(':required_experience', $_POST["job_experience"]);
+    $job->bindParam(':required_experience', $_POST["job_experience"], PDO::PARAM_INT);
     $job->bindParam(':city', $_POST["job_city"]);
     $job->bindParam(':province', $_POST["job_province"]);
     $job->bindParam(':country', $_POST["job_country"]);
@@ -19,8 +19,8 @@ if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POS
     $getIdStmt->execute([$user_id]);
     $result = $getIdStmt->fetch();
 
-    $job->bindParam(':employer_id', $result['employer_id']);
-    $job->bindParam(':recruiter_id', $result['id']);
+    $job->bindParam(':employer_id', $result['employer_id'], PDO::PARAM_INT);
+    $job->bindParam(':recruiter_id', $result['id'], PDO::PARAM_INT);
 
     if ($job->execute()){
         header("Location: .");
