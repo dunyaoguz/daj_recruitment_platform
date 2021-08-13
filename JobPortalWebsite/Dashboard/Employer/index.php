@@ -1,4 +1,3 @@
-
 <?php 
 include_once('../../database.php');
 //session_start();
@@ -15,8 +14,6 @@ $employeerId = $result['id'];
 
 $jobListingStmt = $conn->prepare("SELECT recruiter_id, date_posted, title, description, required_experience, status FROM jobs WHERE employer_id = ?");
 $jobListingStmt->execute([$employeerId]);
-$jobListingResult = $jobListingStmt->fetchAll();
-
 ?>
 
 
@@ -31,44 +28,48 @@ $jobListingResult = $jobListingStmt->fetchAll();
         <link rel="stylesheet" href="">
     </head>
     <body>
-        <h4><a href="../../index.php"></a></h4>
 
-        <h4> <?php echo "Welcome " . $employeerName;?> </h4>
+        <h2> <?php echo "Welcome " . $employeerName;?> </h2>
 
         <br>
 
+        <a href="./create.php">Add a new job</a>
+        <h4>List of Jobs</h4>
         <table align = "centre", border = "1px", style = "width:600px; line-height:40px">
-            <tr>
-                <th> <h2>Job Listing</h2> </th>
-            </tr>
-            <t>
-                <th>Recruiter ID</th>
-                <th>Date Posted</th>
-                <th>Job Title</th>
-                <th>Description</th>
-                <th>Required Experience</th>
-                <th>Status</th>
-            </t>
-            <?php
-            foreach($jobListingResult as $row) {
-            ?>
+            <thead>
                 <tr>
+                    <td>Recruiter ID</td>
+                    <td>Job ID</td>
+                    <td>Date Posted</td>
+                    <td>Job Title</td>
+                    <td>Description</td>
+                    <td>Required Experience (Years)</td>
+                    <td>Status</td>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <?php while ($row = $jobListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
+                    <tr>
                     <td> <?php echo $row['recruiter_id']; ?> </td>
+                    <td> <?php echo $row['id']; ?> </td>
                     <td> <?php echo $row['date_posted']; ?> </td>
                     <td> <?php echo $row['title']; ?> </td>
                     <td> <?php echo $row['description']; ?> </td>
                     <td> <?php echo $row['required_experience']; ?> </td>
                     <td> <?php echo $row['status']; ?> </td>
-                </tr>
-            <?php
-                }
-            ?>
-                
-
-
+                    <td>
+                        <a href="./?job_id="<?= $row["id"] ?>Delete</a>
+                        <a href="./?job_id="<?= $row["id"] ?>Edit</a>
+                    </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
         </table>
 
+        <br>
 
+        <a href="../../index.php">Back To HomePage</a>
 
     </body>
 </html>
