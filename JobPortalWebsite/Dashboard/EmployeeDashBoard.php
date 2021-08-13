@@ -31,7 +31,7 @@ $jobListingResult = $jobListingStmt->fetchAll();
         <link rel="stylesheet" href="">
     </head>
     <body>
-        <h1> <?php echo Welcome $employeerName; ?> </h1>
+        <h1> <?php echo (Welcome . $employeerName); ?> </h1>
 
         <br>
 
