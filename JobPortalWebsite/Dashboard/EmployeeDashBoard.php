@@ -1,6 +1,6 @@
 
 <?php 
-include_once('/nfs/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/database.php');
+include_once('/nfs/groups/r/ri_comp5531_1/COMP5531_final_project/JobPortalWebsite/database.php');
 //session_start();
 
 //$user_id = $_SESSION['userID'];
