@@ -17,7 +17,7 @@ $jobListingStmt->execute([$employeerId]);
 ?>
 
 
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -45,6 +45,7 @@ $jobListingStmt->execute([$employeerId]);
                     <td>Description</td>
                     <td>Required Experience (Years)</td>
                     <td>Status</td>
+                    <td>Actions</td>
                 </tr>
             </thead>
             
