@@ -1,9 +1,8 @@
-<?php require_once '/www/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/database.php';
-//Update this for the new Database Attributes
-//Need to make sure email not in use before Query made
+<?php require_once '/www/groups/r/ri_comp5531_1/COMP5531_final_project/JobPortalWebsite/database.php';
+// Update this for the new Database Attributes
+// Need to make sure email not in use before Query made
 
-//1.Insert user
-
+// 1.Insert user
 $user = $conn->prepare("INSERT INTO ric55311.users (user_type, login_name,
 password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :email)
 ;");
@@ -13,13 +12,13 @@ password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :em
     $user->bindParam(':phone', $_POST["phone"]);
     $user->bindParam(':email', $_POST["email"]);
 
-    //checking if email already exists
+    // checking if email already exists
     $email = $_POST["email"];
     $stmt = $conn->prepare("SELECT * FROM ric55311.users WHERE email=?;");
     $stmt->execute([$email]);
     $check = $stmt->fetch();
     if ($check) {
-      //Need to fix the logic with what happens when email in use
+      // need to fix the logic with what happens when email in use
         print("<h2>You already have an active account. Please login.</h2>");
         header("Location: /nfs/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/Login");
         exit();
@@ -27,9 +26,9 @@ password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :em
     if($user->execute()){
         print ("<h2>User creation successful</h2>");
     }
-   
-// //2.insert employeee (check credentials)
-// //need to get the userID and resulting membership_ID so we can enter the Employer
+
+// 2.insert employeee (check credentials)
+// need to get the userID and resulting membership_ID so we can enter the Employer
 $employer = $conn->prepare("INSERT INTO ric55311.employers (user_id,
 name, membership_id) VALUES (:user_id, :name, :membership_id);");
 
@@ -45,7 +44,7 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
         print("<h2>Employer Creation Successful</h2>");
     }
 
-// //3.create payment method
+// 3.create payment method
 if(isset($_POST["membership_type"]) && isset($_POST["payment_method_type"])){
 print("<h2>Payment checker</h2>");
 }
@@ -72,7 +71,7 @@ print("<h2>Payment checker</h2>");
     }
 
 
-?> 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -90,7 +89,6 @@ print("<h2>Payment checker</h2>");
   </nav>
   <h2>Sign Up</h2>
   <h6>Fill the form below to sign up for a membership.</h6>
-<!-- Update the Form to match the database -->
   <form action="" method="POST">
       <input type="hidden" name="user_type" id="user_type" value="Employer">
       <div class="form-group">

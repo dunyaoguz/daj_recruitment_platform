@@ -12,8 +12,19 @@
     <span class="navbar-brand mb-0 h1">DAJ Recruitment Platform</span>
     <span class="logo-image"><img src="../logo.png" class="logo"></span>
   </nav>
-  <div class="footer">
-    © 2021 Copyright: Dunya Oguz, Azman Akhter, John Purcell
-  </div>
+    <p></p>
+    <h1>What are you looking for?</h1>
+    <p></p>
+    <div class="d-flex justify-content-center">
+      <div class="button">
+        <a href='./Employer/' class="btn btn-outline-success btn-lg">I want to hire someone</a>
+      </div>
+      <div class="button">
+        <a href='./JobSeeker/' class="btn btn-outline-success btn-lg">I am looking for a job</a>
+      </div>
+    </div>
+    <div class="footer">
+      © 2021 Copyright: Dunya Oguz, Azman Akhter, John Purcell
+    </div>
 </body>
 </html>

@@ -12,17 +12,6 @@
     <span class="navbar-brand mb-0 h1">DAJ Recruitment Platform</span>
     <span class="logo-image"><img src="logo.png" class="logo"></span>
   </nav>
-  <p></p>
-  <h1>Welcome!</h1>
-  <p></p>
-  <div class="d-flex justify-content-center">
-    <div class="left">
-      <a href='./SignUp/' class="btn btn-outline-success btn-lg">Sign Up</a>
-    </div>
-    <div class="right">
-      <a href='./Login/' class="btn btn-outline-success btn-lg">Login</a>
-    </div>
-  </div>
   <div class="footer">
     © 2021 Copyright: Dunya Oguz, Azman Akhter, John Purcell
   </div>

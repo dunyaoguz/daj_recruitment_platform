@@ -34,13 +34,9 @@ a {
   display: flex;
   justify-content: center;
 }
-.left {
-  float: left;
+.button {
+  /* float: left; */
   margin-right:10px;
-}
-.right{
-  float: left;
-  margin-left: 10px;
 }
 .logo {
   width: 50px;
@@ -64,4 +60,7 @@ a {
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 20px;
+}
+.btn-group {
+  text-align: center;
 }
