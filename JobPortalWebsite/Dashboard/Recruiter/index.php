@@ -36,10 +36,10 @@
 
     // Get Total Number of Jobs For Employer
 
-    $getTotalNumberOfJobsStmt = $conn->prepare("SELECT COUNT(id) AS total FROM jobs WHERE employer_id = :employer_id");
+    $getTotalNumberOfJobsStmt = $conn->prepare("SELECT COUNT(id) FROM jobs WHERE employer_id = :employer_id");
     $getTotalNumberOfJobsStmt->bindParam(':employer_id', $recruiterEmployerId, PDO::PARAM_INT);
     $getTotalNumberOfJobsStmt->execute();
-    $getTotalNumberOfJobs->$getTotalNumberOfJobsStmt->fetch()['total'];
+    $getTotalNumberOfJobs = $getTotalNumberOfJobsStmt->fetchColumn();
 
     // Check if the total jobs exceed or not
 
@@ -119,7 +119,7 @@
             if($canPostJob){ ?>
                 <center><a href="./create.php" class="btn btn-outline-success">Add a New Job</a></center>
             <?php   } else {?>
-                <center><a href="." class="btn btn-outline-success">Limit Reached: Can't Post New Jobs</a></center>
+                <center><a href="./index.php" class="btn btn-outline-success">Limit Reached: Can't Post New Jobs</a></center>
                 <?php   }?>
       <br>
       <div class="footer">
