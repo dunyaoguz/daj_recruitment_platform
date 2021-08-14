@@ -47,6 +47,18 @@
         $canPostJob = FALSE;
     }
 
+    // Get Application Data for a Given Recruiter
+    $getApplicationInfoStmt = $conn->prepare("SELECT * FROM applications a 
+                                                LEFT JOIN jobs j
+                                                ON a.job_id = j.id
+                                                LEFT JOIN recruiters r
+                                                ON j.recruiter_id = r.id
+                                                WHERE recruiter_id = :recruiter_id");
+    $getApplicationInfoStmt->bindParam(':recruiter_id', $recruiterId, PDO::PARAM_INT);
+    $getApplicationInfoStmt->execute();
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -129,8 +141,7 @@
               <tr>
                   <td>Application ID</td>
                   <td>Job ID</td>
-                  <td>Applicant First Name</td>
-                  <td>Applicant Last Name</td>
+                  <td>Applicant ID</td>
                   <td>Date Applied</td>
                   <td>Status</td>
                   <td>Actions</td>
@@ -138,34 +149,18 @@
           </thead>
 
           <tbody>
-             <?php while($jobList = $getJobListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){
-                    echo "<h4> Outer While Loop </h4> <br>"; 
-                    $jobId = $jobList['id'];
-
-                    $getApplicationListingStmt = $conn->prepare("SELECT * FROM applications WHERE job_id = :job_id");
-                    $getApplicationListingStmt->bindParam(':job_id', $jobId, PDO::PARAM_INT);
-                    $getApplicationListingStmt->execute();
-
-                    $getJobSeekerInfoStmt = $conn->prepare("SELECT * FROM job_seekers WHERE id = :id");
-                    $getJobSeekerInfoStmt->bindParam(':id', $getApplicationListingStmt->fetch()['job_seeker_id'], PDO::PARAM_INT);
-                    $getJobSeekerInfoStmt->execute();
-                    $getJobSeekerInfo = $getJobSeekerInfoStmt->fetch();
-
-                    while ($row = $getApplicationListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){ 
-                        echo "<h4> Inner While Loop </h4> <br>"; ?>
+             <?php while ($row = $getApplicationInfoStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){?>
                         <tr>
                             <td> <?php echo $row['id']; ?> </td>
                             <td> <?php echo $row['job_id']; ?> </td>
-                            <td> <?php echo $getJobSeekerInfo['first_name']; ?> </td>
-                            <td> <?php echo $getJobSeekerInfo['last_name']; ?> </td>
+                            <td> <?php echo $getJobSeekerInfo['job_seeker_id']; ?> </td>
                             <td> <?php echo $row['date_applied']; ?> </td>
                             <td> <?php echo $row['status']; ?> </td>
                             <td>
                                 <a href="./editApplication.php?application_id=<?= $row["id"] ?>">Edit</a><br>    
                             </td>
                         </tr>
-                  <?php  }
-             } ?>
+            <?php  } ?>
           </tbody>
       </table>
       <br>
