@@ -2,6 +2,34 @@ DROP DATABASE IF EXISTS recruitment_platform;
 CREATE DATABASE recruitment_platform;
 USE recruitment_platform;
 
+DROP TABLE IF EXISTS users;
+DROP TRIGGER IF EXISTS users_insert_trigger;
+DROP TRIGGER IF EXISTS users_update_trigger;
+DROP TABLE IF EXISTS memberships;
+DROP TABLE IF EXISTS accounts;
+DROP TRIGGER IF EXISTS accounts_update_trigger;
+DROP PROCEDURE IF EXISTS check_account_balance;
+DROP PROCEDURE IF EXISTS accounts_loop;
+DROP EVENT IF EXISTS accounts_loop_schedule;
+DROP TABLE IF EXISTS transactions;
+DROP TRIGGER IF EXISTS transactions_insert_trigger;
+DROP TABLE IF EXISTS payment_methods;
+DROP TRIGGER IF EXISTS payment_methods_insert_trigger;
+DROP TRIGGER IF EXISTS payment_methods_update_trigger;
+DROP TABLE IF EXISTS employers;
+DROP TABLE IF EXISTS recruiters;
+DROP TABLE IF EXISTS jobs;
+DROP TRIGGER IF EXISTS jobs_insert_trigger;
+DROP TRIGGER IF EXISTS jobs_update_trigger;
+DROP TABLE IF EXISTS job_categories;
+DROP TABLE IF EXISTS job_seekers;
+DROP TABLE IF EXISTS job_seeker_education_history;
+DROP TABLE IF EXISTS applications;
+DROP TRIGGER IF EXISTS applications_insert_trigger;
+DROP TRIGGER IF EXISTS applications_update_trigger;
+DROP TABLE IF EXISTS system_logs;
+DROP TABLE IF EXISTS emails;
+
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   date_registered DATETIME DEFAULT NOW(),
@@ -10,7 +38,7 @@ CREATE TABLE users (
   password VARCHAR(256) NOT NULL,
   phone VARCHAR(50) NOT NULL UNIQUE,
   email VARCHAR(256) NOT NULL UNIQUE,
-  status ENUM('Active', 'Deactivated') DEFAULT 'Active'
+  status ENUM('Active', 'Frozen', 'Deactivated') DEFAULT 'Active'
 );
 CREATE TRIGGER users_insert_trigger AFTER INSERT
   ON users FOR EACH ROW
@@ -62,6 +90,49 @@ CREATE TRIGGER accounts_update_trigger BEFORE UPDATE
     INSERT INTO system_logs (table_name, activity, new_value, old_value)
     VALUES ('accounts', 'account balance was updated', JSON_OBJECT("balance", NEW.balance), JSON_OBJECT("balance", OLD.balance));
     END;
+-- This stored procedure checks to see if a given account id has a negative balance and if so, sends an email to the user
+CREATE PROCEDURE check_account_balance(account_id INT)
+BEGIN
+  SET @balance = (SELECT balance FROM accounts WHERE id = account_id);
+  IF @balance < 0 THEN
+  	SET @body = CONCAT('You have a negative balance of: ', @balance, '$. Please pay immediately!');
+    -- send email
+    INSERT INTO emails (to_email, from_email, subject, body)
+    VALUES ((SELECT email
+             FROM users
+             WHERE id = (SELECT user_id FROM accounts WHERE id = account_id)),
+             'admin@dajrecruitment.ca', 'IMPORTANT: You have a negative balance.',
+             @body);
+    -- Frreze user
+    UPDATE users SET status = 'Frozen' WHERE id = (SELECT user_id FROM accounts WHERE id = account_id);
+    -- Deactivate user if they havent paid in more than 356 days
+    SET @last_transaction = (SELECT MAX(transaction_date) FROM transactions WHERE account_id = account_id);
+	  SET @diff = DATEDIFF(NOW(), @last_transaction);
+    IF @diff > 356 THEN
+      UPDATE users SET status = 'Deactivated' WHERE id = (SELECT user_id FROM accounts WHERE id = account_id);
+	  END IF;
+  END IF;
+END;
+-- This procedure loops over accounts table and checks balance
+CREATE PROCEDURE accounts_loop()
+BEGIN
+SET @max = (SELECT max(id) FROM accounts);
+SET @min = (SELECT min(id) FROM accounts);
+WHILE @min<@max DO
+  IF @min IN (SELECT id FROM accounts) AND (SELECT status FROM users WHERE id = (SELECT user_id FROM accounts WHERE id = @min)) != 'Deactivated' THEN
+    CALL check_account_balance(@min);
+  END IF;
+  SET @min = @min + 1;
+END WHILE;
+END;
+-- This event schedules accounts loop to run every 12 hours
+CREATE EVENT accounts_loop_schedule
+  ON SCHEDULE EVERY 12 HOUR
+  STARTS '2021-08-14 00:00:00'
+  ENDS '2021-08-17 00:00:00'
+  ON COMPLETION NOT PRESERVE ENABLE
+DO
+  CALL accounts_loop();
 
 CREATE TABLE transactions (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -84,6 +155,17 @@ CREATE TRIGGER transactions_insert_trigger AFTER INSERT
                                                                         "amount", NEW.amount));
     -- Following trigger updates the balance attribute in the accounts table
     UPDATE accounts SET balance = balance + NEW.amount WHERE id = NEW.account_id;
+    -- Following trigger sends emails when there is a charge on the account
+    IF NEW.transaction_type = 'Charge' THEN
+      SET @balance = (SELECT balance FROM accounts WHERE id = NEW.account_id);
+      SET @body = CONCAT('The following charge was made to your account: ', NEW.amount, '$. Your new account balance is: ', @balance, '$.');
+      INSERT INTO emails (to_email, from_email, subject, body)
+      VALUES ((SELECT email
+               FROM users
+               WHERE id = (SELECT user_id FROM accounts WHERE id = NEW.account_id)),
+               'admin@dajrecruitment.ca', 'New charge on your DAJ Recruitment account',
+               @body);
+    END IF;
     END;
 
 CREATE TABLE payment_methods (
@@ -293,4 +375,13 @@ CREATE TABLE system_logs (
   activity VARCHAR(50) NOT NULL,
   old_value JSON,
   new_value JSON
+);
+
+CREATE TABLE emails (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  sent_date DATETIME DEFAULT NOW(),
+  to_email VARCHAR(256) NOT NULL,
+  from_email VARCHAR(256) NOT NULL,
+  subject VARCHAR(256) NOT NULL,
+  body VARCHAR(256) NOT NULL
 );

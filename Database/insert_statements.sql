@@ -78,10 +78,5 @@ INSERT INTO applications (job_seeker_id, job_id) VALUES
   (2, 3),
   (3, 2);
 
-INSERT INTO administrators (first_name, last_name) VALUES
-  ('Dunya', 'Oguz'),
-  ('Azman', 'Akhter'),
-  ('John', 'Purcell');
-
 UPDATE applications SET status = 'Accepted' WHERE job_seeker_id = 1 AND job_id = 1;
 UPDATE jobs SET status = 'Closed' WHERE id = 1;
