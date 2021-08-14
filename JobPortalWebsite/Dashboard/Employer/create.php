@@ -66,18 +66,18 @@ if(isset($_POST["user_type"]) && isset($_POST["first_name"]) && isset($_POST["la
             if($createRecruiterStmt->execute()){
                 header("Location: .");
             }else{
-                echo "<h3> Failed to Create New Recruiter. </h3> <br>"; 
+                echo "<h4> INTERNAL ERROR: Failed to Create New Recruiter. Please contact Website Admin </h4> <br>"; 
             }
         }else{
-            echo "<h3> Failed to Create New User. </h3> <br>"; 
+            echo "<h4> INTERNAL ERROR: Failed to Create New User. Please contact Wedsite Admin </h4> <br>"; 
         }
 
     }else{ //Display Error message
         if($doesUserNameAlreadyExist){
-            echo "<h3> Username Already Exists </h3> <br>"; 
+            echo "<h4> Username Already Exists </h4> <br>"; 
         }
         if($isPhoneNumberAndEmailUnique){
-            echo "<h3> Phone Number or Email Already Exists </h3> <br>";
+            echo "<h4> Phone Number or Email Already Exists </h4> <br>";
         }
     } 
 }
