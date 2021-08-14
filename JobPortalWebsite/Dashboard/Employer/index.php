@@ -102,7 +102,7 @@ $recruiterListingStmt->execute([$employeerId]);
                   <td> <?php echo $row['last_name']; ?> </td>
                   <td>
                     <a href="./edit.php?recruiter_id=<?= $row["id"] ?>">Edit</a><br>    
-                    <a href=".delete.php/?recruiter_id=<?= $row["id"] ?>">Delete</a>
+                    <a href="./delete.php?recruiter_id=<?= $row["id"] ?>">Delete</a>
                   </td>
                   </tr>
               <?php } ?>
