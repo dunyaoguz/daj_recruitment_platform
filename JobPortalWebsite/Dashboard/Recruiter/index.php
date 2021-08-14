@@ -132,7 +132,7 @@
                   <td>Applicant Last Name</td>
                   <td>Job ID</td>
                   <td>Date_applied</td>
-                  <td>status</td>
+                  <td>Status</td>
                   <td>Actions</td>
               </tr>
           </thead>
@@ -146,11 +146,11 @@
                     $getApplicationListingStmt->execute();
 
                     $getJobSeekerInfoStmt = $conn->prepare("SELECT * FROM job_seekers WHERE id = :id");
-                    $getJobSeekerInfoStmt->bindParam(':id', $getApplicationListingStmt->fetch()['job_seeker_id']);
+                    $getJobSeekerInfoStmt->bindParam(':id', $getApplicationListingStmt->fetch()['job_seeker_id'], PDO::PARAM_INT);
                     $getJobSeekerInfoStmt->execute();
-                    $getJobSeekerInfo =  $getJobSeekerInfoStmt->fetch();
+                    $getJobSeekerInfo = $getJobSeekerInfoStmt->fetch();
 
-                    while ($row = $getJobListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){ ?>
+                    while ($row = $getApplicationListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){ ?>
                         <tr>
                         <td> <?php echo $row['id']; ?> </td>
                         <td> <?php echo $getJobSeekerInfo['first_name']; ?> </td>
@@ -159,7 +159,7 @@
                         <td> <?php echo $row['date_applied']; ?> </td>
                         <td> <?php echo $row['status']; ?> </td>
                         <td>
-                            <a href="./edit.php?application_id=<?= $row["id"] ?>">Edit</a><br>    
+                            <a href="./editApplication.php?application_id=<?= $row["id"] ?>">Edit</a><br>    
                         </td>
                         </tr>
 
