@@ -11,14 +11,14 @@ h1 {
 }
 h2 {
   margin-top: 25px;
-  margin-left: 15px;
+  margin-left: 20px;
 }
 h3 {
-  margin-left: 15px;
+  margin-left: 20px;
   margin-top: 25px;
 }
 h6 {
-  margin-left: 15px;
+  margin-left: 20px;
   margin-bottom: 25px;
 }
 .copyright {
@@ -85,4 +85,8 @@ p {
 }
 .login-form-group {
   margin-bottom: 20px;
+}
+#job_description {
+  height: 150px;
+  word-break: break-word;
 }

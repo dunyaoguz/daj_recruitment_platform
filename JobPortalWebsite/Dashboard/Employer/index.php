@@ -83,7 +83,7 @@ $jobListingStmt->execute([$employeerId]);
           </tbody>
       </table>
       <br>
-      <center><a href="./create.php" class="btn btn-outline-success">Add a new job</a></center>
+      <center><a href="create.php" class="btn btn-outline-success">Add a new job</a></center>
       <br>
       <h2>Your Recruiters</h2>
       <h6>Here are the recruiters eligible to post jobs on your behalf.</h6>
