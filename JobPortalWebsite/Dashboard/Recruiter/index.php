@@ -149,15 +149,15 @@
           </thead>
 
           <tbody>
-             <?php while ($row = $getApplicationInfoStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){?>
+             <?php while ($data = $getApplicationInfoStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){?>
                         <tr>
-                            <td> <?php echo $row['id']; ?> </td>
-                            <td> <?php echo $row['job_id']; ?> </td>
-                            <td> <?php echo $getJobSeekerInfo['job_seeker_id']; ?> </td>
-                            <td> <?php echo $row['date_applied']; ?> </td>
-                            <td> <?php echo $row['status']; ?> </td>
+                            <td> <?php echo $data['id']; ?> </td>
+                            <td> <?php echo $data['job_id']; ?> </td>
+                            <td> <?php echo $data['job_seeker_id']; ?> </td>
+                            <td> <?php echo $data['date_applied']; ?> </td>
+                            <td> <?php echo $data['status']; ?> </td>
                             <td>
-                                <a href="./editApplication.php?application_id=<?= $row["id"] ?>">Edit</a><br>    
+                                <a href="./editApplication.php?application_id=<?= $data["id"] ?>">Edit</a><br>    
                             </td>
                         </tr>
             <?php  } ?>
