@@ -138,7 +138,6 @@ password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :em
         <label for="password">Password (minimum 8 characters)</label><br>
         <input type="password" class="form-control" name="password" id="password" minlength="8" required>
       </div>
-      <p>Work History</p>
       <div class="form-group">
         <label for="current_title">Current Title</label><br>
         <input type="text" class="form-control" name="current_title" id="current_title" required>

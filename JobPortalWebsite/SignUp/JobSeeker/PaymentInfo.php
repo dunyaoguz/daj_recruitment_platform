@@ -1,4 +1,4 @@
-<?php require_once '/www/groups/r/ri_comp5531_1/COMP5531_final_project/JobPortalWebsite/database.php';
+<?php require_once '../../database.php';
  $account_id = $_SESSION['account_id'];
  print $account_id["id"];
 
@@ -7,25 +7,25 @@ if(isset($_POST["withdrawal_method"])){
 }
 if(isset($_POST["payment_method_type"])){
   print("<h2>Payment test 2</h2>");
-} 
+}
 if(isset($_POST["billing_address"])){
   print("<h2>Payment test 3</h2>");
 }
 if(isset($_POST["postal_code"])){
   print("<h2>Payment test 4</h2>");
-} 
+}
 if(isset($_POST["card_number"])){
   print("<h2>Payment test 5</h2>");
 }
 if(isset($_POST["security_code"])){
   print("<h2>Payment test 6</h2>");
-} 
+}
 if(isset($_POST["expiration_month"])){
   print("<h2>Payment test 7</h2>");
 }
 if(isset($_POST["expiration_year"])){
   print("<h2>Payment test 8</h2>");
-} 
+}
  $payment = $conn->prepare("INSERT INTO ric55311.payment_methods (account_id, payment_method_type,
  billing_address, postal_code, card_number, security_code, expiration_month, expiration_year,
  withdrawal_method)
@@ -122,4 +122,3 @@ if(isset($_POST["expiration_year"])){
   </div>
 </body>
 </html>
-
