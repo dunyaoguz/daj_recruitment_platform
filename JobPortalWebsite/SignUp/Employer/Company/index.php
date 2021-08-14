@@ -1,4 +1,4 @@
-<?php require_once '/www/groups/r/ri_comp5531_1/COMP5531_final_project/JobPortalWebsite/database.php';
+<?php require_once '../../../database.php';
 // Update this for the new Database Attributes
 // Need to make sure email not in use before Query made
 
