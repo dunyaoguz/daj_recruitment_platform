@@ -61,7 +61,7 @@ if(isset($_POST["education_type_3"])&&isset($_POST["school_3"])&&isset($_POST["c
       }
 }
 if (isset($_POST["submitform"])){
-  header("Location: ../Login.php");
+  header("Location: ../SuccessMessage.php");
 };
 ?>
 
