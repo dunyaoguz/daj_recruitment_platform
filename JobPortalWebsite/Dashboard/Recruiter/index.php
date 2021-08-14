@@ -97,16 +97,16 @@
           <tbody>
               <?php while ($row = $getJobListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
                   <tr>
-                  <td> <?php echo $row['id']; ?> </td>
-                  <td> <?php echo $row['date_posted']; ?> </td>
-                  <td> <?php echo $row['title']; ?> </td>
-                  <td> <?php echo $row['description']; ?> </td>
-                  <td> <?php echo $row['required_experience']; ?> </td>
-                  <td> <?php echo $row['status']; ?> </td>
-                  <td>
-                    <a href="./editJob.php?job_id=<?= $row["id"] ?>">Edit</a><br>    
-                    <a href="./deleteJob.php?job_id=<?= $row["id"] ?>">Delete</a>
-                  </td>
+                        <td> <?php echo $row['id']; ?> </td>
+                        <td> <?php echo $row['date_posted']; ?> </td>
+                        <td> <?php echo $row['title']; ?> </td>
+                        <td> <?php echo $row['description']; ?> </td>
+                        <td> <?php echo $row['required_experience']; ?> </td>
+                        <td> <?php echo $row['status']; ?> </td>
+                        <td>
+                            <a href="./editJob.php?job_id=<?= $row["id"] ?>">Edit</a><br>    
+                            <a href="./deleteJob.php?job_id=<?= $row["id"] ?>">Delete</a>
+                        </td>
                   </tr>
               <?php } ?>
           </tbody>
@@ -128,10 +128,10 @@
           <thead>
               <tr>
                   <td>Application ID</td>
+                  <td>Job ID</td>
                   <td>Applicant First Name</td>
                   <td>Applicant Last Name</td>
-                  <td>Job ID</td>
-                  <td>Date_applied</td>
+                  <td>Date Applied</td>
                   <td>Status</td>
                   <td>Actions</td>
               </tr>
@@ -139,6 +139,7 @@
 
           <tbody>
              <?php while($jobList = $getJobListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){
+                    echo "<h4> Outer While Loop </h4> <br>"; 
                     $jobId = $jobList['id'];
 
                     $getApplicationListingStmt = $conn->prepare("SELECT * FROM applications WHERE job_id = :job_id");
@@ -150,19 +151,19 @@
                     $getJobSeekerInfoStmt->execute();
                     $getJobSeekerInfo = $getJobSeekerInfoStmt->fetch();
 
-                    while ($row = $getApplicationListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){ ?>
+                    while ($row = $getApplicationListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){ 
+                        echo "<h4> Inner While Loop </h4> <br>"; ?>
                         <tr>
-                        <td> <?php echo $row['id']; ?> </td>
-                        <td> <?php echo $getJobSeekerInfo['first_name']; ?> </td>
-                        <td> <?php echo $getJobSeekerInfo['last_name']; ?> </td>
-                        <td> <?php echo $row['job_id']; ?> </td>
-                        <td> <?php echo $row['date_applied']; ?> </td>
-                        <td> <?php echo $row['status']; ?> </td>
-                        <td>
-                            <a href="./editApplication.php?application_id=<?= $row["id"] ?>">Edit</a><br>    
-                        </td>
+                            <td> <?php echo $row['id']; ?> </td>
+                            <td> <?php echo $row['job_id']; ?> </td>
+                            <td> <?php echo $getJobSeekerInfo['first_name']; ?> </td>
+                            <td> <?php echo $getJobSeekerInfo['last_name']; ?> </td>
+                            <td> <?php echo $row['date_applied']; ?> </td>
+                            <td> <?php echo $row['status']; ?> </td>
+                            <td>
+                                <a href="./editApplication.php?application_id=<?= $row["id"] ?>">Edit</a><br>    
+                            </td>
                         </tr>
-
                   <?php  }
              } ?>
           </tbody>
