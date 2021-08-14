@@ -7,7 +7,10 @@ INSERT INTO users (user_type, login_name, password, phone, email) VALUES
   ('Recruiter', 'emily_tetzal', 'emily123456', '4375016383', 'emily@busbud.com'),
   ('Job Seeker', 'dunya_oguz', 'dunyas_password', '6385016383', 'dunya@concordia.ca'),
   ('Job Seeker', 'azman_akhter', 'azmans_password', '4385096383', 'azman@concordia.ca'),
-  ('Job Seeker', 'john_purcell', 'johns_password', '4385015383', 'john@concordia.ca');
+  ('Job Seeker', 'john_purcell', 'johns_password', '4385015383', 'john@concordia.ca'),
+  ('Administrator', 'admin_dunya', 'dunyas_password', '6385016384', 'dunyaoguz13@gmail.com'),
+  ('Administrator', 'admin_azman', 'azmans_password', '4385096384', 'azman2@concordia.ca'),
+  ('Administrator', 'admin_john', 'johns_password', '4385015384', 'john2@concordia.ca');
 
 INSERT INTO memberships (user_type, membership_type, monthly_fee, job_posting_limit, job_application_limit) VALUES
   ('Employer', 'Prime', 50, 5, 0),
