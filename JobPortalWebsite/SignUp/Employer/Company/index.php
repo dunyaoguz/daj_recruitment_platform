@@ -162,15 +162,15 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
       </div>
       <div class="form-group">
         <label for="card_number">Card Number</label><br>
-        <input type="text" class="form-control" name="card_number" id="card_number" placeholder="111122223333"required>
+        <input type="text" class="form-control" name="card_number" id="card_number" minlength="15" placeholder="111122223333"required>
       </div>
       <div class="form-group">
         <label for="security_code">Security Code</label><br>
-        <input type="text" class="form-control" name="security_code" id="security_code" placeholder="00111"required>
+        <input type="text" class="form-control" name="security_code" id="security_code" minlength="3" placeholder="111"required>
       </div>
       <div class="form-group">
         <label for="expiration_month">Expiration Month</label><br>
-        <input type="text" class="form-control" name="expiration_month" id="expiration_month" placeholder="001"required>
+        <input type="text" class="form-control" name="expiration_month" id="expiration_month" minlength="2" placeholder="01"required>
       </div>
       <div class="form-group">
         <label for="expiration_year">Expiration Year</label><br>
