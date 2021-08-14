@@ -286,12 +286,6 @@ CREATE TRIGGER applications_update_trigger BEFORE UPDATE
                                                                       "status", OLD.status));
     END;
 
-CREATE TABLE administrators (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(50) NOT NULL
-);
-
 CREATE TABLE system_logs (
   id INT AUTO_INCREMENT PRIMARY KEY,
   activity_date DATETIME DEFAULT NOW(),

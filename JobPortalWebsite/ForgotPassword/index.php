@@ -4,10 +4,13 @@
   $stmt = $conn->prepare("SELECT password FROM users WHERE email=?;");
   $stmt->execute([$email]);
   $password = $stmt->fetch();
+  $headers = 'From: webmaster@dajrecruitment.com'       . "\r\n" .
+             'Reply-To: webmaster@dajrecruitment.com' . "\r\n" .
+             'X-Mailer: PHP/' . phpversion();
 
   if($password["password"]){
       // mail($email,"Your Password to DAJ Recruitment Platform",$password["password"]);
-      mail("dunya.oguz@mail.mcgill.ca","Your Password to DAJ Recruitment Platform",$password["password"]);
+      mail("dunya.oguz@mail.mcgill.ca","Your Password to DAJ Recruitment Platform",$password["password"], $headers);
   }
 ?>
 
