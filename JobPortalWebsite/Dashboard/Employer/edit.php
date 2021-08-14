@@ -4,7 +4,7 @@ include_once('../../database.php');
 //$user_id = $_SESSION['userId'];
 //$user_id = "1";
 
-$recruiterInfoStmt = conn->prepare("SELECT * FROM recruiters WHERE id = :id");
+$recruiterInfoStmt = $conn->prepare("SELECT * FROM recruiters WHERE id = :id");
 $recruiterInfoStmt->bindParam(':id', $_GET["recruiter_id"]);
 $recruiterInfoStmt->execute();
 $recruiterInfo = $recruiterInfoStmt->fetch(PDO::FETCH_ASSOC);
