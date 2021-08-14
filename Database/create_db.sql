@@ -180,6 +180,7 @@ CREATE TABLE jobs (
   FOREIGN KEY (recruiter_id)
     REFERENCES recruiters(id)
       ON UPDATE CASCADE
+      ON DELETE CASCADE
 );
 CREATE TRIGGER jobs_insert_trigger AFTER INSERT
   ON jobs FOR EACH ROW
