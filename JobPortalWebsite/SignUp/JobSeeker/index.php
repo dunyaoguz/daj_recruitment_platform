@@ -20,7 +20,7 @@ password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :em
     if ($check) {
       // need to fix the logic with what happens when email in use
         print("<h2>You already have an active account. Please login.</h2>");
-        header("Location: /nfs/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/Login");
+        header("Location: ../Login.php");
         exit();
     }
 
@@ -37,7 +37,6 @@ password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :em
     $query->execute();
     $user_id=$query->fetch();
     $job_seeker->bindParam(':user_id', $user_id["id"], PDO::PARAM_INT);
-    //print($user_id["id"]);
     $job_seeker->bindParam(':membership_id', $_POST["membership_id"], PDO::PARAM_INT);
     $job_seeker->bindParam(':first_name', $_POST["first_name"]);
     $job_seeker->bindParam(':last_name', $_POST["last_name"]);
@@ -47,7 +46,6 @@ password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :em
     $job_seeker->bindParam(':current_title', $_POST["current_title"]);
     $job_seeker->bindParam(':years_of_experience', $_POST["years_of_experience"], PDO::PARAM_INT);
 
-    //print ("<h2>We got here</h2>");
     if($job_seeker->execute()){
       // print ("<h2>Job Seeker creation successful</h2>");
     }

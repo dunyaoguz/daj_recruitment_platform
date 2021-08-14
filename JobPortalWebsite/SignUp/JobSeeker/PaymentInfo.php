@@ -1,54 +1,29 @@
 <?php require_once '../../database.php';
  $account_id = $_SESSION['account_id'];
- print $account_id["id"];
 
-if(isset($_POST["withdrawal_method"])){
-  print($_POST["withdrawal_method"]);
-}
-if(isset($_POST["payment_method_type"])){
-  print("<h2>Payment test 2</h2>");
-}
-if(isset($_POST["billing_address"])){
-  print("<h2>Payment test 3</h2>");
-}
-if(isset($_POST["postal_code"])){
-  print("<h2>Payment test 4</h2>");
-}
-if(isset($_POST["card_number"])){
-  print("<h2>Payment test 5</h2>");
-}
-if(isset($_POST["security_code"])){
-  print("<h2>Payment test 6</h2>");
-}
-if(isset($_POST["expiration_month"])){
-  print("<h2>Payment test 7</h2>");
-}
-if(isset($_POST["expiration_year"])){
-  print("<h2>Payment test 8</h2>");
-}
- $payment = $conn->prepare("INSERT INTO payment_methods (account_id, payment_method_type,
+ $payment2 = $conn->prepare("INSERT INTO payment_methods (account_id, payment_method_type,
  billing_address, postal_code, card_number, security_code, expiration_month, expiration_year,
  withdrawal_method)
  VALUES (:account_id, :payment_method_type,
  :billing_address, :postal_code, :card_number, :security_code, :expiration_month, :expiration_year,
  :withdrawal_method);");
- $payment->bindParam(':account_id', $account_id["id"], PDO::PARAM_INT);
- $payment->bindParam(':payment_method_type', $_POST["payment_method_type"]);
- $payment->bindParam(':billing_address', $_POST["billing_address"]);
- $payment->bindParam(':postal_code', $_POST["postal_code"]);
+ $payment2->bindParam(':account_id', $account_id["id"], PDO::PARAM_INT);
+ $payment2->bindParam(':payment_method_type', $_POST["payment_method_type"]);
+ $payment2->bindParam(':billing_address', $_POST["billing_address"]);
+ $payment2->bindParam(':postal_code', $_POST["postal_code"]);
  $card_number = intval($_POST["card_number"]);
- $payment->bindParam(':card_number', $card_number, PDO::PARAM_INT);
+ $payment2->bindParam(':card_number', $card_number, PDO::PARAM_INT);
  $security_code = intval($_POST["security_code"]);
- $payment->bindParam(':security_code', $security_code, PDO::PARAM_INT);
+ $payment2->bindParam(':security_code', $security_code, PDO::PARAM_INT);
  $expiration_month = intval($_POST["expiration_month"]);
- $payment->bindParam(':expiration_month', $expiration_month, PDO::PARAM_INT);
+ $payment2->bindParam(':expiration_month', $expiration_month, PDO::PARAM_INT);
  $expiration_year = intval($_POST["expiration_year"]);
- $payment->bindParam(':expiration_year', $expiration_year, PDO::PARAM_INT);
- $payment->bindParam(':withdrawal_method', $_POST["withdrawal_method"]);
+ $payment2->bindParam(':expiration_year', $expiration_year, PDO::PARAM_INT);
+ $payment2->bindParam(':withdrawal_method', $_POST["withdrawal_method"]);
 
- if($payment->execute()){
-     print("<h2>Your the payment method for account " . $account_id["id"] . " was successfuly added</h2>");
- }
+if($payment2->execute()){
+  header("Location: EducationHistory.php");
+}
 ?>
 
 
@@ -71,6 +46,7 @@ if(isset($_POST["expiration_year"])){
   <h3>Payment information</h3>
       <h6>Let us know how you'd like to pay for your membership.</h6>
       <p>Are you paying with a credit card or a debit card?</p>
+      <form action="" method="POST">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="payment_method_type" id="Credit" value="Credit">
         <label class="form-check-label" for="Credit">Credit Card</label>
