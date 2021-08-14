@@ -62,7 +62,6 @@ $recruiterListingStmt->execute([$employeerId]);
                   <td>Description</td>
                   <td>Required Experience (Years)</td>
                   <td>Status</td>
-                  <td>Actions</td>
               </tr>
           </thead>
 
@@ -76,19 +75,11 @@ $recruiterListingStmt->execute([$employeerId]);
                   <td> <?php echo $row['description']; ?> </td>
                   <td> <?php echo $row['required_experience']; ?> </td>
                   <td> <?php echo $row['status']; ?> </td>
-                  <td>
-                    <a href="#">Delete</a>
-                    <br>
-                    <a href="#">Edit</a>
-                      <!-- <a href="./?job_id="<?= $row["id"] ?>Delete</a> -->
-                      <!-- <a href="./?job_id="<?= $row["id"] ?>Edit</a> -->
-                  </td>
                   </tr>
               <?php } ?>
           </tbody>
       </table>
       <br>
-      <center><a href="create.php" class="btn btn-outline-success">Add a new job</a></center>
       <br>
       <h2>Your Recruiters</h2>
       <h6>Here are the recruiters eligible to post jobs on your behalf.</h6>
@@ -123,14 +114,6 @@ $recruiterListingStmt->execute([$employeerId]);
       <br>
       <center><a href="./create.php" class="btn btn-outline-success">Add a New Recruiter</a></center>
       <br>
-
-
-
-
-
-
-
-
       <div class="footer">
         © 2021 Copyright: Dunya Oguz, Azman Akhter, John Purcell
       </div>

@@ -28,7 +28,6 @@ if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POS
     }
 }
 
-
 ?>
 
 
