@@ -16,14 +16,14 @@ if(isset($_POST["recruiter_first_name"]) && isset($_POST["recruiter_last_name"])
                                             last_name = :last_name
                                             WHERE id = :id");
 
-    $recruiterUpdateStmt->bindParam(':first_name', $_POST(["recruiter_first_name"]));
-    $recruiterUpdateStmt->bindParam(':last_name', $_POST(["recruiter_last_name"]));
-    $recruiterUpdateStmt->bindParam(':id', $_POST(["recruiter_id"]), PDO::PARAM_INT);
+    $recruiterUpdateStmt->bindParam(':first_name', $_POST["recruiter_first_name"]);
+    $recruiterUpdateStmt->bindParam(':last_name', $_POST["recruiter_last_name"]);
+    $recruiterUpdateStmt->bindParam(':id', $_POST["recruiter_id"], PDO::PARAM_INT);
 
     if($recruiterUpdateStmt->execute()){
         header("Location: .");
     }else{
-        header("Location: ./edit.php?recruiter_id=".$_POST(["recruiter_id"]));
+        header("Location: ./edit.php?recruiter_id=".$_POST["recruiter_id"]);
     }
 }
 
