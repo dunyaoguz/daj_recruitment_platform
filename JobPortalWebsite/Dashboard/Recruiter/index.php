@@ -44,10 +44,13 @@
     // Check if the total jobs exceed or not
 
     if('Basic' == $getEmployerMembershipInfo && (int)$getTotalNumberOfJobs < 5){
+        echo "<h4> Inside 1st if block </h4> <br>"; 
         $canPostJob = TRUE;
     }else if ('Gold' == $getEmployerMembershipInfo){
+        echo "<h4> Inside 2st if block </h4> <br>"; 
         $canPostJob = TRUE;
     }else{
+        echo "<h4> Inside else block </h4> <br>"; 
         $canPostJob = FALSE;
     }
 
