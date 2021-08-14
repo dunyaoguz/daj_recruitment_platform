@@ -4,6 +4,7 @@ include_once('../../database.php');
 //session_start();
 
 //$user_id = $_SESSION['userId'];
+
 $user_id = "1";
 
 
@@ -14,8 +15,8 @@ if(isset($_POST["user_type"]) && isset($_POST["first_name"]) && isset($_POST["la
     $doesUserNameAlreadyExist = FALSE;
     $isPhoneNumberAndEmailUnique = FALSE;
 
-    $getExistingUsersStmt = $conn->prepare("SELECT * FROM users");
-    $getExistingUsersStmt->exceute();
+    $getExistingUsersStmt = $conn->prepare("SELECT * FROM users"); 
+    $getExistingUsersStmt->execute();
 
     while ($row = $getExistingUsersStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){
         if($row['login_name'] == $_POST["login_name"]){
@@ -39,7 +40,7 @@ if(isset($_POST["user_type"]) && isset($_POST["first_name"]) && isset($_POST["la
         $createUserStmt->bindParam(':phone', $_POST["phone"]);
         $createUserStmt->bindParam(':email', $_POST["email"]);
 
-        if($createUserStmt->excecute()){ // new user create successfully
+        if($createUserStmt->execute()){ // new user create successfully
             // Fetch data of newly created user
             $getNewlyCreatedUserInfoStmt = $conn->prepare("SELECT * FROM users WHERE user_type = 'Recruiter' and  email = ?");
             $getNewlyCreatedUserInfoStmt->execute($_POST["email"]);
@@ -51,7 +52,7 @@ if(isset($_POST["user_type"]) && isset($_POST["first_name"]) && isset($_POST["la
             
             //fetch the employer_id using the user_id
             $getEmployerIdStmt = $conn->prepare("SELECT * FROM employers WHERE user_id = ?");
-            $getEmployerIdStmt->excecute($user_id);
+            $getEmployerIdStmt->execute($user_id);
             $employerIdInfo = $getEmployerIdStmt->fetch(PDO::FETCH_ASSOC);
 
             //bind all the data and execute query
@@ -60,7 +61,7 @@ if(isset($_POST["user_type"]) && isset($_POST["first_name"]) && isset($_POST["la
             $createRecruiterStmt->bindParam(':first_name', $_POST["first_name"]);
             $createRecruiterStmt->bindParam(':last_name', $_POST["last_name"]);
 
-            if($createRecruiterStmt->exceute()){
+            if($createRecruiterStmt->execute()){
                 header("Location: .");
             }else{
                 echo "<h3> Failed to Create New Recruiter. </h3> <br>"; 
