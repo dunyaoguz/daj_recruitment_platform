@@ -2,7 +2,8 @@
 include_once('../../database.php');
 
 //$user_id = $_SESSION['userId'];
-$user_id = "1";
+$user_id = "4";
+
 
 if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POST["job_experience"]) && isset($_POST["job_city"]) && isset($_POST["job_province"]) && isset($_POST["job_country"])){
     $job = $conn->prepare("INSERT INTO jobs (employer_id, recruiter_id, title, description, required_experience, city, province, country)
@@ -30,6 +31,7 @@ if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POS
 
 
 }
+
 
 ?>
 
