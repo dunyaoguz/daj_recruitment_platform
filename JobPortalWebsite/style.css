@@ -68,8 +68,11 @@ p {
   text-align: center;
 }
 .table {
-  /* margin-left: 30px; */
-  margin-right: 30px;
+  margin-left: 30px;
+  /* padding-right: 30px; */
+  width:95%;
+  text-align: center;
+  justify-content: center;
  }
 .login {
   display: block;

@@ -30,15 +30,24 @@ $jobListingStmt->execute([$employeerId]);
         <html lang="en">
     </head>
     <body>
-      <nav class="navbar navbar-light bg-light">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
         <span class="navbar-brand mb-0 h1">DAJ Recruitment Platform</span>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="#">Dashboard<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="#">Membership</a>
+            <a class="nav-item nav-link" href="#">Contact Us</a>
+          </div>
+        </div>
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>
+        </div>
       </nav>
       <h1><?php echo $employeerName . "'s Dashboard";?></h1>
       <h2>Your Jobs</h2>
       <h6>Here is a quick glance of all the jobs you've published with us.</h6>
       <br>
-      <table class="table table-striped table-responsive-lg">
+      <table class="table table-striped">
           <thead>
               <tr>
                   <td>Job ID</td>
@@ -63,7 +72,10 @@ $jobListingStmt->execute([$employeerId]);
                   <td> <?php echo $row['required_experience']; ?> </td>
                   <td> <?php echo $row['status']; ?> </td>
                   <td>
-                      <a href="./?job_id="<?= $row["id"] ?>Delete</a>
+                    <a href="#">Delete</a>
+                    <br>
+                    <a href="#">Edit</a>
+                      <!-- <a href="./?job_id="<?= $row["id"] ?>Delete</a> -->
                       <!-- <a href="./?job_id="<?= $row["id"] ?>Edit</a> -->
                   </td>
                   </tr>
