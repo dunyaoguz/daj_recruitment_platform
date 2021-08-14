@@ -48,7 +48,7 @@ if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POS
         <span class="navbar-brand mb-0 h1">DAJ Recruitment Platform</span>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/../Dashboard/Employer/">Dashboard</a>
+            <a class="nav-item nav-link" href="/../Dashboard/Recruiter/">Dashboard</a>
           </div>
         </div>
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>

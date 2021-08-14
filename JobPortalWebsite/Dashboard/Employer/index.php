@@ -1,8 +1,8 @@
 <?php
 include_once('../../database.php');
-session_start();
+//session_start();
 
-$user_id = $_SESSION['userId'];
+//$user_id = $_SESSION['userId'];
 $user_id = "1";
 
 
@@ -20,7 +20,6 @@ $recruiterListingStmt = $conn->prepare("SELECT * FROM recruiters WHERE employer_
 $recruiterListingStmt->execute([$employeerId]);
 
 ?>
-
 
 <!DOCTYPE html>
 <html>
