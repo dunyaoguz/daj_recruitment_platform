@@ -42,8 +42,9 @@ if(isset($_POST["user_type"]) && isset($_POST["first_name"]) && isset($_POST["la
 
         if($createUserStmt->execute()){ // new user create successfully
             // Fetch data of newly created user
-            $getNewlyCreatedUserInfoStmt = $conn->prepare("SELECT * FROM users WHERE user_type = 'Recruiter' and  email = ?");
-            $getNewlyCreatedUserInfoStmt->execute($_POST["email"]);
+            $getNewlyCreatedUserInfoStmt = $conn->prepare("SELECT * FROM users WHERE user_type = 'Recruiter' and  email = :existingEmail");
+            $getNewlyCreatedUserInfoStmt->bindParam(':existingEmail', $_POST["email"]);
+            $getNewlyCreatedUserInfoStmt->execute();
             $newlyCreatedUserInfo = $getNewlyCreatedUserInfoStmt->fetch(PDO::FETCH_ASSOC);
 
             // Now add user to the recruiter table
@@ -51,8 +52,9 @@ if(isset($_POST["user_type"]) && isset($_POST["first_name"]) && isset($_POST["la
                                                 VALUES (:user_id, :employer_id, :first_name, :last_name)");
             
             //fetch the employer_id using the user_id
-            $getEmployerIdStmt = $conn->prepare("SELECT * FROM employers WHERE user_id = ?");
-            $getEmployerIdStmt->execute($user_id);
+            $getEmployerIdStmt = $conn->prepare("SELECT * FROM employers WHERE user_id = :existingUserId");
+            $getEmployerIdStmt->bindParam(':existingUserId', $user_id);
+            $getEmployerIdStmt->execute();
             $employerIdInfo = $getEmployerIdStmt->fetch(PDO::FETCH_ASSOC);
 
             //bind all the data and execute query
