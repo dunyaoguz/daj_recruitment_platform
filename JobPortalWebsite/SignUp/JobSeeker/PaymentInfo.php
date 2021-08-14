@@ -26,7 +26,7 @@ if(isset($_POST["expiration_month"])){
 if(isset($_POST["expiration_year"])){
   print("<h2>Payment test 8</h2>");
 }
- $payment = $conn->prepare("INSERT INTO ric55311.payment_methods (account_id, payment_method_type,
+ $payment = $conn->prepare("INSERT INTO payment_methods (account_id, payment_method_type,
  billing_address, postal_code, card_number, security_code, expiration_month, expiration_year,
  withdrawal_method)
  VALUES (:account_id, :payment_method_type,
@@ -49,7 +49,6 @@ if(isset($_POST["expiration_year"])){
  if($payment->execute()){
      print("<h2>Your the payment method for account " . $account_id["id"] . " was successfuly added</h2>");
  }
-
 ?>
 
 
@@ -61,6 +60,7 @@ if(isset($_POST["expiration_year"])){
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="../../style.css">
     <title>Job Seeker Sign Up</title>
+    <link rel="icon" href="../../logo.png" type="penguin">
 </head>
 <body>
   <nav class="navbar navbar-light bg-light">
@@ -85,15 +85,15 @@ if(isset($_POST["expiration_year"])){
       </div>
       <div class="form-group">
         <label for="security_code">Security Code</label><br>
-        <input type="text" class="form-control" name="security_code" id="security_code" placeholder="00111"required>
+        <input type="text" class="form-control" name="security_code" id="security_code" placeholder="367"required>
       </div>
       <div class="form-group">
         <label for="expiration_month">Expiration Month</label><br>
-        <input type="text" class="form-control" name="expiration_month" id="expiration_month" placeholder="001"required>
+        <input type="text" class="form-control" name="expiration_month" id="expiration_month" placeholder="10"required>
       </div>
       <div class="form-group">
         <label for="expiration_year">Expiration Year</label><br>
-        <input type="text" class="form-control" name="expiration_year" id="expiration_year" placeholder="2000"required>
+        <input type="text" class="form-control" name="expiration_year" id="expiration_year" placeholder="2023"required>
       </div>
       <div class="form-group">
         <label for="billing_address">Billing Address</label><br>
