@@ -60,11 +60,11 @@ if(isset($_POST["recruiter_first_name"]) && isset($_POST["recruiter_last_name"])
        <form action="./edit.php" method = "post">
          <div class="form-group">
            <label for="recruiter_first_name">First Name</label><br>
-           <input type="text" class="form-control" name="recruiter_first_name" id="recruiter_first_name" value="<?= $recruiterInfo["first_name"]?>">
+           <input type="text" class="form-control" name="recruiter_first_name" id="recruiter_first_name" value="<?= $recruiterInfo["first_name"]?>" required>
          </div>
          <div class="form-group">
            <label for="recruiter_last_name">Last Name</label><br>
-           <input type="text" class="form-control" name="recruiter_last_name" id="recruiter_last_name" value="<?= $recruiterInfo["last_name"]?>">
+           <input type="text" class="form-control" name="recruiter_last_name" id="recruiter_last_name" value="<?= $recruiterInfo["last_name"]?>" required>
          </div>
          <div class="form-group">
            <input type="hidden" class="form-control" name="recruiter_id" id="recruiter_id" value= "<?= $recruiterInfo["id"]?>">
