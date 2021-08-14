@@ -14,8 +14,7 @@ if(isset($_POST["user_type"]) && isset($_POST["first_name"]) && isset($_POST["la
     $doesUserNameAlreadyExist = FALSE;
     $isPhoneNumberAndEmailUnique = FALSE;
 
-    $getExistingUsersStmt = $conn->prepare("SELECT * FROM users WHERE user_type = :user_type");
-    $getExistingUsersStmt-bindParam(':user_type', "Recruiter");
+    $getExistingUsersStmt = $conn->prepare("SELECT * FROM users");
     $getExistingUsersStmt->exceute();
 
     while ($row = $getExistingUsersStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){
