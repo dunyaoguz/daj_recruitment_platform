@@ -32,7 +32,7 @@
     $getEmployerMembershipInfoStmt = $conn->prepare("SELECT * FROM transactions WHERE id = :id");
     $getEmployerMembershipInfoStmt->bindParam(':id', $getEmployerMembershipId, PDO::PARAM_INT);
     $getEmployerMembershipInfoStmt->execute();
-    $getEmployerMembershipInfo = $getEmployerMembershipInfoStmt->fetch()['membership_type'];
+    $getEmployerMembershipInfo = $getEmployerMembershipInfoStmt->fetch()['id'];
 
     // Get Total Number of Jobs For Employer
 
@@ -43,10 +43,10 @@
 
     // Check if the total jobs exceed or not
 
-    if('Basic' == $getEmployerMembershipInfo && (int)$getTotalNumberOfJobs < 5){
+    if('1' == $getEmployerMembershipInfo && (int)$getTotalNumberOfJobs < 5){
         echo "<h4> Inside 1st if block </h4> <br>"; 
         $canPostJob = TRUE;
-    }else if ('Gold' == $getEmployerMembershipInfo){
+    }else if ('2' == $getEmployerMembershipInfo){
         echo "<h4> Inside 2st if block </h4> <br>"; 
         $canPostJob = TRUE;
     }else{
