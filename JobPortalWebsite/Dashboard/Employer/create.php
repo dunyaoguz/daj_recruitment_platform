@@ -14,8 +14,10 @@ if(isset($_POST["user_type"]) && isset($_POST["first_name"]) && isset($_POST["la
     $doesUserNameAlreadyExist = FALSE;
     $isPhoneNumberAndEmailUnique = FALSE;
 
-    $getExistingUsersStmt = $conn->prepare("SELECT * FROM users WHERE user_type = ?");
-    $getExistingUsersStmt->exceute($_POST["user_type"]);
+    $getExistingUsersStmt = $conn->prepare("SELECT * FROM users WHERE user_type = :user_type");
+    $getExistingUsersStmt-bindParam(':user_type', "Recruiter");
+    $getExistingUsersStmt->exceute();
+
     while ($row = $getExistingUsersStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){
         if($row['login_name'] == $_POST["login_name"]){
             $doesUserNameAlreadyExist = TRUE;
@@ -54,8 +56,8 @@ if(isset($_POST["user_type"]) && isset($_POST["first_name"]) && isset($_POST["la
             $employerIdInfo = $getEmployerIdStmt->fetch(PDO::FETCH_ASSOC);
 
             //bind all the data and execute query
-            $createRecruiterStmt->bindParam(':user_id', $newlyCreatedUserInfo['id']);
-            $createRecruiterStmt->bindParam(':employer_id', $employerIdInfo['id']);
+            $createRecruiterStmt->bindParam(':user_id', $newlyCreatedUserInfo['id'], PDO::PARAM_INT);
+            $createRecruiterStmt->bindParam(':employer_id', $employerIdInfo['id'], PDO::PARAM_INT);
             $createRecruiterStmt->bindParam(':first_name', $_POST["first_name"]);
             $createRecruiterStmt->bindParam(':last_name', $_POST["last_name"]);
 
