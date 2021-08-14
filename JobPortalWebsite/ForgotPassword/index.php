@@ -4,7 +4,7 @@
   $stmt = $conn->prepare("SELECT password FROM users WHERE email=?;");
   $stmt->execute([$email]);
   $password = $stmt->fetch();
-  $headers = 'From: admin@dajrecruitment.com'
+  $headers = 'From: admin@dajrecruitment.com';
 
   if($password["password"]){
       mail($email,"Your Password to DAJ Recruitment Platform",$password["password"]);
