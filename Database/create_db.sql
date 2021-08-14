@@ -180,6 +180,7 @@ CREATE TABLE jobs (
   FOREIGN KEY (recruiter_id)
     REFERENCES recruiters(id)
       ON UPDATE CASCADE
+      ON DELETE CASCADE
 );
 CREATE TRIGGER jobs_insert_trigger AFTER INSERT
   ON jobs FOR EACH ROW
@@ -284,12 +285,6 @@ CREATE TRIGGER applications_update_trigger BEFORE UPDATE
                                                                       "job_id", OLD.job_id,
                                                                       "status", OLD.status));
     END;
-
-CREATE TABLE administrators (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(50) NOT NULL
-);
 
 CREATE TABLE system_logs (
   id INT AUTO_INCREMENT PRIMARY KEY,
