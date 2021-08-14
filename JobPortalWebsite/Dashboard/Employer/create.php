@@ -2,7 +2,8 @@
 include_once('../../database.php');
 
 //$user_id = $_SESSION['userId'];
-$user_id = "1";
+$user_id = "4";
+
 
 if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POST["job_experience"]) && isset($_POST["job_city"]) && isset($_POST["job_province"]) && isset($_POST["job_country"])){
     $job = $conn->prepare("INSERT INTO jobs (employer_id, recruiter_id, title, description, required_experience, city, province, country)
@@ -31,6 +32,7 @@ if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POS
     
 }
 
+
 ?>
 
 
@@ -51,23 +53,23 @@ if(isset($_POST["job_title"]) && isset($_POST["job_description"]) && isset($_POS
 
        <form action="./create.php" method = "post">
     
-        <label for="job_title">Job Title</label><br>
-        <input type="text" name = "job_title" id = "job_title"><br>
+        <label for="job_title">Job Title*</label><br>
+        <input type="text" name = "job_title" id = "job_title" require><br>
 
-        <label for="job_description">Job Description</label><br>
-        <input type="text" name = "job_description" id = "job_description"><br>
+        <label for="job_description">Job Description*</label><br>
+        <input type="text" name = "job_description" id = "job_description" required><br>
 
-        <label for="job_experience">Job Experience Required (Years)</label><br>
-        <input type="number" name = "job_experience" id = "job_experience"><br>
+        <label for="job_experience">Job Experience Required (Years)*</label><br>
+        <input type="text" name = "job_experience" id = "job_experience" required><br>
 
-        <label for="job_city">City</label><br>
-        <input type="text" name = "job_city" id = "job_city"><br>
+        <label for="job_city">City*</label><br>
+        <input type="text" name = "job_city" id = "job_city" required><br>
 
-        <label for="job_province">Province</label><br>
-        <input type="text" name = "job_province" id = "job_province"><br>
+        <label for="job_province">Province*</label><br>
+        <input type="text" name = "job_province" id = "job_province" required><br>
 
-        <label for="job_country">Country</label><br>
-        <input type="text" name = "job_country" id = "job_country"><br>
+        <label for="job_country">Country*</label><br>
+        <input type="text" name = "job_country" id = "job_country" required><br>
 
         <button type = "submit">Add</button>
     
