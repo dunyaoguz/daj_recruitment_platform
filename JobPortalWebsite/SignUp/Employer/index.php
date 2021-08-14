@@ -1,4 +1,4 @@
-<?php require_once '../../../database.php';
+<?php require_once '../../database.php';
 // Update this for the new Database Attributes
 // Need to make sure email not in use before Query made
 
@@ -50,25 +50,25 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
 // }
 // if(isset($_POST["payment_method_type"])){
 //   print("<h2>Payment test 2</h2>");
-// } 
+// }
 // if(isset($_POST["billing_address"])){
 //   print("<h2>Payment test 3</h2>");
 // }
 // if(isset($_POST["postal_code"])){
 //   print("<h2>Payment test 4</h2>");
-// } 
+// }
 // if(isset($_POST["card_number"])){
 //   print("<h2>Payment test 5</h2>");
 // }
 // if(isset($_POST["security_code"])){
 //   print("<h2>Payment test 6</h2>");
-// } 
+// }
 // if(isset($_POST["expiration_month"])){
 //   print("<h2>Payment test 7</h2>");
 // }
 // if(isset($_POST["expiration_year"])){
 //   print("<h2>Payment test 8</h2>");
-// } 
+// }
     $payment = $conn->prepare("INSERT INTO ric55311.payment_methods (account_id, payment_method_type,
     billing_address, postal_code, card_number, security_code, expiration_month, expiration_year,
     withdrawal_method)
