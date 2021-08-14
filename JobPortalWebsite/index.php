@@ -13,22 +13,30 @@
     <span class="logo-image"><img src="../logo.png" class="logo"></span>
   </nav>
   <h1>Login</h1>
-  <p><center>Select your user type:</center></p>
-
-  <div class="d-flex justify-content-center">
-    <div class="button">
-      <a href='Login/Admin/' class="btn btn-outline-success btn-lg">Administrator</a>
-    </div>
-    <div class="button">
-      <a href='Login/Employer/' class="btn btn-outline-success btn-lg">Employer</a><br>
-    </div>
-    <div class="button">
-      <a href='Login/Recruiter/' class="btn btn-outline-success btn-lg">Recruiter</a><br>
-    </div>
-    <div class="button">
-      <a href='Login/JobSeeker/' class="btn btn-outline-success btn-lg">Job Seeker</a>
-    </div>
+  <div class="login">
+    <form action="" class="login-form" method="POST">
+      <div class="login-form-group">
+        <label for="user_type">Select your user type:</label>
+        <select class="form-control" name="user_type" id="user_type">
+          <option>Administrator</option>
+          <option>Employer</option>
+          <option>Recruiter</option>
+          <option>Job Seeker</option>
+        </select>
+      </div>
+      <div class="login-form-group">
+        <label for="login_name">Login Name:</label><br>
+        <input type="text" class="form-control" name="login_name" id="login_name" required>
+      </div>
+      <div class="login-form-group">
+        <label for="password">Password:</label><br>
+        <input type="password" class="form-control" name="password" id="password" minlength="8" required>
+      </div>
+      <a href='ForgotPassword/' class="forgot-password">Forgot Password?</a>
+      <center><p><button type="submit" class="btn btn-outline-success">Log in</button></p></center>
+    </form>
   </div>
+
   <br>
   <a href='./SignUp/' class="register">Are you a new user? Register here</a>
   <div class="footer">
