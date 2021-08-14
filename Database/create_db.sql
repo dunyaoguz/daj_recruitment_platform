@@ -6,7 +6,7 @@ CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   date_registered DATETIME DEFAULT NOW(),
   user_type ENUM('Employer', 'Recruiter', 'Job Seeker', 'Administrator') NOT NULL,
-  login_name VARCHAR(100) NOT NULL,
+  login_name VARCHAR(100) NOT NULL UNIQUE,
   password VARCHAR(256) NOT NULL,
   phone VARCHAR(50) NOT NULL UNIQUE,
   email VARCHAR(256) NOT NULL UNIQUE,
