@@ -1,3 +1,89 @@
+<?php require_once '../../database.php';
+// Update this for the new Database Attributes
+// Need to make sure email not in use before Query made
+
+// 1.Insert user
+$user = $conn->prepare("INSERT INTO ric55311.users (user_type, login_name,
+password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :email)
+;");
+    $user->bindParam(':user_type', $_POST["user_type"]);
+    $user->bindParam(':login_name', $_POST["login_name"]);
+    $user->bindParam(':password', $_POST["password"]);
+    $user->bindParam(':phone', $_POST["phone"]);
+    $user->bindParam(':email', $_POST["email"]);
+
+    // checking if email already exists
+    $email = $_POST["email"];
+    $stmt = $conn->prepare("SELECT * FROM ric55311.users WHERE email=?;");
+    $stmt->execute([$email]);
+    $check = $stmt->fetch();
+    if ($check) {
+      // need to fix the logic with what happens when email in use
+        print("<h2>You already have an active account. Please login.</h2>");
+        header("Location: /nfs/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/Login");
+        exit();
+    }
+
+    if($user->execute()){
+       // print ("<h2>User creation successful</h2>");
+    }
+
+    // 2.Insert Job Seeker
+    $job_seeker = $conn->prepare("INSERT INTO ric55311.job_seekers (user_id, membership_id,
+    first_name, last_name, city, province, country, current_title, years_of_experience) VALUES (:user_id, :membership_id,
+    :first_name, :last_name, :city, :province, :country, :current_title, :years_of_experience);");
+    $query = $conn->prepare("SELECT id FROM ric55311.users WHERE email=:email;");
+    $query->bindParam(":email",$email);
+    $query->execute();
+    $user_id=$query->fetch();
+    $job_seeker->bindParam(':user_id', $user_id["id"], PDO::PARAM_INT);
+    //print($user_id["id"]);
+    $job_seeker->bindParam(':membership_id', $_POST["membership_id"], PDO::PARAM_INT);
+    $job_seeker->bindParam(':first_name', $_POST["first_name"]);
+    $job_seeker->bindParam(':last_name', $_POST["last_name"]);
+    $job_seeker->bindParam(':city', $_POST["city"]);
+    $job_seeker->bindParam(':province', $_POST["province"]);
+    $job_seeker->bindParam(':country', $_POST["country"]);
+    $job_seeker->bindParam(':current_title', $_POST["current_title"]);
+    $job_seeker->bindParam(':years_of_experience', $_POST["years_of_experience"], PDO::PARAM_INT);
+
+    //print ("<h2>We got here</h2>");
+    if($job_seeker->execute()){
+      // print ("<h2>Job Seeker creation successful</h2>");
+    }
+
+    //job_seeker ID for Education Page
+    $job_id_query = $conn->prepare("SELECT id FROM ric55311.job_seekers WHERE user_id=:user_id;");
+    $job_id_query->bindParam(":user_id",$user_id["id"]);
+    $job_id_query->execute();
+    $job_seeker_id=$job_id_query->fetch();
+    //On Education Page
+    $_SESSION['job_seeker_id'] = $job_seeker_id;
+
+
+    //accountId for payment methods Page
+    $query2 = $conn->prepare("SELECT id FROM ric55311.accounts WHERE user_id=:user_id;");
+    $query2->bindParam(":user_id",$user_id["id"]);
+    $query2->execute();
+    $account_id=$query2->fetch();
+    $_SESSION['account_id'] = $account_id;
+
+    $membership_id =  $_POST["membership_id"];
+    //print $membership_id;
+   //page redirection    
+    if($membership_id > 3){
+      //payment page redirect
+      header("Location: PaymentInfo.php");
+    }
+    if($membership_id < 4 && $membership_id != 0){
+      //payment page redirect
+      header("Location: EducationHistory.php");
+    }
+    
+
+   
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,8 +103,12 @@
   <form action="" method="POST">
       <input type="hidden" name="user_type" id="user_type" value="Job Seeker">
       <div class="form-group">
-        <label for="name">Company</label><br>
-        <input type="text" class="form-control" name="name" id="name" required>
+        <label for="first_name">First Name</label><br>
+        <input type="text" class="form-control" name="first_name" id="first_name" required>
+      </div>
+      <div class="form-group">
+        <label for="last_name">Last Name</label><br>
+        <input type="text" class="form-control" name="last_name" id="last_name" required>
       </div>
       <div class="form-group">
         <label for="email">Email</label><br>
@@ -33,64 +123,44 @@
         <input type="text" class="form-control" name="phone" id="phone" placeholder="123-123-1111"required>
       </div>
       <div class="form-group">
+        <label for="country">Country</label><br>
+        <input type="text" class="form-control" name="country" id="country" required>
+      </div>
+      <div class="form-group">
+        <label for="province">Province/State</label><br>
+        <input type="text" class="form-control" name="province" id="province" required>
+      </div>
+      <div class="form-group">
+        <label for="city">City</label><br>
+        <input type="text" class="form-control" name="city" id="city" required>
+      </div>
+      <div class="form-group">
         <label for="password">Password (minimum 8 characters)</label><br>
         <input type="password" class="form-control" name="password" id="password" minlength="8" required>
       </div>
+      <p>Work History</p>
+      <div class="form-group">
+        <label for="current_title">Current Title</label><br>
+        <input type="text" class="form-control" name="current_title" id="current_title" required>
+      </div>
+      <div class="form-group">
+        <label for="years_of_experience">Years of Work Experience</label><br>
+        <input type="number" class="form-control" name="years_of_experience" id="years_of_experience" required>
+      </div>
+      
      <p>Which membership would you like?</p>
      <div class="form-check form-check-inline">
-       <input class="form-check-input" type="radio" name="membership_id" id="Prime" value="1">
-       <label class="form-check-label" for="Prime">Prime ($50/month, 5 postings/month)</label>
+       <input class="form-check-input" type="radio" name="membership_id" id="Basic" value="3">
+       <label class="form-check-label" for="Prime">Prime (Free, View Only)</label>
      </div>
      <div class="form-check form-check-inline">
-       <input class="form-check-input" type="radio" name="membership_id" id="Gold" value="2">
-       <label class="form-check-label" for="Gold">Gold (100$/month, Unlimited postings)</label>
+       <input class="form-check-input" type="radio" name="membership_id" id="Prime" value="4">
+       <label class="form-check-label" for="Prime">Prime ($10/month, 5 applications/month)</label>
      </div>
-
-      <h3>Payment information</h3>
-      <h6>Let us know how you'd like to pay for your membership.</h6>
-
-      <p>Are you paying with a credit card or a debit card?</p>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="payment_method_type" id="Credit" value="Credit">
-        <label class="form-check-label" for="Credit">Credit Card</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="payment_method_type" id="Debit" value="Debit">
-        <label class="form-check-label" for="Debit">Debit Card</label>
-      </div>
-      <div class="form-group">
-        <label for="card_number">Card Number</label><br>
-        <input type="text" class="form-control" name="card_number" id="card_number" placeholder="111122223333"required>
-      </div>
-      <div class="form-group">
-        <label for="security_code">Security Code</label><br>
-        <input type="text" class="form-control" name="security_code" id="security_code" placeholder="00111"required>
-      </div>
-      <div class="form-group">
-        <label for="expiration_month">Expiration Month</label><br>
-        <input type="text" class="form-control" name="expiration_month" id="expiration_month" placeholder="001"required>
-      </div>
-      <div class="form-group">
-        <label for="expiration_year">Expiration Year</label><br>
-        <input type="text" class="form-control" name="expiration_year" id="expiration_year" placeholder="2000"required>
-      </div>
-      <div class="form-group">
-        <label for="billing_address">Billing Address</label><br>
-        <input type="text" class="form-control" name="billing_address" id="billing_address" required>
-      </div>
-      <div class="form-group">
-        <label for="postal_code">Postal Code</label><br>
-        <input type = "text" class="form-control" name="postal_code" id="postal_code" required>
-      </div>
-      <p>Would you like your payments made manually or automatically?</p>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="withdrawal_method" value="Automatic" required>
-        <label class="form-check-label" for="Automatic">Automatic</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="withdrawal_method" value="Manual" required>
-        <label class="form-check-label" for="Manual">Manual</label>
-      </div>
+     <div class="form-check form-check-inline">
+       <input class="form-check-input" type="radio" name="membership_id" id="Gold" value="5">
+       <label class="form-check-label" for="Gold">Gold (20$/month, unlimited applications)</label>
+     </div>
 
       <p><button type="submit" class="btn btn-outline-success">Submit</button></p>
       <br>
