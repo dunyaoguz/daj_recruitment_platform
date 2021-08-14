@@ -11,7 +11,13 @@
   $stmt->execute();
   $result = $stmt->fetch();
 
-  if($result){
+  if($result and $user_type="Employer"){
+    header("Location:Dashboard/Employer/index.php");
+  } elseif ($result and $user_type="Administrator") {
+    header("Location:Dashboard/Employer/index.php");
+  } elseif ($result and $user_type="Job Seeker") {
+    header("Location:Dashboard/Employer/index.php");
+  } elseif ($result and $user_type="Recruiter") {
     header("Location:Dashboard/Employer/index.php");
   }
 ?>
