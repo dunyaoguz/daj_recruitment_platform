@@ -1,4 +1,4 @@
-<?php require_once '/www/groups/r/ri_comp5531_1/COMP5531_final_project/JobPortalWebsite/database.php';
+<?php require_once '../../database.php';
 
 //On page 2
 $job_seeker_id = $_SESSION['job_seeker_id'];
@@ -28,6 +28,7 @@ if(isset($_POST["education_type_3"])&&isset($_POST["school_3"])&&isset($_POST["c
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="../../style.css">
     <title>Job Seeker Sign Up</title>
+    <link rel="icon" href="../../logo.png" type="penguin">
 </head>
 <body>
   <nav class="navbar navbar-light bg-light">
@@ -35,7 +36,7 @@ if(isset($_POST["education_type_3"])&&isset($_POST["school_3"])&&isset($_POST["c
     <span class="logo-image"><img src="../../logo.png" class="logo"></span>
   </nav>
   <h2>Education History</h2>
-  <h6>Include (up to) three levels of Education</h6>
+  <h6>Include (up to) three levels of education below.</h6>
   <br>
   <h6>Entry 1</h6>
   <form action="" method="POST">

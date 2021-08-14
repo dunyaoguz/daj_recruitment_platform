@@ -3,7 +3,7 @@
 // Need to make sure email not in use before Query made
 
 // 1.Insert user
-$user = $conn->prepare("INSERT INTO ric55311.users (user_type, login_name,
+$user = $conn->prepare("INSERT INTO users (user_type, login_name,
 password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :email)
 ;");
     $user->bindParam(':user_type', $_POST["user_type"]);
@@ -14,13 +14,13 @@ password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :em
 
     // checking if email already exists
     $email = $_POST["email"];
-    $stmt = $conn->prepare("SELECT * FROM ric55311.users WHERE email=?;");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email=?;");
     $stmt->execute([$email]);
     $check = $stmt->fetch();
     if ($check) {
       // need to fix the logic with what happens when email in use
         print("<h2>You already have an active account. Please login.</h2>");
-        header("Location: /nfs/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/Login");
+        // header("Location: /nfs/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/Login");
         exit();
     }
     if($user->execute()){
@@ -29,7 +29,7 @@ password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :em
 
 // 2.insert employeee (check credentials)
 // need to get the userID and resulting membership_ID so we can enter the Employer
-$employer = $conn->prepare("INSERT INTO ric55311.employers (user_id,
+$employer = $conn->prepare("INSERT INTO employers (user_id,
 name, membership_id) VALUES (:user_id, :name, :membership_id);");
 
     $query = $conn->prepare("SELECT id FROM ric55311.users WHERE email=:email;");
@@ -69,7 +69,8 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
 // if(isset($_POST["expiration_year"])){
 //   print("<h2>Payment test 8</h2>");
 // }
-    $payment = $conn->prepare("INSERT INTO ric55311.payment_methods (account_id, payment_method_type,
+
+    $payment = $conn->prepare("INSERT INTO payment_methods (account_id, payment_method_type,
     billing_address, postal_code, card_number, security_code, expiration_month, expiration_year,
     withdrawal_method)
     VALUES (:account_id, :payment_method_type,
@@ -96,8 +97,6 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
     if($payment->execute()){
         print("<h2>Your the payment method for account " . $account_id["id"] . " was successfuly added</h2>");
     }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -108,6 +107,7 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="../../../style.css">
     <title>Employer Sign Up</title>
+    <link rel="icon" href="../../../logo.png" type="penguin">
 </head>
 <body>
   <nav class="navbar navbar-light bg-light">
@@ -166,15 +166,15 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
       </div>
       <div class="form-group">
         <label for="security_code">Security Code</label><br>
-        <input type="text" class="form-control" name="security_code" id="security_code" placeholder="00111"required>
+        <input type="text" class="form-control" name="security_code" id="security_code" placeholder="921"required>
       </div>
       <div class="form-group">
         <label for="expiration_month">Expiration Month</label><br>
-        <input type="text" class="form-control" name="expiration_month" id="expiration_month" placeholder="001"required>
+        <input type="text" class="form-control" name="expiration_month" id="expiration_month" placeholder="12"required>
       </div>
       <div class="form-group">
         <label for="expiration_year">Expiration Year</label><br>
-        <input type="text" class="form-control" name="expiration_year" id="expiration_year" placeholder="2000"required>
+        <input type="text" class="form-control" name="expiration_year" id="expiration_year" placeholder="2023"required>
       </div>
       <div class="form-group">
         <label for="billing_address">Billing Address</label><br>
