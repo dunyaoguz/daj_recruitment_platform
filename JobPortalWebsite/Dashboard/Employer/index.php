@@ -14,6 +14,11 @@ $employeerId = $result['id'];
 
 $jobListingStmt = $conn->prepare("SELECT id, recruiter_id, date_posted, title, description, required_experience, status FROM jobs WHERE employer_id = ?");
 $jobListingStmt->execute([$employeerId]);
+
+
+$recruiterListingStmt = $conn->prepare("SELECT * FROM recruiters WHERE employer_id = ?");
+$recruiterListingStmt->execute([$employeerId]);
+
 ?>
 
 
@@ -87,6 +92,44 @@ $jobListingStmt->execute([$employeerId]);
       <br>
       <h2>Your Recruiters</h2>
       <h6>Here are the recruiters eligible to post jobs on your behalf.</h6>
+      <br>
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                  <td>Recruiter ID</td>
+                  <td>First Name</td>
+                  <td>Last Name</td>
+                  <td>Actions</td>
+              </tr>
+          </thead>
+
+          <tbody>
+              <?php while ($row = $recruiterListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
+                  <tr>
+                  <td> <?php echo $row['id']; ?> </td>
+                  <td> <?php echo $row['first_name']; ?> </td>
+                  <td> <?php echo $row['last_name']; ?> </td>
+                  <td>
+                    <a href="#">Delete</a>
+                    <br>
+                    <a href="#">Edit</a>
+                      <!-- <a href="./?job_id="<?= $row["id"] ?>Delete</a> -->
+                      <!-- <a href="./?job_id="<?= $row["id"] ?>Edit</a> -->
+                  </td>
+                  </tr>
+              <?php } ?>
+          </tbody>
+      </table>
+      <br>
+      <center><a href="./create.php" class="btn btn-outline-success">Add a New Recruiter</a></center>
+      <br>
+
+
+
+
+
+
+
 
       <div class="footer">
         © 2021 Copyright: Dunya Oguz, Azman Akhter, John Purcell
