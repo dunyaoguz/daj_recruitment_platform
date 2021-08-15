@@ -15,16 +15,16 @@ if(isset($_POST["user_type"]) && isset($_POST["first_name"]) && isset($_POST["la
     $doesUserNameAlreadyExist = FALSE;
     $isPhoneNumberAndEmailUnique = FALSE;
 
-    $getExistingUsersStmt = $conn->prepare("SELECT u.id, u.date_registered, u.user_type, u.login_name, u.password, u.phone, u.email, u.status 
+    $getExistingUsersStmt = $conn->prepare("SELECT u.id, u.date_registered, u.user_type, u.login_name AS u_login_name, u.password, u.phone AS u_phone, u.email AS u_email, u.status 
                                                 FROM users u"); 
     $getExistingUsersStmt->execute();
 
     while ($row = $getExistingUsersStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){
-        if($row['u.login_name'] == $_POST["login_name"]){
+        if($row['u_login_name'] == $_POST["login_name"]){
             $doesUserNameAlreadyExist = TRUE;
             break;
         }
-        if(($row['u.phone'] == $_POST["phone"]) || ($row['u.email'] == $_POST["email"])){
+        if(($row['_.phone'] == $_POST["phone"]) || ($row['u_email'] == $_POST["email"])){
             $isPhoneNumberAndEmailUnique = TRUE;
             break;
         }
@@ -33,40 +33,40 @@ if(isset($_POST["user_type"]) && isset($_POST["first_name"]) && isset($_POST["la
 
     if (!$doesUserNameAlreadyExist && !$isPhoneNumberAndEmailUnique){ // both are false, then create new user
         $createUserStmt = $conn->prepare("INSERT INTO users user (user.user_type, user.login_name, user.password, user.phone, user.email)
-                                        VALUES (:user.user_type, :user.login_name, :user.password, :user.phone, :user.email)");
+                                        VALUES (:user_user_type, :user_login_name, :user_password, :user_phone, :user_email)");
 
-        $createUserStmt->bindParam(':user.user_type', $_POST["user_type"]);
-        $createUserStmt->bindParam(':user.login_name', $_POST["login_name"]);
-        $createUserStmt->bindParam(':user.password', $_POST["password"]);
-        $createUserStmt->bindParam(':user.phone', $_POST["phone"]);
-        $createUserStmt->bindParam(':user.email', $_POST["email"]);
+        $createUserStmt->bindParam(':user_user_type', $_POST["user_type"]);
+        $createUserStmt->bindParam(':user_login_name', $_POST["login_name"]);
+        $createUserStmt->bindParam(':user_password', $_POST["password"]);
+        $createUserStmt->bindParam(':user_phone', $_POST["phone"]);
+        $createUserStmt->bindParam(':user_email', $_POST["email"]);
 
         if($createUserStmt->execute()){ // new user create successfully
             // Fetch data of newly created user
-            $getNewlyCreatedUserInfoStmt = $conn->prepare("SELECT us.id, us.date_registered, us.user_type, us.login_name, us.password, us.phone, us.email, us.status 
+            $getNewlyCreatedUserInfoStmt = $conn->prepare("SELECT us.id AS us_id, us.date_registered, us.user_type, us.login_name, us.password, us.phone, us.email, us.status 
                                                                 FROM users us
-                                                                WHERE us.user_type = 'Recruiter' and  us.email = :us.existingEmail");
-            $getNewlyCreatedUserInfoStmt->bindParam(':us.existingEmail', $_POST["email"]);
+                                                                WHERE us.user_type = 'Recruiter' and  us.email = :us_existingEmail");
+            $getNewlyCreatedUserInfoStmt->bindParam(':us_existingEmail', $_POST["email"]);
             $getNewlyCreatedUserInfoStmt->execute();
             $newlyCreatedUserInfo = $getNewlyCreatedUserInfoStmt->fetch(PDO::FETCH_ASSOC);
 
             // Now add user to the recruiter table
             $createRecruiterStmt = $conn->prepare("INSERT INTO recruiters r (r.user_id, r.employer_id, r.first_name, r.last_name)
-                                                VALUES (:r.user_id, :r.employer_id, :r.first_name, :r.last_name)");
+                                                VALUES (:r_user_id, :r_employer_id, :r_first_name, :r_last_name)");
             
             //fetch the employer_id using the user_id
-            $getEmployerIdStmt = $conn->prepare("SELECT e.id, e.user_id, e.membership_id, e.name 
+            $getEmployerIdStmt = $conn->prepare("SELECT e.id AS employer_id, e.user_id, e.membership_id, e.name 
                                                     FROM employers e
-                                                    WHERE e.user_id = :e.existingUserId");
-            $getEmployerIdStmt->bindParam(':e.existingUserId', $user_id);
+                                                    WHERE e.user_id = :e_existingUserId");
+            $getEmployerIdStmt->bindParam(':e_existingUserId', $user_id);
             $getEmployerIdStmt->execute();
             $employerIdInfo = $getEmployerIdStmt->fetch(PDO::FETCH_ASSOC);
 
             //bind all the data and execute query
-            $createRecruiterStmt->bindParam(':r.user_id', $newlyCreatedUserInfo['us.id'], PDO::PARAM_INT);
-            $createRecruiterStmt->bindParam(':r.employer_id', $employerIdInfo['e.id'], PDO::PARAM_INT);
-            $createRecruiterStmt->bindParam(':r.first_name', $_POST["first_name"]);
-            $createRecruiterStmt->bindParam(':r.last_name', $_POST["last_name"]);
+            $createRecruiterStmt->bindParam(':r_user_id', $newlyCreatedUserInfo['us_id'], PDO::PARAM_INT);
+            $createRecruiterStmt->bindParam(':r_employer_id', $employerIdInfo['employer_id'], PDO::PARAM_INT);
+            $createRecruiterStmt->bindParam(':r_first_name', $_POST["first_name"]);
+            $createRecruiterStmt->bindParam(':r_last_name', $_POST["last_name"]);
 
             if($createRecruiterStmt->execute()){
                 header("Location: .");
@@ -136,7 +136,7 @@ if(isset($_POST["user_type"]) && isset($_POST["first_name"]) && isset($_POST["la
 
             <div class="form-group">
                 <label for="phone">Recruiter's Phone Number (Unique)</label><br>
-                <input type="text" class="form-control" name="phone" id="phone" placeholder="123-123-1111" required>
+                <input type="text" class="form-control" name="phone" id="phone" placeholder="1231231111" required>
             </div>
 
             <div class="form-group">
