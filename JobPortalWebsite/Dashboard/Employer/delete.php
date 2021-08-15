@@ -11,7 +11,7 @@ $userIdInfoStmt = $conn->prepare("SELECT r.user_id AS recruiter_user_id
                                     WHERE r.id = :r_id");
 $userIdInfoStmt->bindParam(':r_id', $targetRecruiterId, PDO::PARAM_INT);
 $userIdInfoStmt->execute();
-$userIdInfo = $recruiterInfoStmt->fetch(PDO::FETCH_ASSOC);
+$userIdInfo = $$userIdInfoStmt->fetch(PDO::FETCH_ASSO);
                                 
 
 $recruiterDeleteStmt = $conn->prepare("DELETE FROM recruiters
