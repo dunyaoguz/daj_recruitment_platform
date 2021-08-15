@@ -76,7 +76,10 @@ INSERT INTO jobs (employer_id, recruiter_id, title, description, city, province,
   (3, 3, 'Engineering Manager', 'This job rocks!', 'New York City', 'New York', 'USA', 10),
   (1, 1, 'Marketing Manager', 'This is the best job ever.', 'Montreal', 'QC', 'Canada', 10),
   (2, 2, 'Performance Marketing Analyst', 'This job is fun.', 'Toronto', 'ON', 'Canada', 1),
-  (3, 3, 'FP&A Analyst', 'This job rocks!', 'New York City', 'New York', 'USA', 1);
+  (3, 3, 'FP&A Analyst', 'This job rocks!', 'New York City', 'New York', 'USA', 1),
+  (1, 1, 'Marketing Director', 'This is the best job ever.', 'Montreal', 'QC', 'Canada', 10),
+  (2, 2, 'Sales Director', 'This job is fun.', 'Toronto', 'ON', 'Canada', 15),
+  (3, 3, 'Human Resources Coordinator', 'This job rocks!', 'New York City', 'New York', 'USA', 1);;
 
 INSERT INTO job_categories (job_id, job_category) VALUES
 (2, 'Data'),
@@ -91,9 +94,12 @@ INSERT INTO job_categories (job_id, job_category) VALUES
 (4, 'Management'),
 (4, 'Marketing'),
 (5, 'Marketing'),
+(7, 'Marketing'),
 (5, 'Analytics'),
 (6, 'Analytics'),
-(6, 'Finance');
+(6, 'Finance'),
+(8, 'Sales'),
+(9, 'Human Resources');
 
 INSERT INTO job_seekers (user_id, membership_id, first_name, last_name, city, province, country, current_title, years_of_experience) VALUES
   (7, 3, 'Dunya', 'Oguz', 'Montreal', 'QC', 'Canada', 'Analytics Engineer', 4),
@@ -108,7 +114,10 @@ INSERT INTO job_seeker_education_history (job_seeker_id, education_type, school,
 INSERT INTO applications (job_seeker_id, job_id) VALUES
   (1, 1),
   (2, 3),
-  (3, 2);
+  (2, 9),
+  (3, 2),
+  (3, 3);
 
 UPDATE applications SET status = 'Accepted' WHERE job_seeker_id = 1 AND job_id = 1;
+UPDATE applications SET status = 'Offered' WHERE job_seeker_id = 2 AND job_id = 9;
 UPDATE jobs SET status = 'Closed' WHERE id = 1;
