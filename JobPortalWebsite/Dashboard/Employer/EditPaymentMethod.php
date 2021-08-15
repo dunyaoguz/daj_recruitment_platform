@@ -258,6 +258,7 @@ if ($_POST["is_active"]) {
               </tr>
           </tbody>
       </table>
+      <center><a href='./payments.php' class="btn btn-outline-success btn-lg">Back to list of payments</a></center>
       <br>
       <br>
       <div class="footer">
