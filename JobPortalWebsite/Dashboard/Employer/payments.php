@@ -68,8 +68,8 @@ $_SESSION['account_id'] = $account_id;
                   <td> <?php echo $row['withdrawal_method']; ?> </td>
                   <td> <?php echo $row['is_active']; ?> </td>
                   <td>
-                  <a href="./edit.php?payment_id=<?= $row["id"] ?>">Edit</a><br>    
-                    <a href="./delete.php?payment_id=<?= $row["id"] ?>">Delete</a>
+                  <a href="./EditPaymentMethod.php?payment_id=<?= $row["id"] ?>">Edit</a><br>    
+                    <a href="./DeletePaymentMethod.php?payment_id=<?= $row["id"] ?>">Delete</a>
                   </td>
                   </tr>
               <?php } ?>
