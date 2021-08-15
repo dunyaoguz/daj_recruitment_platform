@@ -59,7 +59,7 @@
     }
 
     // Get Application Data for a Given Recruiter
-    $getApplicationInfoStmt = $conn->prepare("SELECT a.id AS app_id, a.job_seeker_id AS app_job_seeker_id, a.job_id AS app_job_id, a.date_applied AS job_date_applied, a.status AS app_status
+    $getApplicationInfoStmt = $conn->prepare("SELECT a.id AS app_id, a.job_seeker_id AS app_job_seeker_id, a.job_id AS app_job_id, a.date_applied AS app_date_applied, a.status AS app_status
                                                 FROM applications a 
                                                 LEFT JOIN jobs jo
                                                 ON a.job_id = jo.id
