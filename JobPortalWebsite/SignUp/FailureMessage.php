@@ -16,17 +16,11 @@
   </nav>
 
   <h1>It looks like you're already registered with us!</h1>
+  <center><p>Your phone and/or email is already in use.</p></center>
+  <center><p>Unsure? Try the "Forgot my Password" button on the Home Page.</p></center>
+
   <br>
-  <br>
-  
-  <center><h2>Your phone and/or email is already in use</h2></center>
-  
-  <br>
-  
-  <center><h3>Unsure? Try the "Forgot my Password" button on the Home Page</h3></center>
- 
-  <br>
-  <a href='../' class="login">Home Page</a>
+  <center><a href='../' class="btn btn-outline-success btn-lg">Home Page</a></center>
   <div class="footer">
     © 2021 Copyright: Dunya Oguz, Azman Akhter, John Purcell
   </div>

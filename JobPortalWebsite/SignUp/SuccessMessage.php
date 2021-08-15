@@ -14,10 +14,10 @@
     <span class="navbar-brand mb-0 h1">DAJ Recruitment Platform</span>
     <span class="logo-image"><img src="../logo.png" class="logo"></span>
   </nav>
-  <h1>Your Account has been Successfully Created!</h1>
-
+  <h1>Your account has been created!</h1>
+  <center><p>Proceed to login page to authenticate with your new credentials.</p></center>
   <br>
-  <a href='../' class="login">Home Page</a>
+  <center><a href='../' class="btn btn-outline-success btn-lg">Take me to login</a></center>
   <div class="footer">
     © 2021 Copyright: Dunya Oguz, Azman Akhter, John Purcell
   </div>
