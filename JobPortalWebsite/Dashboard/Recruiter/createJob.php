@@ -95,7 +95,7 @@ if(isset($_POST["new_job_title"]) && isset($_POST["new_job_description"]) && iss
       <h2>Post a New Job</h2>
       <h6>Enter the details of the job you want to post below.</h6>
 
-       <form action="./create.php" method = "post">
+       <form action="./createJob.php" method = "post">
          <div class="form-group">
            <label for="new_job_title">Job Title</label><br>
            <input type="text" class="form-control" name="new_job_title" id="new_job_title" placeholder="Data Engineer" required>
