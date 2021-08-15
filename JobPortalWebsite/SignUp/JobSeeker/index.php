@@ -83,7 +83,7 @@
 
   $membership_id =  $_POST["membership_id"];
   //print $membership_id;
-  //page redirection    
+  //page redirection
   if($membership_id > 3){
     //payment page redirect
     header("Location: PaymentInfo.php");
@@ -157,11 +157,11 @@
         <label for="years_of_experience">Years of Work Experience</label><br>
         <input type="number" class="form-control" name="years_of_experience" id="years_of_experience" required>
       </div>
-      
+
      <p>Which membership would you like?</p>
      <div class="form-check form-check-inline">
        <input class="form-check-input" type="radio" name="membership_id" id="Basic" value="3">
-       <label class="form-check-label" for="Prime">Prime (Free, View Only)</label>
+       <label class="form-check-label" for="Prime">Basic (Free, View Only)</label>
      </div>
      <div class="form-check form-check-inline">
        <input class="form-check-input" type="radio" name="membership_id" id="Prime" value="4">

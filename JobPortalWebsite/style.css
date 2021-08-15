@@ -27,7 +27,7 @@ h6 {
   font-size: 70%
 }
 p {
-  margin-left: 10px;
+  margin-left: 20px;
 }
 .forgot-password {
   color: grey;
@@ -86,9 +86,12 @@ p {
 .login-form-group {
   margin-bottom: 20px;
 }
-#job_description {
-  height: 150px;
-  word-break: break-word;
+.job-selection-group {
+  margin-bottom: 20px;
+  margin-left: 20px;
+  display: inline-block;
+  width:40%;
+  text-align: left;
 }
 .register {
   color: grey;
@@ -96,4 +99,16 @@ p {
   margin-top: 20px;
   margin-bottom: 20px;
   justify-content: center;
+}
+.jobseeker-profile-form {
+  width:95%;
+  margin-right:-170px;
+  display: inline-block;
+  display: flex;
+  flex-direction: row;
+}
+.membership-form-group {
+  margin-bottom: 20px;
+  width:40%;
+  margin-left: 20px;
 }

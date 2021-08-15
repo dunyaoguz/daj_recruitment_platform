@@ -1,9 +1,8 @@
 <?php require_once 'database.php';
-  $user_type = $_POST["user_type"];
-  $login = $_POST["login_name"];
-  $password = $_POST["password"];
-
-  $stmt = $conn->prepare("SELECT * FROM users WHERE user_type=:user_type AND login_name=:login_name AND password=:password;");
+  $stmt = $conn->prepare("SELECT * FROM users
+                          WHERE user_type=:user_type
+                          AND login_name=:login_name
+                          AND password=:password;");
   $stmt->bindParam(':user_type', $_POST["user_type"]);
   $stmt->bindParam(':login_name', $_POST["login_name"]);
   $stmt->bindParam(':password', $_POST["password"]);
@@ -11,15 +10,23 @@
   $stmt->execute();
   $result = $stmt->fetch();
 
-  if($result and $user_type="Employer"){
+  $_SESSION['user_id'] = $result['id'];
+
+  if($result["status"]=="Deactivated"){
+    header("Location:Login/Deactivated.php");
+  } elseif($_POST["user_type"]=="Employer"){
     header("Location:Dashboard/Employer/index.php");
-  } elseif ($result and $user_type="Administrator") {
-    header("Location:Dashboard/Employer/index.php");
-  } elseif ($result and $user_type="Job Seeker") {
-    header("Location:Dashboard/Employer/index.php");
-  } elseif ($result and $user_type="Recruiter") {
-    header("Location:Dashboard/Employer/index.php");
+  } elseif ($_POST["user_type"]=="Administrator") {
+    header("Location:Dashboard/Admin/index.php");
+  } elseif ($_POST["user_type"]=="Job Seeker") {
+    header("Location:Dashboard/JobSeeker/index.php");
+  } elseif ($_POST["user_type"]=="Recruiter") {
+    header("Location:Dashboard/Recruiter/index.php");
   }
+  // to do: redirect to account doesnt exist page
+  // if (!$stmt->execute()) {
+  //   header("Location:Login/AccountDoesntExist.php");
+  // }
 ?>
 
 <!DOCTYPE html>
@@ -57,7 +64,7 @@
         <label for="password">Password:</label><br>
         <input type="password" class="form-control" name="password" id="password" minlength="8" required>
       </div>
-      <a href='ForgotPassword/' class="forgot-password">Forgot Password?</a>
+      <a href='Login/ForgotPassword.php' class="forgot-password">Forgot Password?</a>
       <center><p><button type="submit" class="btn btn-outline-success">Log in</button></p></center>
     </form>
   </div>
