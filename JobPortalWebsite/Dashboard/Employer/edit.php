@@ -4,28 +4,28 @@ include_once('../../database.php');
 //$user_id = $_SESSION['userId'];
 //$user_id = "1";
 
-$recruiterInfoStmt = $conn->prepare("SELECT r.id, r.user_id, r.employer_id, r.first_name, r.last_name  
+$recruiterInfoStmt = $conn->prepare("SELECT r.id AS recruiter_id, r.user_id, r.employer_id, r.first_name AS recruiter_first_name, r.last_name AS recruiter_last_name  
                                         FROM recruiters r
-                                        WHERE r.id = :r.id");
-$recruiterInfoStmt->bindParam(':r.id', $_GET["recruiter_id"], PDO::PARAM_INT);
+                                        WHERE r.id = :r_id");
+$recruiterInfoStmt->bindParam(':r_id', $_GET["recruiter_id"], PDO::PARAM_INT);
 $recruiterInfoStmt->execute();
 $recruiterInfo = $recruiterInfoStmt->fetch(PDO::FETCH_ASSOC);
 
 
-if(isset($_POST["recruiter_first_name"]) && isset($_POST["recruiter_last_name"]) && isset($_POST["recruiter_id"])){
+if(isset($_POST["new_recruiter_first_name"]) && isset($_POST["new_recruiter_last_name"]) && isset($_POST["new_recruiter_id"])){
     $recruiterUpdateStmt = $conn->prepare("UPDATE recruiters rec SET
                                             rec.first_name = :rec.first_name,
                                             rec.last_name = :rec.last_name
                                             WHERE rec.id = :rec.id");
 
-    $recruiterUpdateStmt->bindParam(':rec.first_name', $_POST["recruiter_first_name"]);
-    $recruiterUpdateStmt->bindParam(':rec.last_name', $_POST["recruiter_last_name"]);
-    $recruiterUpdateStmt->bindParam(':rec.id', $_POST["recruiter_id"], PDO::PARAM_INT);
+    $recruiterUpdateStmt->bindParam(':rec_first_name', $_POST["new_recruiter_first_name"]);
+    $recruiterUpdateStmt->bindParam(':rec_last_name', $_POST["new_recruiter_last_name"]);
+    $recruiterUpdateStmt->bindParam(':rec_id', $_POST["new_recruiter_id"], PDO::PARAM_INT);
 
     if($recruiterUpdateStmt->execute()){
         header("Location: .");
     }else{
-        header("Location: ./edit.php?recruiter_id=".$_POST["recruiter_id"]);
+        header("Location: ./edit.php?recruiter_id=".$_POST["new_recruiter_id"]);
     }
 }
 
@@ -61,15 +61,15 @@ if(isset($_POST["recruiter_first_name"]) && isset($_POST["recruiter_last_name"])
 
        <form action="./edit.php" method = "post">
          <div class="form-group">
-           <label for="recruiter_first_name">First Name</label><br>
-           <input type="text" class="form-control" name="recruiter_first_name" id="recruiter_first_name" value="<?= $recruiterInfo["r.first_name"]?>" required>
+           <label for="new_recruiter_first_name">First Name</label><br>
+           <input type="text" class="form-control" name="new_recruiter_first_name" id="new_recruiter_first_name" value="<?= $recruiterInfo["recruiter_first_name"]?>" required>
          </div>
          <div class="form-group">
-           <label for="recruiter_last_name">Last Name</label><br>
-           <input type="text" class="form-control" name="recruiter_last_name" id="recruiter_last_name" value="<?= $recruiterInfo["r.last_name"]?>" required>
+           <label for="new_recruiter_last_name">Last Name</label><br>
+           <input type="text" class="form-control" name="new_recruiter_last_name" id="new_recruiter_last_name" value="<?= $recruiterInfo["recruiter_last_name"]?>" required>
          </div>
          <div class="form-group">
-           <input type="hidden" class="form-control" name="recruiter_id" id="recruiter_id" value= "<?= $recruiterInfo["r.id"]?>">
+           <input type="hidden" class="form-control" name="new_recruiter_id" id="new_recruiter_id" value= "<?= $recruiterInfo["recruiter_id"]?>">
          </div>
          <p><button type="submit" class="btn btn-outline-success">Update Info</button></p>
          <br>
