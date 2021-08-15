@@ -10,8 +10,8 @@ $database = 'ric55311';
 // $database = 'recruitment_platform';
 
 try{
-    // $conn = new PDO ("mysql:host=$server; port=3306; dbname=$database;", $username, $password);
-    $conn = new PDO ("mysql:host=$server; dbname=$database;", $username, $password);
+    $conn = new PDO ("mysql:host=$server; port=3306; dbname=$database;", $username, $password);
+    // $conn = new PDO ("mysql:host=$server; dbname=$database;", $username, $password);
 }catch (PDOException $e){
     die('Connection Failed: ' . $e->getMessage());
 }

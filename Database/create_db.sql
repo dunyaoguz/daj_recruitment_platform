@@ -8,9 +8,6 @@ DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS payment_methods;
 DROP TABLE IF EXISTS accounts;
 DROP TRIGGER IF EXISTS accounts_update_trigger;
-DROP PROCEDURE IF EXISTS check_account_balance;
-DROP PROCEDURE IF EXISTS accounts_loop;
-DROP EVENT IF EXISTS accounts_loop_schedule;
 DROP TRIGGER IF EXISTS transactions_insert_trigger;
 DROP TRIGGER IF EXISTS payment_methods_insert_trigger;
 DROP TRIGGER IF EXISTS payment_methods_update_trigger;
@@ -29,6 +26,15 @@ DROP TRIGGER IF EXISTS applications_insert_trigger;
 DROP TRIGGER IF EXISTS applications_update_trigger;
 DROP TABLE IF EXISTS system_logs;
 DROP TABLE IF EXISTS emails;
+DROP PROCEDURE IF EXISTS check_account_balance;
+DROP PROCEDURE IF EXISTS check_account_balance_loop;
+DROP EVENT IF EXISTS check_account_balance_schedule;
+DROP PROCEDURE IF EXISTS charge_account;
+DROP PROCEDURE IF EXISTS charge_accounts_loop;
+DROP PROCEDURE IF EXISTS charge_accounts_schedule;
+DROP PROCEDURE IF EXISTS pay_account;
+DROP EVENT IF EXISTS pay_accounts_loop;
+DROP EVENT IF EXISTS pay_accounts_schedule;
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -103,7 +109,7 @@ BEGIN
              WHERE id = (SELECT user_id FROM accounts WHERE id = account_id)),
              'admin@dajrecruitment.ca', 'IMPORTANT: You have a negative balance.',
              @body);
-    -- Frreze user
+    -- Freeze user
     UPDATE users SET status = 'Frozen' WHERE id = (SELECT user_id FROM accounts WHERE id = account_id);
     -- Deactivate user if they havent paid in more than 356 days
     SET @last_transaction = (SELECT MAX(transaction_date) FROM transactions WHERE account_id = account_id);
@@ -114,7 +120,7 @@ BEGIN
   END IF;
 END;
 -- This procedure loops over accounts table and checks balance
-CREATE PROCEDURE accounts_loop()
+CREATE PROCEDURE check_accounts_balance_loop()
 BEGIN
 SET @max = (SELECT max(id) FROM accounts);
 SET @min = (SELECT min(id) FROM accounts);
@@ -126,13 +132,13 @@ WHILE @min<@max DO
 END WHILE;
 END;
 -- This event schedules accounts loop to run every 12 hours
-CREATE EVENT accounts_loop_schedule
+CREATE EVENT check_account_balance_schedule
   ON SCHEDULE EVERY 12 HOUR
   STARTS '2021-08-14 00:00:00'
   ENDS '2021-08-17 00:00:00'
   ON COMPLETION NOT PRESERVE ENABLE
 DO
-  CALL accounts_loop();
+  CALL check_account_balance_loop();
 
 CREATE TABLE transactions (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -168,6 +174,78 @@ CREATE TRIGGER transactions_insert_trigger AFTER INSERT
                @body);
     END IF;
     END;
+-- This stored procedure charges users based on their membership type
+CREATE PROCEDURE charge_account(account_id INT)
+BEGIN
+  SET @user_id = (SELECT user_id FROM accounts WHERE id = account_id);
+  SET @user_type = (SELECT user_type FROM users WHERE id = @user_id);
+  IF @user_type = "Employer" THEN
+    SET @membership = (SELECT membership_id FROM employers WHERE user_id = @user_id);
+    SET @charge = -(SELECT monthly_fee FROM memberships WHERE id = @membership);
+    INSERT INTO transactions (account_id, transaction_type, amount) VALUES (account_id, 'Charge', @charge);
+  ELSEIF @user_type = "Job Seeker" THEN
+    SET @membership = (SELECT membership_id FROM job_seekers WHERE user_id = @user_id);
+    SET @charge = -(SELECT monthly_fee FROM memberships WHERE id = @membership);
+    INSERT INTO transactions (account_id, transaction_type, amount) VALUES (account_id, 'Charge', @charge);
+  END IF;
+END;
+-- This procedure loops over accounts table and charges them every month if they are not deactivated
+CREATE PROCEDURE charge_accounts_loop()
+BEGIN
+SET @max = (SELECT max(id) FROM accounts);
+SET @min = (SELECT min(id) FROM accounts);
+WHILE @min<@max DO
+  IF @min IN (SELECT id FROM accounts) AND (SELECT status FROM users WHERE id = (SELECT user_id FROM accounts WHERE id = @min)) != 'Deactivated' THEN
+      CALL charge_account(@min);
+  END IF;
+  SET @min = @min + 1;
+END WHILE;
+END;
+-- This event schedules charge_accounts_loop to run every month
+CREATE EVENT charge_accounts_schedule
+  ON SCHEDULE EVERY 1 MONTH
+  STARTS '2021-08-14 00:00:00'
+  ENDS '2021-08-17 00:00:00'
+  ON COMPLETION NOT PRESERVE ENABLE
+DO
+  CALL charge_accounts_loop();
+-- This stored procedure gets payments from users based on their membership type
+CREATE PROCEDURE pay_account(account_id INT)
+BEGIN
+  SET @user_id = (SELECT user_id FROM accounts WHERE id = account_id);
+  SET @user_type = (SELECT user_type FROM users WHERE id = @user_id);
+  IF @user_type = "Employer" THEN
+    SET @membership = (SELECT membership_id FROM employers WHERE user_id = @user_id);
+    SET @payment = (SELECT monthly_fee FROM memberships WHERE id = @membership);
+    INSERT INTO transactions (account_id, transaction_type, amount) VALUES (account_id, 'Payment', @payment);
+  ELSEIF @user_type = "Job Seeker" THEN
+    SET @membership = (SELECT membership_id FROM job_seekers WHERE user_id = @user_id);
+    SET @payment = (SELECT monthly_fee FROM memberships WHERE id = @membership);
+    INSERT INTO transactions (account_id, transaction_type, amount) VALUES (account_id, 'Payment', @payment);
+  END IF;
+END;
+-- This procedure loops over accounts table and charges them if they have automatic payments
+CREATE PROCEDURE pay_accounts_loop()
+BEGIN
+SET @max = (SELECT max(id) FROM accounts);
+SET @min = (SELECT min(id) FROM accounts);
+WHILE @min<@max DO
+  IF @min IN (SELECT id FROM accounts) AND (SELECT status FROM users WHERE id = (SELECT user_id FROM accounts WHERE id = @min)) != 'Deactivated' THEN
+    IF (SELECT COUNT(*) FROM payment_methods WHERE withdrawal_method = 'Automatic' AND account_id = @min) > 0 THEN
+      CALL pay_account(@min);
+    END IF;
+  END IF;
+  SET @min = @min + 1;
+END WHILE;
+END;
+-- This event schedules charge_accounts_loop to run every month
+CREATE EVENT pay_accounts_schedule
+  ON SCHEDULE EVERY 1 MONTH
+  STARTS '2021-08-14 00:00:00'
+  ENDS '2021-08-17 00:00:00'
+  ON COMPLETION NOT PRESERVE ENABLE
+DO
+  CALL pay_accounts_loop();
 
 CREATE TABLE payment_methods (
   id INT AUTO_INCREMENT PRIMARY KEY,
