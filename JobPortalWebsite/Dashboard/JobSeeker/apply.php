@@ -2,7 +2,7 @@
 include_once('../../database.php');
 
 $user_id = $_SESSION['user_id'];
-$user_id = "8";
+// $user_id = "8";
 
 $jobSeekerStmt = $conn->prepare("SELECT id FROM job_seekers WHERE user_id = ?");
 $jobSeekerStmt->execute([$user_id]);

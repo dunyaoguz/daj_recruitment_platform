@@ -1,16 +1,15 @@
 <?php
     include_once('../../database.php');
-    //session_start();
 
-    //$user_id = $_SESSION['userId'];
-    $user_id = 4;
+    $user_id = $_SESSION['user_id'];
+    // $user_id = 4;
 
     $canPostJob = FALSE;
 
     // Obtain Recruiter's Name, Recruiter ID, Recruiter's Employer ID
     $getRecruiterInfoStmt = $conn->prepare("SELECT r.id AS recruiter_id, r.user_id, r.employer_id AS recruiter_employer_id, r.first_name AS recruiter_first_name, r.last_name
-                                                FROM recruiters r
-                                                WHERE r.user_id = :r_user_id");
+                                            FROM recruiters r
+                                            WHERE r.user_id = :r_user_id");
 
     $getRecruiterInfoStmt->bindParam(':r_user_id', $user_id, PDO::PARAM_INT);
     $getRecruiterInfoStmt->execute();
@@ -21,8 +20,8 @@
 
     // Obtain Recruiter ID -> Obtain all Jobs for the Recruiter
     $getJobListingStmt = $conn->prepare("SELECT j.id AS job_id, j.employer_id AS job_employer_id, j.recruiter_id AS job_recruiter_id, j.date_posted AS job_date_posted, j.title AS job_title, j.description AS job_description, j.required_experience AS job_required_experience, j.status AS job_status, j.city, j.province, j.country, j.is_remote_eligible
-                                            FROM jobs j
-                                            WHERE j.recruiter_id = :j_recruiter_id");
+                                         FROM jobs j
+                                         WHERE j.recruiter_id = :j_recruiter_id");
     $getJobListingStmt->bindParam(':j_recruiter_id', $recruiterId, PDO::PARAM_INT);
     $getJobListingStmt->execute();
 
@@ -59,18 +58,23 @@
     }
 
     // Get Application Data for a Given Recruiter
-    $getApplicationInfoStmt = $conn->prepare("SELECT a.id AS app_id, a.job_seeker_id AS app_job_seeker_id, a.job_id AS app_job_id, a.date_applied AS app_date_applied, a.status AS app_status
+    $getApplicationInfoStmt = $conn->prepare("SELECT a.id AS app_id,
+                                                     CONCAT(js.first_name, ' ', js.last_name) AS applicant_name,
+                                                     CONCAT(js.current_title) AS applicant_current_title,
+                                                     CONCAT(js.years_of_experience) AS applicant_years_of_experience,
+                                                     a.job_id AS app_job_id,
+                                                     a.date_applied AS app_date_applied,
+                                                     a.status AS app_status
                                                 FROM applications a
                                                 LEFT JOIN jobs jo
                                                 ON a.job_id = jo.id
                                                 LEFT JOIN recruiters re
                                                 ON jo.recruiter_id = re.id
+                                                LEFT JOIN job_seekers js
+                                                ON a.job_seeker_id = js.id
                                                 WHERE jo.recruiter_id = :jo_recruiter_id");
     $getApplicationInfoStmt->bindParam(':jo_recruiter_id', $recruiterId, PDO::PARAM_INT);
     $getApplicationInfoStmt->execute();
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -94,6 +98,7 @@
           <div class="navbar-nav">
             <a class="nav-item nav-link active" href="#">Dashboard<span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="contactUs.php">Contact Us</a>
+            <a class="nav-item nav-link" href="../../">Sign Out</a>
           </div>
         </div>
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>
@@ -128,7 +133,8 @@
                         <td> <?php echo $row['job_status']; ?> </td>
                         <td>
                             <a href="./editJob.php?job_id=<?= $row["job_id"] ?>">Edit</a><br>
-                            <a href="./deleteJob.php?job_id=<?= $row["job_id"] ?>">Delete</a>
+                            <a href="./open.php?job_id=<?= $row["job_id"] ?>">Open</a>
+                            <a href="./close.php?job_id=<?= $row["job_id"] ?>">Close</a>
                         </td>
                   </tr>
               <?php } ?>
@@ -152,7 +158,9 @@
               <tr>
                   <td>Application ID</td>
                   <td>Job ID</td>
-                  <td>Applicant ID</td>
+                  <td>Applicant Name</td>
+                  <td>Applicant Current Title</td>
+                  <td>Applicant Years of Experience</td>
                   <td>Date Applied</td>
                   <td>Status</td>
                   <td>Actions</td>
@@ -164,11 +172,14 @@
                         <tr>
                             <td> <?php echo $data['app_id']; ?> </td>
                             <td> <?php echo $data['app_job_id']; ?> </td>
-                            <td> <?php echo $data['app_job_seeker_id']; ?> </td>
+                            <td> <?php echo $data['applicant_name']; ?> </td>
+                            <td> <?php echo $data['applicant_current_title']; ?> </td>
+                            <td> <?php echo $data['applicant_years_of_experience']; ?> </td>
                             <td> <?php echo $data['app_date_applied']; ?> </td>
                             <td> <?php echo $data['app_status']; ?> </td>
                             <td>
-                                <a href="./editApplication.php?application_id=<?= $data["app_id"] ?>">Edit</a><br>
+                                <a href="./offer.php?application_id=<?= $data["app_id"] ?>">Offer</a><br>
+                                <a href="./reject.php?application_id=<?= $data["app_id"] ?>">Reject</a><br>
                             </td>
                         </tr>
             <?php  } ?>

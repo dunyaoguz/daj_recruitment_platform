@@ -1,12 +1,8 @@
 <?php
 include_once('../../database.php');
 
-//session_start();
-
-//$user_id = $_SESSION['userId'];
-
-$user_id = "1";
-
+$user_id = $_SESSION['user_id'];
+// $user_id = "1";
 
 if(isset($_POST["new_user_type"]) && isset($_POST["new_first_name"]) && isset($_POST["new_last_name"]) && isset($_POST["new_email"]) && isset($_POST["new_phone"]) && isset($_POST["new_login_name"]) && isset($_POST["new_password"])){
     /*check if username not already exits
@@ -15,8 +11,8 @@ if(isset($_POST["new_user_type"]) && isset($_POST["new_first_name"]) && isset($_
     $doesUserNameAlreadyExist = FALSE;
     $isPhoneNumberAndEmailUnique = FALSE;
 
-    $getExistingUsersStmt = $conn->prepare("SELECT u.id, u.date_registered, u.user_type, u.login_name AS u_login_name, u.password, u.phone AS u_phone, u.email AS u_email, u.status 
-                                                FROM users u"); 
+    $getExistingUsersStmt = $conn->prepare("SELECT u.id, u.date_registered, u.user_type, u.login_name AS u_login_name, u.password, u.phone AS u_phone, u.email AS u_email, u.status
+                                                FROM users u");
     $getExistingUsersStmt->execute();
 
     while ($row = $getExistingUsersStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){
@@ -43,7 +39,7 @@ if(isset($_POST["new_user_type"]) && isset($_POST["new_first_name"]) && isset($_
 
         if($createUserStmt->execute()){ // new user create successfully
             // Fetch data of newly created user
-            $getNewlyCreatedUserInfoStmt = $conn->prepare("SELECT us.id AS us_id, us.date_registered, us.user_type, us.login_name, us.password, us.phone, us.email, us.status 
+            $getNewlyCreatedUserInfoStmt = $conn->prepare("SELECT us.id AS us_id, us.date_registered, us.user_type, us.login_name, us.password, us.phone, us.email, us.status
                                                                 FROM users us
                                                                 WHERE us.user_type = 'Recruiter' and  us.email = :us_existingEmail");
             $getNewlyCreatedUserInfoStmt->bindParam(':us_existingEmail', $_POST["new_email"]);
@@ -53,9 +49,9 @@ if(isset($_POST["new_user_type"]) && isset($_POST["new_first_name"]) && isset($_
             // Now add user to the recruiter table
             $createRecruiterStmt = $conn->prepare("INSERT INTO recruiters (user_id, employer_id, first_name, last_name)
                                                     VALUES (:r_user_id, :r_employer_id, :r_first_name, :r_last_name)");
-            
+
             //fetch the employer_id using the user_id
-            $getEmployerIdStmt = $conn->prepare("SELECT e.id AS employer_id, e.user_id, e.membership_id, e.name 
+            $getEmployerIdStmt = $conn->prepare("SELECT e.id AS employer_id, e.user_id, e.membership_id, e.name
                                                     FROM employers e
                                                     WHERE e.user_id = :e_existingUserId");
             $getEmployerIdStmt->bindParam(':e_existingUserId', $user_id);
@@ -71,20 +67,20 @@ if(isset($_POST["new_user_type"]) && isset($_POST["new_first_name"]) && isset($_
             if($createRecruiterStmt->execute()){
                 header("Location: .");
             }else{
-                echo "<h4> INTERNAL ERROR: Failed to Create New Recruiter. Please contact Website Admin </h4> <br>"; 
+                echo "<h4> INTERNAL ERROR: Failed to Create New Recruiter. Please contact Website Admin </h4> <br>";
             }
         }else{
-            echo "<h4> INTERNAL ERROR: Failed to Create New User. Please contact Website Admin </h4> <br>"; 
+            echo "<h4> INTERNAL ERROR: Failed to Create New User. Please contact Website Admin </h4> <br>";
         }
 
     }else{ //Display Error message
         if($doesUserNameAlreadyExist){
-            echo "<h4> Username Already Exists </h4> <br>"; 
+            echo "<h4> Username Already Exists </h4> <br>";
         }
         if($isPhoneNumberAndEmailUnique){
             echo "<h4> Phone Number or Email Already Exists </h4> <br>";
         }
-    } 
+    }
 }
 
 ?>
@@ -118,7 +114,7 @@ if(isset($_POST["new_user_type"]) && isset($_POST["new_first_name"]) && isset($_
 
        <form action="./create.php" method = "post">
             <input type="hidden" name="new_user_type" id="new_user_type" value="Recruiter">
-            
+
             <div class="form-group">
                 <label for="new_first_name">Recruiter's First Name</label><br>
                 <input type="text" class="form-control" name="new_first_name" id="new_first_name" required>

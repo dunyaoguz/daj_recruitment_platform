@@ -1,7 +1,7 @@
 <?php
 include_once('../../database.php');
 
-//$user_id = $_SESSION['userId'];
+$user_id = $_SESSION['user_id'];
 //$user_id = "1";
 
 $targetRecruiterId = $_GET["recruiter_id"];
@@ -12,7 +12,7 @@ $userIdInfoStmt = $conn->prepare("SELECT r.user_id AS recruiter_user_id
 $userIdInfoStmt->bindParam(':r_id', $targetRecruiterId, PDO::PARAM_INT);
 $userIdInfoStmt->execute();
 $userIdInfo = $userIdInfoStmt->fetch();
-                                
+
 
 $recruiterDeleteStmt = $conn->prepare("DELETE FROM recruiters
                                             WHERE id = :id");

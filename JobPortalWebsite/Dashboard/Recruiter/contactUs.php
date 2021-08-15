@@ -39,6 +39,7 @@ if(isset($_POST["email"]) && isset($_POST["subject"]) && isset($_POST["details"]
           <div class="navbar-nav">
             <a class="nav-item nav-link" href="index.php">Dashboard</a>
             <a class="nav-item nav-link active" href="#">Contact Us<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="../../">Sign Out</a>
           </div>
         </div>
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>

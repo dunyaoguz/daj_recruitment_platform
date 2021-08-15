@@ -1,10 +1,10 @@
 <?php
 include_once('../../database.php');
 
-//$user_id = $_SESSION['userId'];
+$user_id = $_SESSION['user_id'];
 //$user_id = "1";
 
-$recruiterInfoStmt = $conn->prepare("SELECT r.id AS recruiter_id, r.user_id, r.employer_id, r.first_name AS recruiter_first_name, r.last_name AS recruiter_last_name  
+$recruiterInfoStmt = $conn->prepare("SELECT r.id AS recruiter_id, r.user_id, r.employer_id, r.first_name AS recruiter_first_name, r.last_name AS recruiter_last_name
                                         FROM recruiters r
                                         WHERE r.id = :r_id");
 $recruiterInfoStmt->bindParam(':r_id', $_GET["recruiter_id"], PDO::PARAM_INT);

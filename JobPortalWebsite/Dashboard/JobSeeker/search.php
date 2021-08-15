@@ -34,6 +34,7 @@ if($_POST["job_category"] == "View All Jobs") {
                               LEFT JOIN job_categories c
                               ON j.id = c.job_id
                               WHERE j.id NOT IN (SELECT job_id FROM applications WHERE job_seeker_id=:job_seeker_id)
+                              AND j.status != 'CLOSED'
                               GROUP BY 1, 3, 4, 5, 6, 7, 8, 9, 10, 11");
 } else {
   $jobsStmt = $conn->prepare("SELECT j.id,
@@ -56,11 +57,12 @@ if($_POST["job_category"] == "View All Jobs") {
                               LEFT JOIN job_categories c
                               ON j.id = c.job_id
                               WHERE job_category = :job_category
+                              AND j.status != 'CLOSED'
                               AND j.id NOT IN (SELECT job_id FROM applications WHERE job_seeker_id=:job_seeker_id)
                               GROUP BY 1, 3, 4, 5, 6, 7, 8, 9, 10, 11");
     $jobsStmt->bindParam(':job_category', $_POST["job_category"]);
-    $jobsStmt->bindParam(':job_seeker_id', $jobSeekerId);
 }
+$jobsStmt->bindParam(':job_seeker_id', $jobSeekerId);
 $jobsStmt->execute();
 ?>
 
@@ -83,6 +85,9 @@ $jobsStmt->execute();
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-item nav-link" href="/../Dashboard/JobSeeker/">Dashboard</a>
+            <a class="nav-item nav-link" href="./profile.php">Profile</a>
+            <a class="nav-item nav-link" href="./contactUs.php">Contact Us</a>
+            <a class="nav-item nav-link" href="../../">Sign Out</a>
           </div>
         </div>
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>

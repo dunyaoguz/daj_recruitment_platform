@@ -1,14 +1,12 @@
 <?php
 include_once('../../database.php');
-//session_start();
 
-//$user_id = $_SESSION['userId'];
-$user_id = "1";
-
+$user_id = $_SESSION['user_id'];
+// $user_id = "1";
 
 $employeerInfoStmt = $conn->prepare("SELECT e.id AS employer_id, e.name AS employer_name
-                                        FROM employers e
-                                        WHERE e.user_id = ?");
+                                     FROM employers e
+                                     WHERE e.user_id = ?");
 $employeerInfoStmt->execute([$user_id]);
 $result = $employeerInfoStmt->fetch();
 $employeerName = $result['employer_name'];
@@ -49,6 +47,7 @@ $recruiterListingStmt->execute([$employeerId]);
             <a class="nav-item nav-link active" href="#">Dashboard<span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="profile.php">Profile</a>
             <a class="nav-item nav-link" href="contactUs.php">Contact Us</a>
+            <a class="nav-item nav-link" href="../../">Sign Out</a>
           </div>
         </div>
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>

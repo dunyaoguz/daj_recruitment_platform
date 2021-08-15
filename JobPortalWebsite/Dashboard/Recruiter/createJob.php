@@ -1,8 +1,8 @@
 <?php
 include_once('../../database.php');
 
-//$user_id = $_SESSION['userId'];
-$user_id = "4";
+$user_id = $_SESSION['user_id'];
+// $user_id = "4";
 
 
 if(isset($_POST["new_job_title"]) && isset($_POST["new_job_description"]) && isset($_POST["new_job_experience"]) && isset($_POST["new_job_city"]) && isset($_POST["new_job_province"]) && isset($_POST["new_job_category"]) && isset($_POST["new_job_country"])){
@@ -18,7 +18,7 @@ if(isset($_POST["new_job_title"]) && isset($_POST["new_job_description"]) && iss
     $createNewJob->bindParam(':country', $_POST["new_job_country"]);
 
     $getemployerIdInfoStmt = $conn->prepare("SELECT r.employer_id AS rec_employer_id, r.id AS rec_id
-                                    FROM recruiters r 
+                                    FROM recruiters r
                                     WHERE r.user_id = ?");
     $getemployerIdInfoStmt->execute([$user_id]);
     $getemployerIdInfo = $getemployerIdInfoStmt->fetch();
@@ -48,9 +48,9 @@ if(isset($_POST["new_job_title"]) && isset($_POST["new_job_description"]) && iss
       $getNewlyCreatedJobIdInfoStmt->bindParam(':j_recruiter_id', $getemployerIdInfo['rec_id'], PDO::PARAM_INT);
       $getNewlyCreatedJobIdInfoStmt->execute();
       $getNewlyCreatedJobIdInfo = $getNewlyCreatedJobIdInfoStmt->fetch()['j_id'];
-    
-    
-    
+
+
+
         // Create an array from a CSV
       $jobCategoryArr = explode(",", $_POST["new_job_category"]);
 
@@ -88,6 +88,8 @@ if(isset($_POST["new_job_title"]) && isset($_POST["new_job_description"]) && iss
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-item nav-link" href="/../Dashboard/Recruiter/">Dashboard</a>
+            <a class="nav-item nav-link" href="contactUs.php">Contact Us</a>
+            <a class="nav-item nav-link" href="../../">Sign Out</a>
           </div>
         </div>
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>

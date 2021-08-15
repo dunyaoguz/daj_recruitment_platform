@@ -1,8 +1,8 @@
 <?php
 include_once('../../database.php');
 
-// $user_id = $_SESSION['user_id'];
-$user_id = "2";
+$user_id = $_SESSION['user_id'];
+// $user_id = "2";
 
 $employerInfoStmt = $conn->prepare("SELECT e.*, m.membership_type
                                      FROM employers e
@@ -12,7 +12,7 @@ $employerInfoStmt = $conn->prepare("SELECT e.*, m.membership_type
 $employerInfoStmt->execute([$user_id]);
 $employerInfoStmt = $employerInfoStmt->fetch();
 $employerId = $employerInfoStmt['id'];
-$employeerName = $employerInfoStmt['employer_name'];
+$employeerName = $employerInfoStmt['name'];
 $membershipType = $employerInfoStmt['membership_type'];
 
 if ($_POST["membership_change"]) {
@@ -47,6 +47,7 @@ if ($_POST["membership_change"]) {
             <a class="nav-item nav-link" href="index.php">Dashboard</a>
             <a class="nav-item nav-link active" href="#">Profile<span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="contactUs.php">Contact Us</a>
+            <a class="nav-item nav-link" href="../../">Sign Out</a>
           </div>
         </div>
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>

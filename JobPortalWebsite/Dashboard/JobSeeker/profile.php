@@ -103,6 +103,7 @@ if ($_POST["membership_change"]) {
             <a class="nav-item nav-link" href="index.php">Dashboard</a>
             <a class="nav-item nav-link active" href="#">Profile<span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="contactUs.php">Contact Us</a>
+            <a class="nav-item nav-link" href="../../">Sign Out</a>
           </div>
         </div>
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>

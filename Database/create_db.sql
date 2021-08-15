@@ -339,7 +339,7 @@ CREATE TABLE applications (
   job_seeker_id INT NOT NULL,
   job_id INT NOT NULL,
   date_applied DATETIME DEFAULT NOW(),
-  status ENUM('In Progress', 'Submitted', 'Withdrawn', 'Rejected', 'Offered', 'Accepted') NOT NULL,
+  status ENUM('Submitted', 'Withdrawn', 'Recruiter Rejected', 'Offered', 'Accepted', 'Applicant Rejected') NOT NULL DEFAULT 'Submitted',
   FOREIGN KEY (job_seeker_id)
     REFERENCES job_seekers(id)
       ON UPDATE CASCADE

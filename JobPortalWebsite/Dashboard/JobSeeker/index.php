@@ -2,7 +2,7 @@
 include_once('../../database.php');
 
 $user_id = $_SESSION['user_id'];
-// $user_id = "8";
+// $user_id = "7";
 
 $jobSeekerInfoStmt = $conn->prepare("SELECT id, first_name, last_name FROM job_seekers WHERE user_id = ?");
 $jobSeekerInfoStmt->execute([$user_id]);
@@ -28,8 +28,31 @@ $applicationStmt = $conn->prepare("SELECT a.id,
                                     ON j.employer_id = e.id
                                   LEFT JOIN recruiters r
                                     ON j.recruiter_id = r.id
-                                  WHERE job_seeker_id = ?");
+                                  WHERE job_seeker_id = ?
+                                  AND a.status IN ('Submitted', 'Withdrawn', 'Recruiter Rejected')");
 $applicationStmt->execute([$jobSeekerId]);
+
+$offerStmt = $conn->prepare("SELECT a.id,
+                                         a.date_applied,
+                                         a.status AS application_status,
+                                         j.title,
+                                         j.description,
+                                         e.name AS company,
+                                         CONCAT(r.first_name, ' ', r.last_name) AS recruiter,
+                                         j.status AS job_status,
+                                         CONCAT(j.city, ', ', j.province, ', ', j.country) AS location,
+                                         CASE WHEN is_remote_eligible = 1 THEN 'yes'
+                                         ELSE 'no' END AS is_remote_eligible
+                                  FROM applications a
+                                  LEFT JOIN jobs j
+                                    ON a.job_id = j.id
+                                  LEFT JOIN employers e
+                                    ON j.employer_id = e.id
+                                  LEFT JOIN recruiters r
+                                    ON j.recruiter_id = r.id
+                                  WHERE job_seeker_id = ?
+                                  AND a.status IN ('Applicant Rejected', 'Offered', 'Accepted')");
+$offerStmt->execute([$jobSeekerId]);
 ?>
 
 <!DOCTYPE html>
@@ -54,6 +77,7 @@ $applicationStmt->execute([$jobSeekerId]);
             <a class="nav-item nav-link active" href="#">Dashboard<span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="./profile.php">Profile</a>
             <a class="nav-item nav-link" href="./contactUs.php">Contact Us</a>
+            <a class="nav-item nav-link" href="../../">Sign Out</a>
           </div>
         </div>
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>
@@ -99,6 +123,45 @@ $applicationStmt->execute([$jobSeekerId]);
           </tbody>
       </table>
       <br>
+      <h2>Your Offers</h2>
+      <h6>Here are all the jobs that you've been offered. You can accept or reject them here.</h6>
+      <br>
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                  <td>Application ID</td>
+                  <td>Date Applied</td>
+                  <td>Job Title</td>
+                  <td>Company</td>
+                  <td>Recruiter</td>
+                  <td>Location</td>
+                  <td>Is Remote Eligible?</td>
+                  <td>Job Status</td>
+                  <td>Application Status</td>
+                  <td>Actions</td>
+              </tr>
+          </thead>
+
+          <tbody>
+              <?php while ($row = $offerStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
+                  <tr>
+                  <td> <?php echo $row['id']; ?> </td>
+                  <td> <?php echo $row['date_applied']; ?> </td>
+                  <td> <?php echo $row['title']; ?> </td>
+                  <td> <?php echo $row['company']; ?> </td>
+                  <td> <?php echo $row['recruiter']; ?> </td>
+                  <td> <?php echo $row['location']; ?> </td>
+                  <td> <?php echo $row['is_remote_eligible']; ?> </td>
+                  <td> <?php echo $row['job_status']; ?> </td>
+                  <td> <?php echo $row['application_status']; ?> </td>
+                  <td>
+                    <a href="./accept.php?application_id=<?= $row["id"]?>">Accept</a>
+                    <a href="./reject.php?application_id=<?= $row["id"]?>">Reject</a>
+                  </td>
+                  </tr>
+              <?php } ?>
+          </tbody>
+      </table>
       <br>
       <br>
       <center><a href="./search.php" class="btn btn-outline-success">Search for new jobs</a></center>
