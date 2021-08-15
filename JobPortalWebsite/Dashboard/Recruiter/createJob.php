@@ -40,7 +40,7 @@ if(isset($_POST["new_job_title"]) && isset($_POST["new_job_description"]) && iss
                                                               j.recruiter_id = :j_recruiter_id");
       $getNewlyCreatedJobIdInfoStmt->bindParam(':j_title', $_POST["new_job_title"]);
       $getNewlyCreatedJobIdInfoStmt->bindParam(':j_description', $_POST["new_job_description"]);
-      $getNewlyCreatedJobIdInfoStmt->bindParam('j_required_experience', $_POST["new_job_experience"]);
+      $getNewlyCreatedJobIdInfoStmt->bindParam('j_required_experience', $_POST["new_job_experience"], PDO::PARAM_INT);
       $getNewlyCreatedJobIdInfoStmt->bindParam(':j_city', $_POST["new_job_city"]);
       $getNewlyCreatedJobIdInfoStmt->bindParam(':j_province', $_POST["new_job_province"]);
       $getNewlyCreatedJobIdInfoStmt->bindParam(':j_country', $_POST["new_job_country"]);
