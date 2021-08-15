@@ -347,7 +347,8 @@ CREATE TABLE applications (
   FOREIGN KEY (job_id)
     REFERENCES jobs(id)
       ON UPDATE CASCADE
-      ON DELETE CASCADE
+      ON DELETE CASCADE,
+  UNIQUE (job_id, job_seeker_id)
 );
 CREATE TRIGGER applications_insert_trigger AFTER INSERT
   ON applications FOR EACH ROW

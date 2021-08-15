@@ -58,15 +58,35 @@ INSERT INTO recruiters (user_id, employer_id, first_name, last_name) VALUES
   (5, 2, 'Karen', 'Banahora'),
   (6, 3, 'Emily', 'Tetzal');
 
-INSERT INTO jobs (employer_id, recruiter_id, title, description, city, province, country) VALUES
-  (1, 1, 'Software Engineer', 'This is the best job ever.', 'Montreal', 'QC', 'Canada'),
-  (2, 2, 'Data Scientist', 'This job is fun.', 'Toronto', 'ON', 'Canada'),
-  (3, 3, 'Engineering Manager', 'This job rocks!', 'New York City', 'New York', 'USA');
+INSERT INTO jobs (employer_id, recruiter_id, title, description, city, province, country, required_experience) VALUES
+  (1, 1, 'Software Engineer', 'This is the best job ever.', 'Montreal', 'QC', 'Canada', 2),
+  (2, 2, 'Data Scientist', 'This job is fun.', 'Toronto', 'ON', 'Canada', 3),
+  (3, 3, 'Engineering Manager', 'This job rocks!', 'New York City', 'New York', 'USA', 10),
+  (1, 1, 'Marketing Manager', 'This is the best job ever.', 'Montreal', 'QC', 'Canada', 10),
+  (2, 2, 'Performance Marketing Analyst', 'This job is fun.', 'Toronto', 'ON', 'Canada', 1),
+  (3, 3, 'FP&A Analyst', 'This job rocks!', 'New York City', 'New York', 'USA', 1);
 
-INSERT INTO job_seekers (user_id, membership_id, first_name, last_name, city, province, country) VALUES
-  (7, 3, 'Dunya', 'Oguz', 'Montreal', 'QC', 'Canada'),
-  (8, 4, 'Azman', 'Ahkter', 'Toronto', 'ON', 'Canada'),
-  (9, 5, 'John', 'Purcell', 'Hallifax', 'Nova Scotia', 'Canada');
+INSERT INTO job_categories (job_id, job_category) VALUES
+(2, 'Data'),
+(2, 'Analytics'),
+(1, 'Software Engineering'),
+(2, 'Software Engineering'),
+(3, 'Software Engineering'),
+(1, 'Information Technology'),
+(2, 'Information Technology'),
+(3, 'Information Technology'),
+(3, 'Management'),
+(4, 'Management'),
+(4, 'Marketing'),
+(5, 'Marketing'),
+(5, 'Analytics'),
+(6, 'Analytics'),
+(6, 'Finance');
+
+INSERT INTO job_seekers (user_id, membership_id, first_name, last_name, city, province, country, current_title, years_of_experience) VALUES
+  (7, 3, 'Dunya', 'Oguz', 'Montreal', 'QC', 'Canada', 'Analytics Engineer', 4),
+  (8, 4, 'Azman', 'Ahkter', 'Toronto', 'ON', 'Canada', 'Software Engineer', 1),
+  (9, 5, 'John', 'Purcell', 'Hallifax', 'Nova Scotia', 'Canada', 'Software Engineer', 0);
 
 INSERT INTO job_seeker_education_history (job_seeker_id, education_type, school, concentration, grade, year_graduated) VALUES
   (1, 'Diploma', 'Concordia University', 'Computer Science', 3.8, 2022),
