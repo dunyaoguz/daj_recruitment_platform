@@ -56,14 +56,14 @@ if(isset($_POST["new_job_title"]) && isset($_POST["new_job_description"]) && iss
 
       $createNewCategory = $conn->prepare("INSERT INTO job_categories (job_id, job_category)
                                               VALUES (:job_id, :job_category)");
-                                              
+
       foreach($jobCategoryArr as $newCategory){
         $createNewCategory->bindParam(':job_id', $getNewlyCreatedJobIdInfo, PDO::PARAM_INT);
-        $createNewCategory->bindParam(':job_id', trim($newCategory));
+        $createNewCategory->bindParam(':job_category', trim($newCategory));
         $createNewCategory->execute();
       }
 
-      header("Location: .");
+      header("Location: ./index.php");
     }
 }
 
