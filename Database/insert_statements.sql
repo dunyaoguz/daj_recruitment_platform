@@ -40,11 +40,23 @@ INSERT INTO transactions (account_id, transaction_type, amount) VALUES
 INSERT INTO payment_methods (account_id, payment_method_type, billing_address, postal_code,
                               card_number, security_code, expiration_month, expiration_year) VALUES
   (1, 'Credit', '60 Rue de Bresoles', 'H2Y 1V5', '001836352043266', 677, 09, 2023),
+  (1, 'Credit', '60 Rue de Bresoles', 'H2Y 1V5', '201836352043266', 678, 08, 2025),
   (2, 'Debit', '1467 Saint Denis Street', 'H2X 3J5', '356799032150000', 098, 12, 2025),
+  (2, 'Debit', '1467 Saint Denis Street', 'H2X 3J5', '456799032150000', 890, 12, 2024),
   (3, 'Credit', '2066 Jeanne Mance St', 'H2X 2J5', '9871234099654399', 123, 01, 2022),
+  (3, 'Debit', '2066 Jeanne Mance St', 'H2X 2J5', '9971234099654399', 131, 05, 2025),
   (4, 'Debit', '87 Atwater Avenue', 'H3H 1B5', '997659811304114', 591, 04, 2030),
+  (4, 'Debit', '87 Atwater Avenue', 'H3H 1B5', '997659811304223', 593, 05, 2031),
   (5, 'Credit', '1212 Avenue Des Pins', 'H2W 1S6', '766665098121243', 432, 10, 2022),
-  (6, 'Debit', '3665 Rue de Bullion', 'H2X 3A6', '8888076542187610', 404, 07, 2023);
+  (5, 'Credit', '1212 Avenue Des Pins', 'H2W 1S6', '767665098121243', 432, 10, 2023),
+  (6, 'Debit', '3665 Rue de Bullion', 'H2X 3A6', '8888076542187610', 404, 07, 2023),
+  (6, 'Credit', '3665 Rue de Bullion', 'H2X 3A6', '9998076542187610', 454, 09, 2024),
+  (7, 'Credit', '890 Rue Saint Paul', 'H2X 285', '9871234099644399', 125, 08, 2023),
+  (7, 'Debit', '890 Rue Saint Paul', 'H2X 285', '9971234099908399', 135, 06, 2026),
+  (8, 'Credit', '80 Lasalle Boul', 'H2X 987', '2221234099644399', 908, 05, 2023),
+  (8, 'Debit', '80 Lasalle Boul', 'H6X 907', '9861234099768399', 765, 04, 2026),
+  (9, 'Credit', '87 Saint Laurent St', 'H29 987', '3331234099544399', 999, 05, 2022),
+  (9, 'Debit', '87 Saint Laurent St', 'H24 907', '9081234099768399', 777, 08, 2022);
 
 UPDATE payment_methods SET postal_code = 'H2Y 8PO' WHERE account_id = 5;
 

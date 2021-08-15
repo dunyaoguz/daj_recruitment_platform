@@ -12,15 +12,15 @@
 
   $_SESSION['user_id'] = $result['id'];
 
-  if($result["status"]=="Deactivated"){
+  if($result["status"]=="Deactivated" or $result["status"]=="Frozen"){
     header("Location:Login/Deactivated.php");
-  } elseif($_POST["user_type"]=="Employer"){
+  } elseif($result and $_POST["user_type"]=="Employer"){
     header("Location:Dashboard/Employer/index.php");
-  } elseif ($_POST["user_type"]=="Administrator") {
+  } elseif ($result and $_POST["user_type"]=="Administrator") {
     header("Location:Dashboard/Admin/index.php");
-  } elseif ($_POST["user_type"]=="Job Seeker") {
+  } elseif ($result and $_POST["user_type"]=="Job Seeker") {
     header("Location:Dashboard/JobSeeker/index.php");
-  } elseif ($_POST["user_type"]=="Recruiter") {
+  } elseif ($result and $_POST["user_type"]=="Recruiter") {
     header("Location:Dashboard/Recruiter/index.php");
   }
   // to do: redirect to account doesnt exist page
@@ -64,7 +64,7 @@
         <label for="password">Password:</label><br>
         <input type="password" class="form-control" name="password" id="password" minlength="8" required>
       </div>
-      <a href='Login/ForgotPassword.php' class="forgot-password">Forgot Password?</a>
+      <a href='Login/forgotPassword.php' class="forgot-password">Forgot Password?</a>
       <center><p><button type="submit" class="btn btn-outline-success">Log in</button></p></center>
     </form>
   </div>

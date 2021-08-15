@@ -4,11 +4,16 @@ include_once('../../database.php');
 $user_id = $_SESSION['user_id'];
 // $user_id = "7";
 
-$jobSeekerInfoStmt = $conn->prepare("SELECT id, first_name, last_name FROM job_seekers WHERE user_id = ?");
+$canApply = FALSE;
+
+$jobSeekerInfoStmt = $conn->prepare("SELECT id, first_name, last_name, membership_id
+                                     FROM job_seekers
+                                     WHERE user_id = ?");
 $jobSeekerInfoStmt->execute([$user_id]);
 $result = $jobSeekerInfoStmt->fetch();
 $jobSeekerName = $result['first_name'];
 $jobSeekerId = $result['id'];
+$membershipId = $result['membership_id'];
 
 $applicationStmt = $conn->prepare("SELECT a.id,
                                          a.date_applied,
@@ -33,26 +38,40 @@ $applicationStmt = $conn->prepare("SELECT a.id,
 $applicationStmt->execute([$jobSeekerId]);
 
 $offerStmt = $conn->prepare("SELECT a.id,
-                                         a.date_applied,
-                                         a.status AS application_status,
-                                         j.title,
-                                         j.description,
-                                         e.name AS company,
-                                         CONCAT(r.first_name, ' ', r.last_name) AS recruiter,
-                                         j.status AS job_status,
-                                         CONCAT(j.city, ', ', j.province, ', ', j.country) AS location,
-                                         CASE WHEN is_remote_eligible = 1 THEN 'yes'
-                                         ELSE 'no' END AS is_remote_eligible
-                                  FROM applications a
-                                  LEFT JOIN jobs j
-                                    ON a.job_id = j.id
-                                  LEFT JOIN employers e
-                                    ON j.employer_id = e.id
-                                  LEFT JOIN recruiters r
-                                    ON j.recruiter_id = r.id
-                                  WHERE job_seeker_id = ?
-                                  AND a.status IN ('Applicant Rejected', 'Offered', 'Accepted')");
+                                    a.date_applied,
+                                    a.status AS application_status,
+                                    j.title,
+                                    j.description,
+                                    e.name AS company,
+                                    CONCAT(r.first_name, ' ', r.last_name) AS recruiter,
+                                    j.status AS job_status,
+                                    CONCAT(j.city, ', ', j.province, ', ', j.country) AS location,
+                                    CASE WHEN is_remote_eligible = 1 THEN 'yes'
+                                    ELSE 'no' END AS is_remote_eligible
+                             FROM applications a
+                             LEFT JOIN jobs j
+                               ON a.job_id = j.id
+                             LEFT JOIN employers e
+                               ON j.employer_id = e.id
+                             LEFT JOIN recruiters r
+                               ON j.recruiter_id = r.id
+                             WHERE job_seeker_id = ?
+                               AND a.status IN ('Applicant Rejected', 'Offered', 'Accepted')");
 $offerStmt->execute([$jobSeekerId]);
+
+// get total applications
+$noApplications = $conn->prepare("SELECT COUNT(*) AS count FROM applications WHERE job_seeker_id = ?");
+$noApplications->execute([$jobSeekerId]);
+$noApplications = $noApplications->fetch();
+
+// Check if the no applications exceed or not
+if((int)$membershipId == 4 && (int)$noApplications['count'] < 5){
+    $canPostJob = TRUE;
+} else if ((int)$membershipId == 5){
+    $canPostJob = TRUE;
+} else {
+    $canPostJob = FALSE;
+}
 ?>
 
 <!DOCTYPE html>
@@ -122,7 +141,6 @@ $offerStmt->execute([$jobSeekerId]);
               <?php } ?>
           </tbody>
       </table>
-      <br>
       <h2>Your Offers</h2>
       <h6>Here are all the jobs that you've been offered. You can accept or reject them here.</h6>
       <br>
@@ -164,7 +182,13 @@ $offerStmt->execute([$jobSeekerId]);
       </table>
       <br>
       <br>
-      <center><a href="./search.php" class="btn btn-outline-success">Search for new jobs</a></center>
+
+      <?php
+          if($canPostJob){ ?>
+              <center><a href="./search.php" class="btn btn-outline-success">Search for new jobs</a></center>
+          <?php   } else {?>
+              <center><a href="./index.php" class="btn btn-outline-success">Limit Reached For Your Account: Can't Apply to New Jobs</a></center>
+              <?php   }?>
       <br>
       <br>
       <div class="footer">

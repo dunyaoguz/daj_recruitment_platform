@@ -13,8 +13,8 @@
     <span class="navbar-brand mb-0 h1">DAJ Recruitment Platform</span>
     <span class="logo-image"><img src="../logo.png" class="logo"></span>
   </nav>
-  <h1>This account is deactivated</h1>
-  <center><a href='../SignUp/' class="btn btn-outline-success">Contact us to activate again</a></center>
+  <h1>This account is deactivated or frozen :(</h1>
+  <center><a href='contactUs.php' class="btn btn-outline-success">Contact us to activate again</a></center>
   <br>
   <a href='../' class="register">Home Page</a>
   <div class="footer">

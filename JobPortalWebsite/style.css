@@ -10,7 +10,7 @@ h1 {
   margin-bottom: 25px;
 }
 h2 {
-  margin-top: 25px;
+  margin-top: 50px;
   margin-left: 20px;
 }
 h3 {
@@ -27,7 +27,7 @@ h6 {
   font-size: 70%
 }
 p {
-  margin-left: 20px;
+  margin-left: 25px;
 }
 .forgot-password {
   color: grey;
@@ -110,5 +110,10 @@ p {
 .membership-form-group {
   margin-bottom: 20px;
   width:40%;
-  margin-left: 20px;
+  margin-left: 25px;
+}
+.make-payment {
+  margin-bottom: 20px;
+  width:70%;
+  margin-left: 10px;
 }

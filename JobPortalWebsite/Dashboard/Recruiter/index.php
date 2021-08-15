@@ -141,14 +141,12 @@
           </tbody>
       </table>
 
-      <br>
         <?php
             if($canPostJob){ ?>
                 <center><a href="./createJob.php" class="btn btn-outline-success">Add a New Job</a></center>
             <?php   } else {?>
                 <center><a href="./index.php" class="btn btn-outline-success">Limit Reached For Your Employer's Account: Can't Post New Jobs</a></center>
                 <?php   }?>
-      <br>
 
       <h2>Your Applications</h2>
       <h6>Here is a quick glance of all the applications.</h6>
@@ -185,6 +183,7 @@
             <?php  } ?>
           </tbody>
       </table>
+      <br>
       <br>
       <div class="footer">
         © 2021 Copyright: Dunya Oguz, Azman Akhter, John Purcell

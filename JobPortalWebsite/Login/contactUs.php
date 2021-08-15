@@ -1,8 +1,5 @@
 <?php
-include_once('../../database.php');
-
-$user_id = $_SESSION['user_id'];
-// $user_id = "8";
+include_once('../database.php');
 
 if(isset($_POST["email"]) && isset($_POST["subject"]) && isset($_POST["details"])) {
   $contactUsStmt = $conn->prepare("INSERT INTO emails (to_email, from_email, subject, body)
@@ -15,7 +12,6 @@ if(isset($_POST["email"]) && isset($_POST["subject"]) && isset($_POST["details"]
   $contactUsStmt->execute();
   $result = $contactUsStmt->fetch();
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +19,7 @@ if(isset($_POST["email"]) && isset($_POST["subject"]) && isset($_POST["details"]
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Recruiter Profile</title>
+        <title>Contact us</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -37,12 +33,10 @@ if(isset($_POST["email"]) && isset($_POST["subject"]) && isset($_POST["details"]
         <span class="navbar-brand mb-0 h1">DAJ Recruitment Platform</span>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link" href="index.php">Dashboard</a>
-            <a class="nav-item nav-link active" href="#">Contact Us<span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="../../">Sign Out</a>
+            <a class="nav-item nav-link" href="../">Login</a>
           </div>
         </div>
-        <span class="logo-image"><img src="../../logo.png" class="logo"></span>
+        <span class="logo-image"><img src="../logo.png" class="logo"></span>
         </div>
       </nav>
       <h1>Contact Us</h1>

@@ -84,8 +84,6 @@ $recruiterListingStmt->execute([$employeerId]);
               <?php } ?>
           </tbody>
       </table>
-      <br>
-      <br>
       <h2>Your Recruiters</h2>
       <h6>Here are the recruiters eligible to post jobs on your behalf.</h6>
       <br>
