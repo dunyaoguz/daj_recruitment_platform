@@ -7,7 +7,7 @@ $user_id = $_SESSION['user_id'];
 $jobSeekerInfoStmt = $conn->prepare("SELECT id, first_name, last_name FROM job_seekers WHERE user_id = ?");
 $jobSeekerInfoStmt->execute([$user_id]);
 $result = $jobSeekerInfoStmt->fetch();
-$jobSeekerName = $result['first_name'] . ' ' . $result['last_name'];
+$jobSeekerName = $result['first_name'];
 $jobSeekerId = $result['id'];
 
 $applicationStmt = $conn->prepare("SELECT a.id,

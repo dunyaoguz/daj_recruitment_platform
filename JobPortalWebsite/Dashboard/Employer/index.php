@@ -47,7 +47,7 @@ $recruiterListingStmt->execute([$employeerId]);
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-item nav-link active" href="#">Dashboard<span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="membership.php">Membership</a>
+            <a class="nav-item nav-link" href="profile.php">Profile</a>
             <a class="nav-item nav-link" href="contactUs.php">Contact Us</a>
           </div>
         </div>
@@ -116,6 +116,7 @@ $recruiterListingStmt->execute([$employeerId]);
       </table>
       <br>
       <center><a href="./create.php" class="btn btn-outline-success">Add a New Recruiter</a></center>
+      <br>
       <br>
       <div class="footer">
         © 2021 Copyright: Dunya Oguz, Azman Akhter, John Purcell

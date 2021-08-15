@@ -12,6 +12,7 @@ $jobSeekerInfoStmt = $conn->prepare("SELECT j.*, m.membership_type
 $jobSeekerInfoStmt->execute([$user_id]);
 $jobSeekerInfoStmt = $jobSeekerInfoStmt->fetch();
 $jobSeekerId = $jobSeekerInfoStmt['id'];
+$jobSeekerName = $jobSeekerInfoStmt['first_name'];
 $membershipType = $jobSeekerInfoStmt['membership_type'];
 
 if ($_POST["first_name"]) {
@@ -107,6 +108,7 @@ if ($_POST["membership_change"]) {
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>
         </div>
       </nav>
+      <h1><?php echo $jobSeekerName . "'s Profile";?></h1>
       <h2>Your Personal Details</h2>
       <h6>This is the information you entered about yourself.</h6>
       <br>
@@ -217,7 +219,7 @@ if ($_POST["membership_change"]) {
       <br>
       <br>
       <h2>Your Membership</h2>
-      <h6>You can change your membership, and add or delete payment methods.</h6>
+      <h6>Your current plan and other membership options.</h6>
       <p>Your current plan is: <b><?php echo $membershipType ?></b>.</p>
       <form action="" method="POST">
         <div class="membership-form-group">
@@ -231,6 +233,10 @@ if ($_POST["membership_change"]) {
           <button type="submit" class="btn btn-outline-success">Change Membership</button>
         </div>
       </form>
+      <br>
+      <h2>Your Payment Methods</h2>
+      <!-- <h6>Your current plan and other membership options.</h6> -->
+      <br>
       <br>
       <div class="footer">
         © 2021 Copyright: Dunya Oguz, Azman Akhter, John Purcell

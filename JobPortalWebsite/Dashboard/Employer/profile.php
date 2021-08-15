@@ -12,6 +12,7 @@ $employerInfoStmt = $conn->prepare("SELECT e.*, m.membership_type
 $employerInfoStmt->execute([$user_id]);
 $employerInfoStmt = $employerInfoStmt->fetch();
 $employerId = $employerInfoStmt['id'];
+$employeerName = $employerInfoStmt['employer_name'];
 $membershipType = $employerInfoStmt['membership_type'];
 
 if ($_POST["membership_change"]) {
@@ -44,15 +45,16 @@ if ($_POST["membership_change"]) {
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-item nav-link" href="index.php">Dashboard</a>
-            <a class="nav-item nav-link active" href="#">Membership<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link active" href="#">Profile<span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link" href="contactUs.php">Contact Us</a>
           </div>
         </div>
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>
         </div>
       </nav>
+      <h1><?php echo $employeerName . "'s Profile";?></h1>
       <h2>Your Membership</h2>
-      <h6>You can change your membership, and add or delete payment methods.</h6>
+      <h6>Your current plan and other membership options.</h6>
       <p>Your current plan is: <b><?php echo $membershipType ?></b>.</p>
       <form action="" method="POST">
         <div class="membership-form-group">
@@ -65,6 +67,9 @@ if ($_POST["membership_change"]) {
           <button type="submit" class="btn btn-outline-success">Change Membership</button>
         </div>
       </form>
+      <br>
+      <h2>Your Payment Methods</h2>
+      <!-- <h6>Your current plan and other membership options.</h6> -->
       <br>
       <div class="footer">
         © 2021 Copyright: Dunya Oguz, Azman Akhter, John Purcell
