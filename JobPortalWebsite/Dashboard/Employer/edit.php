@@ -14,9 +14,9 @@ $recruiterInfo = $recruiterInfoStmt->fetch(PDO::FETCH_ASSOC);
 
 if(isset($_POST["new_recruiter_first_name"]) && isset($_POST["new_recruiter_last_name"]) && isset($_POST["new_recruiter_id"])){
     $recruiterUpdateStmt = $conn->prepare("UPDATE recruiters rec SET
-                                            rec.first_name = :rec.first_name,
-                                            rec.last_name = :rec.last_name
-                                            WHERE rec.id = :rec.id");
+                                            rec.first_name = :rec_first_name,
+                                            rec.last_name = :rec_last_name
+                                            WHERE rec.id = :rec_id");
 
     $recruiterUpdateStmt->bindParam(':rec_first_name', $_POST["new_recruiter_first_name"]);
     $recruiterUpdateStmt->bindParam(':rec_last_name', $_POST["new_recruiter_last_name"]);
@@ -25,7 +25,7 @@ if(isset($_POST["new_recruiter_first_name"]) && isset($_POST["new_recruiter_last
     if($recruiterUpdateStmt->execute()){
         header("Location: .");
     }else{
-        header("Location: ./edit.php?recruiter_id=".$_POST["new_recruiter_id"]);
+        header("Location: ./edit.php?recruiter_id=".$_POST["recruiter_id"]);
     }
 }
 
