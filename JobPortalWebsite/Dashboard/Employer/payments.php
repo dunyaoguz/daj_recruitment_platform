@@ -7,21 +7,13 @@ include_once('../../database.php');
 $account_id = "1";
 
 $cardInfoStmt = $conn->prepare("SELECT id, payment_method_type, card_number, expiration_year, withdrawal_method, is_active FROM payment_methods WHERE account_id = :account_id");
-// $cardInfoStmt->execute([$account_id);
+// need to change $account_id["id"] once we change structure
 $cardInfoStmt->bindParam(':account_id', $account_id, PDO::PARAM_INT);
 
 $cardInfoStmt->execute();
-// $result = $cardInfoStmt->fetch();
-
-// print $result['id'];
-// print $result['payment_method_type'];
-// print $result['card_number'];
-// print $result['expiration_year'];
-// print $result['withdrawal_method'];
-// print $result['is_active'];
 
 //setting Session Variable to be used by payment add/delete
-// $_SESSION['account_id'] = $account_id;
+$_SESSION['account_id'] = $account_id;
 ?>
 
 <!DOCTYPE html>
