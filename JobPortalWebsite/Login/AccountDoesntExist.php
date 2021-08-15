@@ -1,16 +1,3 @@
-<?php require_once '../database.php';
-  // checking if email exists
-  $email = $_POST["email"];
-  $stmt = $conn->prepare("SELECT password FROM users WHERE email=?;");
-  $stmt->execute([$email]);
-  $password = $stmt->fetch();
-  $headers = 'From: admin@dajrecruitment.com';
-
-  if($password["password"]){
-      mail($email,"Your Password to DAJ Recruitment Platform",$password["password"]);
-  }
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,18 +13,8 @@
     <span class="navbar-brand mb-0 h1">DAJ Recruitment Platform</span>
     <span class="logo-image"><img src="../logo.png" class="logo"></span>
   </nav>
-  <h1>Forgot Password?</h1>
-  <div class="login">
-    <br>
-    <form action="" class="login-form" method="POST">
-      <div class="login-form-group">
-        <label for="email">We'll email you your password if your email exists in our system:</label><br>
-        <input type="text" class="form-control" name="email" id="email" required>
-      </div>
-      <center><p><button type="submit" class="btn btn-outline-success">Send me my password</button></p></center>
-    </form>
-  </div>
-
+  <h1>Sorry, this account doesn't exist</h1>
+  <center><a href='../SignUp/' class="btn btn-outline-success">Click here to register</a></center>
   <br>
   <a href='../' class="register">Home Page</a>
   <div class="footer">

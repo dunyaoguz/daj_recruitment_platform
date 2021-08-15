@@ -7,7 +7,7 @@ $user_id = "1";
 
 
 $employeerInfoStmt = $conn->prepare("SELECT e.id AS employer_id, e.name AS employer_name
-                                        FROM employers e 
+                                        FROM employers e
                                         WHERE e.user_id = ?");
 $employeerInfoStmt->execute([$user_id]);
 $result = $employeerInfoStmt->fetch();
@@ -21,7 +21,7 @@ $jobListingStmt->execute([$employeerId]);
 
 
 $recruiterListingStmt = $conn->prepare("SELECT r.id AS recruiter_id, r.user_id AS recruiter_user_id, r.employer_id AS recruiter_employer_id, r.first_name AS recruiter_first_name, r.last_name AS recruiter_last_name
-                                          FROM recruiters r 
+                                          FROM recruiters r
                                           WHERE r.employer_id = ?");
 $recruiterListingStmt->execute([$employeerId]);
 
@@ -47,8 +47,8 @@ $recruiterListingStmt->execute([$employeerId]);
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a class="nav-item nav-link active" href="#">Dashboard<span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="#">Membership</a>
-            <a class="nav-item nav-link" href="#">Contact Us</a>
+            <a class="nav-item nav-link" href="membership.php">Membership</a>
+            <a class="nav-item nav-link" href="contactUs.php">Contact Us</a>
           </div>
         </div>
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>
@@ -107,7 +107,7 @@ $recruiterListingStmt->execute([$employeerId]);
                   <td> <?php echo $data['recruiter_first_name']; ?> </td>
                   <td> <?php echo $data['recruiter_last_name']; ?> </td>
                   <td>
-                    <a href="./edit.php?recruiter_id=<?= $data["recruiter_id"] ?>">Edit</a><br>    
+                    <a href="./edit.php?recruiter_id=<?= $data["recruiter_id"] ?>">Edit</a><br>
                     <a href="./delete.php?recruiter_id=<?= $data["recruiter_id"] ?>">Delete</a>
                   </td>
                   </tr>
