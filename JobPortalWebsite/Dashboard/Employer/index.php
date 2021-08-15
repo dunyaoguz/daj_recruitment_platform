@@ -6,17 +6,23 @@ include_once('../../database.php');
 $user_id = "1";
 
 
-$employeerInfoStmt = $conn->prepare("SELECT id, name FROM employers WHERE user_id = ?");
+$employeerInfoStmt = $conn->prepare("SELECT e.id AS employer_id, e.name AS employer_name
+                                        FROM employers e 
+                                        WHERE e.user_id = ?");
 $employeerInfoStmt->execute([$user_id]);
 $result = $employeerInfoStmt->fetch();
-$employeerName = $result['name'];
-$employeerId = $result['id'];
+$employeerName = $result['employer_name'];
+$employeerId = $result['employer_id'];
 
-$jobListingStmt = $conn->prepare("SELECT id, recruiter_id, date_posted, title, description, required_experience, status FROM jobs WHERE employer_id = ?");
+$jobListingStmt = $conn->prepare("SELECT j.id AS job_id, j.recruiter_id AS job_recruiter_id, j.date_posted AS job_date_posted, j.title AS job_title, j.description AS job_description, j.required_experience AS job_required_experience, j.status AS job_status
+                                      FROM jobs j
+                                      WHERE j.employer_id = ?");
 $jobListingStmt->execute([$employeerId]);
 
 
-$recruiterListingStmt = $conn->prepare("SELECT * FROM recruiters WHERE employer_id = ?");
+$recruiterListingStmt = $conn->prepare("SELECT r.id AS recruiter_id, r.user_id AS recruiter_user_id, r.employer_id AS recruiter_employer_id, r.first_name AS recruiter_first_name, r.last_name AS recruiter_last_name
+                                          FROM recruiters r 
+                                          WHERE r.employer_id = ?");
 $recruiterListingStmt->execute([$employeerId]);
 
 ?>
@@ -68,13 +74,13 @@ $recruiterListingStmt->execute([$employeerId]);
           <tbody>
               <?php while ($row = $jobListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
                   <tr>
-                  <td> <?php echo $row['id']; ?> </td>
-                  <td> <?php echo $row['recruiter_id']; ?> </td>
-                  <td> <?php echo $row['date_posted']; ?> </td>
-                  <td> <?php echo $row['title']; ?> </td>
-                  <td> <?php echo $row['description']; ?> </td>
-                  <td> <?php echo $row['required_experience']; ?> </td>
-                  <td> <?php echo $row['status']; ?> </td>
+                  <td> <?php echo $row['job_id']; ?> </td>
+                  <td> <?php echo $row['job_recruiter_id']; ?> </td>
+                  <td> <?php echo $row['job_date_posted']; ?> </td>
+                  <td> <?php echo $row['job_title']; ?> </td>
+                  <td> <?php echo $row['job_description']; ?> </td>
+                  <td> <?php echo $row['job_required_experience']; ?> </td>
+                  <td> <?php echo $row['job_status']; ?> </td>
                   </tr>
               <?php } ?>
           </tbody>
@@ -95,14 +101,14 @@ $recruiterListingStmt->execute([$employeerId]);
           </thead>
 
           <tbody>
-              <?php while ($row = $recruiterListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
+              <?php while ($data = $recruiterListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
                   <tr>
-                  <td> <?php echo $row['id']; ?> </td>
-                  <td> <?php echo $row['first_name']; ?> </td>
-                  <td> <?php echo $row['last_name']; ?> </td>
+                  <td> <?php echo $data['recruiter_id']; ?> </td>
+                  <td> <?php echo $data['recruiter_first_name']; ?> </td>
+                  <td> <?php echo $data['recruiter_last_name']; ?> </td>
                   <td>
-                    <a href="./edit.php?recruiter_id=<?= $row["id"] ?>">Edit</a><br>    
-                    <a href="./delete.php?recruiter_id=<?= $row["id"] ?>">Delete</a>
+                    <a href="./edit.php?recruiter_id=<?= $data["recruiter_id"] ?>">Edit</a><br>    
+                    <a href="./delete.php?recruiter_id=<?= $data["recruiter_id"] ?>">Delete</a>
                   </td>
                   </tr>
               <?php } ?>
