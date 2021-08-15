@@ -52,7 +52,7 @@ if(isset($_POST["new_job_title"]) && isset($_POST["new_job_description"]) && iss
     
     
         // Create an array from a CSV
-      $jobCategoryArr = explode(",", $_POST["new_job_country"]);
+      $jobCategoryArr = explode(",", $_POST["new_job_category"]);
 
       $createNewCategory = $conn->prepare("INSERT INTO job_categories (job_id, job_category)
                                               VALUES (:job_id, :job_category)");
