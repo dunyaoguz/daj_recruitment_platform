@@ -3,16 +3,16 @@
     //session_start();
 
     //$user_id = $_SESSION['userId'];
-    $user_id = "4";
+    $user_id = 4;
 
     $canPostJob = FALSE;
 
     // Obtain Recruiter's Name, Recruiter ID, Recruiter's Employer ID
     $getRecruiterInfoStmt = $conn->prepare("SELECT r.id, r.user_id, r.employer_id, r.first_name, r.last_name
                                                 FROM recruiters r 
-                                                WHERE r.user_id = :r.user_id");
+                                                WHERE r.user_id = :r_user_id");
 
-    $getRecruiterInfoStmt->bindParam(':r.user_id', $user_id, PDO::PARAM_INT);
+    $getRecruiterInfoStmt->bindParam(':r_user_id', $user_id, PDO::PARAM_INT);
     $getRecruiterInfoStmt->execute();
     $recruiterInfo = $getRecruiterInfoStmt->fetch();
     $recruiterName = $recruiterInfo['r.first_name'];
@@ -22,30 +22,30 @@
     // Obtain Recruiter ID -> Obtain all Jobs for the Recruiter
     $getJobListingStmt = $conn->prepare("SELECT j.id, j.employer_id, j.recruiter_id, j.date_posted, j.title, j.description, j.required_experience, j.status, j.city, j.province, j.country, j.is_remote_eligible 
                                             FROM jobs j
-                                            WHERE j.recruiter_id = :j.recruiter_id");
-    $getJobListingStmt->bindParam(':j.recruiter_id', $recruiterId, PDO::PARAM_INT);
+                                            WHERE j.recruiter_id = :j_recruiter_id");
+    $getJobListingStmt->bindParam(':j_recruiter_id', $recruiterId, PDO::PARAM_INT);
     $getJobListingStmt->execute();
 
     // Obtain Membership ID of Employer -> fetch the Employer's membership Type
     $getEmployerMembershipIdStmt = $conn->prepare("SELECT e.id, e.user_id, e.membership_id, e.name 
                                                         FROM employers e 
-                                                        WHERE e.user_id = :e.user_id");
-    $getEmployerMembershipIdStmt->bindParam(':e.user_id', $recruiterEmployerId, PDO::PARAM_INT);
+                                                        WHERE e.user_id = :e_user_id");
+    $getEmployerMembershipIdStmt->bindParam(':e_user_id', $recruiterEmployerId, PDO::PARAM_INT);
     $getEmployerMembershipIdStmt->execute();
     $getEmployerMembershipId = $getEmployerMembershipIdStmt->fetch()['e.membership_id'];
 
     $getEmployerMembershipInfoStmt = $conn->prepare("SELECT m.id, m.user_type, m.membership_type, m.monthly_fee, m.job_posting_limit, m.job_application_limit
                                                         FROM memberships m 
-                                                        WHERE m.id = :m.id");
-    $getEmployerMembershipInfoStmt->bindParam(':m.id', $getEmployerMembershipId, PDO::PARAM_INT);
+                                                        WHERE m.id = :m_id");
+    $getEmployerMembershipInfoStmt->bindParam(':m_id', $getEmployerMembershipId, PDO::PARAM_INT);
     $getEmployerMembershipInfoStmt->execute();
     $getEmployerMembershipInfo = $getEmployerMembershipInfoStmt->fetch()['m.id'];
 
     // Get Total Number of Jobs For Employer
     $getTotalNumberOfJobsStmt = $conn->prepare("SELECT COUNT(job.id) 
                                                     FROM jobs job
-                                                    WHERE job.employer_id = :job.employer_id");
-    $getTotalNumberOfJobsStmt->bindParam(':job.employer_id', $recruiterEmployerId, PDO::PARAM_INT);
+                                                    WHERE job.employer_id = :job_employer_id");
+    $getTotalNumberOfJobsStmt->bindParam(':job_employer_id', $recruiterEmployerId, PDO::PARAM_INT);
     $getTotalNumberOfJobsStmt->execute();
     $getTotalNumberOfJobs = $getTotalNumberOfJobsStmt->fetchColumn();
 
@@ -65,8 +65,8 @@
                                                 ON a.job_id = jo.id
                                                 LEFT JOIN recruiters re
                                                 ON jo.recruiter_id = re.id
-                                                WHERE jo.recruiter_id = :jo.recruiter_id");
-    $getApplicationInfoStmt->bindParam(':jo.recruiter_id', $recruiterId, PDO::PARAM_INT);
+                                                WHERE jo.recruiter_id = :jo_recruiter_id");
+    $getApplicationInfoStmt->bindParam(':jo_recruiter_id', $recruiterId, PDO::PARAM_INT);
     $getApplicationInfoStmt->execute();
 
 
