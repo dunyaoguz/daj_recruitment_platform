@@ -8,14 +8,14 @@
     $canPostJob = FALSE;
 
     // Obtain Recruiter's Name, Recruiter ID, Recruiter's Employer ID
-    $getRecruiterInfoStmt = $conn->prepare("SELECT r.id, r.user_id, r.employer_id, r.first_name as r.first_name, r.last_name
+    $getRecruiterInfoStmt = $conn->prepare("SELECT r.id, r.user_id, r.employer_id, r.first_name AS recruiter_first_name, r.last_name
                                                 FROM recruiters r 
                                                 WHERE r.user_id = :r_user_id");
 
     $getRecruiterInfoStmt->bindParam(':r_user_id', $user_id, PDO::PARAM_INT);
     $getRecruiterInfoStmt->execute();
     $recruiterInfo = $getRecruiterInfoStmt->fetch();
-    $recruiterName = $recruiterInfo['r.first_name'];
+    $recruiterName = $recruiterInfo['recruiter_first_name'];
     $recruiterId = $recruiterInfo['r.id'];
     $recruiterEmployerId = $recruiterInfo['r.employer_id'];
 
