@@ -15,7 +15,7 @@
     $getRecruiterInfoStmt->bindParam(':r_user_id', $user_id, PDO::PARAM_INT);
     $getRecruiterInfoStmt->execute();
     $recruiterInfo = $getRecruiterInfoStmt->fetch();
-    $recruiterName = $recruiterInfo['r.first_name'];
+    $recruiterName = $recruiterInfo['first_name'];
     $recruiterId = $recruiterInfo['r.id'];
     $recruiterEmployerId = $recruiterInfo['r.employer_id'];
 
