@@ -32,7 +32,7 @@ if(isset($_POST["new_job_title"]) && isset($_POST["new_job_description"]) && iss
                                                         FROM jobs j
                                                         WHERE j.title = :j_title AND
                                                               j.description = :j_description AND
-                                                              j.required_experience = j_required_experience AND
+                                                              j.required_experience = :j_required_experience AND
                                                               j.city = :j_city AND
                                                               j.province = :j_province AND
                                                               j.country = :j_country AND
@@ -40,7 +40,7 @@ if(isset($_POST["new_job_title"]) && isset($_POST["new_job_description"]) && iss
                                                               j.recruiter_id = :j_recruiter_id");
       $getNewlyCreatedJobIdInfoStmt->bindParam(':j_title', $_POST["new_job_title"]);
       $getNewlyCreatedJobIdInfoStmt->bindParam(':j_description', $_POST["new_job_description"]);
-      $getNewlyCreatedJobIdInfoStmt->bindParam('j_required_experience', $_POST["new_job_experience"], PDO::PARAM_INT);
+      $getNewlyCreatedJobIdInfoStmt->bindParam(':j_required_experience', $_POST["new_job_experience"], PDO::PARAM_INT);
       $getNewlyCreatedJobIdInfoStmt->bindParam(':j_city', $_POST["new_job_city"]);
       $getNewlyCreatedJobIdInfoStmt->bindParam(':j_province', $_POST["new_job_province"]);
       $getNewlyCreatedJobIdInfoStmt->bindParam(':j_country', $_POST["new_job_country"]);
@@ -54,9 +54,10 @@ if(isset($_POST["new_job_title"]) && isset($_POST["new_job_description"]) && iss
         // Create an array from a CSV
       $jobCategoryArr = explode(",", $_POST["new_job_country"]);
 
-      foreach($jobCategoryArr as $newCategory){
-        $createNewCategory = $conn->prepare("INSERT INTO job_categories (job_id, job_category)
+      $createNewCategory = $conn->prepare("INSERT INTO job_categories (job_id, job_category)
                                               VALUES (:job_id, :job_category)");
+                                              
+      foreach($jobCategoryArr as $newCategory){
         $createNewCategory->bindParam(':job_id', $getNewlyCreatedJobIdInfo, PDO::PARAM_INT);
         $createNewCategory->bindParam(':job_id', trim($newCategory));
         $createNewCategory->execute();
