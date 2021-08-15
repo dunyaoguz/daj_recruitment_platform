@@ -3,21 +3,66 @@
 //On page 2
 $job_seeker_id = $_SESSION['job_seeker_id'];
 
+
 if(isset($_POST["education_type_1"])&&isset($_POST["school_1"])&&isset($_POST["concentration_1"])
 &&isset($_POST["grade_1"])&&isset($_POST["year_graduated_1"]) ){
+  $education_history1 = $conn->prepare("INSERT INTO job_seeker_education_history (job_seeker_id, education_type,
+  school, concentration, grade, year_graduated ) VALUES (:job_seeker_id, :education_type,
+  :school, :concentration, CAST(:grade AS FLOAT), :year_graduated )
+  ;");
+      $education_history1->bindParam(':job_seeker_id', $job_seeker_id["id"], PDO::PARAM_INT);
+      $education_history1->bindParam(':education_type', $_POST["education_type_1"]);
+      $education_history1->bindParam(':school', $_POST["school_1"]);
+      $education_history1->bindParam(':concentration', $_POST["concentration_1"]);
+      $grade = number_format($_POST["grade_1"], 2);
+      $education_history1->bindParam(':grade', $grade);
+      $education_history1->bindParam(':year_graduated', $_POST["year_graduated_1"], PDO::PARAM_INT);
 
+      if($education_history1->execute()){
+          
+      }
 }
 
 if(isset($_POST["education_type_2"])&&isset($_POST["school_2"])&&isset($_POST["concentration_2"])
 &&isset($_POST["grade_2"])&&isset($_POST["year_graduated_2"]) ){
-
+  $education_history2 = $conn->prepare("INSERT INTO job_seeker_education_history (job_seeker_id, education_type,
+  school, concentration, grade, year_graduated ) VALUES (:job_seeker_id, :education_type,
+  :school, :concentration, CAST(:grade AS FLOAT), :year_graduated )
+  ;"); //chnage vars to match form 
+      $education_history2->bindParam(':job_seeker_id', $job_seeker_id["id"], PDO::PARAM_INT);
+      $education_history2->bindParam(':education_type', $_POST["education_type_2"]);
+      $education_history2->bindParam(':school', $_POST["school_2"]);
+      $education_history2->bindParam(':concentration', $_POST["concentration_2"]);
+      $grade2 = number_format($_POST["grade_2"], 2);
+      $education_history2->bindParam(':grade', $grade2);
+      $education_history2->bindParam(':year_graduated', $_POST["year_graduated_2"], PDO::PARAM_INT);
+     
+      if($education_history2->execute()){
+        
+      }
 }
 
 if(isset($_POST["education_type_3"])&&isset($_POST["school_3"])&&isset($_POST["concentration_3"])
 &&isset($_POST["grade_3"])&&isset($_POST["year_graduated_3"]) ){
+  $education_history3 = $conn->prepare("INSERT INTO job_seeker_education_history (job_seeker_id, education_type,
+  school, concentration, grade, year_graduated ) VALUES (:job_seeker_id, :education_type,
+  :school, :concentration, CAST(:grade AS FLOAT), :year_graduated )
+  ;");
+      $education_history3->bindParam(':job_seeker_id', $job_seeker_id["id"], PDO::PARAM_INT);
+      $education_history3->bindParam(':education_type', $_POST["education_type_3"]);
+      $education_history3->bindParam(':school', $_POST["school_3"]);
+      $education_history3->bindParam(':concentration', $_POST["concentration_3"]);
+      $grade3 = number_format($_POST["grade_3"], 2);
+      $education_history3->bindParam(':grade', $grade3);
+      $education_history3->bindParam(':year_graduated', $_POST["year_graduated_3"], PDO::PARAM_INT);
 
+      if($education_history3->execute()){
+        
+      }
 }
-
+if (isset($_POST["submitform"])){
+  header("Location: ../SuccessMessage.php");
+};
 ?>
 
 <!DOCTYPE html>
@@ -40,9 +85,29 @@ if(isset($_POST["education_type_3"])&&isset($_POST["school_3"])&&isset($_POST["c
   <br>
   <h6>Entry 1</h6>
   <form action="" method="POST">
-      <div class="form-group">
-        <label for="education_type_1">Level of Education</label><br>
-        <input type="text" class="form-control" name="education_type_1" id="education_type_1">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_1" value="High School">
+        <label class="form-check-label" for="High School">High School</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_1" value="Bachelors">
+        <label class="form-check-label" for="Bachelors">Bachelors</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_1" value="Masters">
+        <label class="form-check-label" for="Masters">Masters</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_1" value="PhD">
+        <label class="form-check-label" for="PhD">PhD</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_1" value="Certificate">
+        <label class="form-check-label" for="Certificate">Certificate</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_1" value="Diploma">
+        <label class="form-check-label" for="Diploma">Diploma</label>
       </div>
       <div class="form-group">
         <label for="school_1">Institution</label><br>
@@ -63,9 +128,29 @@ if(isset($_POST["education_type_3"])&&isset($_POST["school_3"])&&isset($_POST["c
       <br>
       <br>
       <h6>Entry 2</h6>
-      <div class="form-group">
-        <label for="education_type_2">Level of Education</label><br>
-        <input type="text" class="form-control" name="education_type_2" id="education_type_2">
+      <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="education_type_2" value="High School">
+        <label class="form-check-label" for="High School">High School</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_2" value="Bachelors">
+        <label class="form-check-label" for="Bachelors">Bachelors</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_2" value="Masters">
+        <label class="form-check-label" for="Masters">Masters</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_2" value="PhD">
+        <label class="form-check-label" for="PhD">PhD</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_2" value="Certificate">
+        <label class="form-check-label" for="Certificate">Certificate</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_2" value="Diploma">
+        <label class="form-check-label" for="Diploma">Diploma</label>
       </div>
       <div class="form-group">
         <label for="school_2">Institution</label><br>
@@ -86,9 +171,29 @@ if(isset($_POST["education_type_3"])&&isset($_POST["school_3"])&&isset($_POST["c
       <br>
       <br>
       <h6>Entry 3</h6>
-      <div class="form-group">
-        <label for="education_type_3">Level of Education</label><br>
-        <input type="text" class="form-control" name="education_type_3" id="education_type_3">
+      <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="education_type_3" value="High School">
+        <label class="form-check-label" for="High School">High School</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_3" value="Bachelors">
+        <label class="form-check-label" for="Bachelors">Bachelors</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_3" value="Masters">
+        <label class="form-check-label" for="Masters">Masters</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_3" value="PhD">
+        <label class="form-check-label" for="PhD">PhD</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_3" value="Certificate">
+        <label class="form-check-label" for="Certificate">Certificate</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="education_type_3" value="Diploma">
+        <label class="form-check-label" for="Diploma">Diploma</label>
       </div>
       <div class="form-group">
         <label for="school_3">Institution</label><br>
@@ -106,7 +211,7 @@ if(isset($_POST["education_type_3"])&&isset($_POST["school_3"])&&isset($_POST["c
         <label for="year_graduated_3">Year Graduated</label><br>
         <input type="text" class="form-control" name="year_graduated_3" id="year_graduated_3">
       </div>
-      <p><button type="submit" class="btn btn-outline-success">Submit</button></p>
+      <p><button type="submit" name = "submitform" class="btn btn-outline-success">Next</button></p>
       <br>
     </form>
 

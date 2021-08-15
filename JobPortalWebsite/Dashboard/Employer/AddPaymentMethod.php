@@ -1,7 +1,10 @@
 <?php require_once '../../database.php';
+//put this on the dashboard page that leads to this page 
+$_SESSION['account_id'] = $account_id;
+
  $account_id = $_SESSION['account_id'];
 
- $payment2 = $conn->prepare("INSERT INTO payment_methods (account_id, payment_method_type,
+ $payment = $conn->prepare("INSERT INTO payment_methods (account_id, payment_method_type,
  billing_address, postal_code, card_number, security_code, expiration_month, expiration_year,
  withdrawal_method)
  VALUES (:account_id, :payment_method_type,
@@ -44,7 +47,7 @@ if($payment2->execute()){
   </nav>
 
   <h3>Payment information</h3>
-      <h6>Let us know how you'd like to pay for your membership.</h6>
+      <h6>What card would you like to add?</h6>
       <p>Are you paying with a credit card or a debit card?</p>
       <form action="" method="POST">
       <div class="form-check form-check-inline">

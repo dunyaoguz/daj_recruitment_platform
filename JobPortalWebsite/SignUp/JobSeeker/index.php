@@ -2,52 +2,66 @@
 // Update this for the new Database Attributes
 // Need to make sure email not in use before Query made
 
-// 1.Insert user
-$user = $conn->prepare("INSERT INTO ric55311.users (user_type, login_name,
-password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :email)
-;");
-    $user->bindParam(':user_type', $_POST["user_type"]);
-    $user->bindParam(':login_name', $_POST["login_name"]);
-    $user->bindParam(':password', $_POST["password"]);
-    $user->bindParam(':phone', $_POST["phone"]);
-    $user->bindParam(':email', $_POST["email"]);
+  // 1.Insert user
+  $user = $conn->prepare("INSERT INTO ric55311.users (user_type, login_name,
+  password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :email)
+  ;");
+  $user->bindParam(':user_type', $_POST["user_type"]);
+  $user->bindParam(':login_name', $_POST["login_name"]);
+  $user->bindParam(':password', $_POST["password"]);
+  $user->bindParam(':phone', $_POST["phone"]);
+  $user->bindParam(':email', $_POST["email"]);
 
-    // checking if email already exists
-    $email = $_POST["email"];
-    $stmt = $conn->prepare("SELECT * FROM ric55311.users WHERE email=?;");
-    $stmt->execute([$email]);
-    $check = $stmt->fetch();
-    if ($check) {
-      // need to fix the logic with what happens when email in use
-        print("<h2>You already have an active account. Please login.</h2>");
-        header("Location: /nfs/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/Login");
-        exit();
-    }
+  // checking if email already exists
+  $email = $_POST["email"];
+  $stmt = $conn->prepare("SELECT * FROM ric55311.users WHERE email=?;");
+  $stmt->execute([$email]);
+  $check = $stmt->fetch();
+  if ($check) {
+      header("Location: ../FailureMessage.php");
+      exit();
+  }
+  //checking if phone already exists
+  $phone = $_POST["phone"];
+  $stmt2 = $conn->prepare("SELECT * FROM users WHERE phone=?;");
+  $stmt2->execute([$phone]);
+  $check2 = $stmt2->fetch();
+  if ($check2) {
+    header("Location: ../FailureMessage.php");
+      exit();
+  }
+  //checking if login already exists
+  $login_name = $_POST["login_name"];
+  $stmt3 = $conn->prepare("SELECT * FROM users WHERE login_name=?;");
+  $stmt3->execute([$login_name]);
+  $check3 = $stmt3->fetch();
+  if ($check3) {
+    header("Location: ../FailureMessage.php");
+    exit();
+  }
 
-    if($user->execute()){
-       // print ("<h2>User creation successful</h2>");
-    }
+  if($user->execute()){
+      // print ("<h2>User creation successful</h2>");
+  }
 
-    // 2.Insert Job Seeker
-    $job_seeker = $conn->prepare("INSERT INTO ric55311.job_seekers (user_id, membership_id,
-    first_name, last_name, city, province, country, current_title, years_of_experience) VALUES (:user_id, :membership_id,
-    :first_name, :last_name, :city, :province, :country, :current_title, :years_of_experience);");
-    $query = $conn->prepare("SELECT id FROM ric55311.users WHERE email=:email;");
-    $query->bindParam(":email",$email);
-    $query->execute();
-    $user_id=$query->fetch();
-    $job_seeker->bindParam(':user_id', $user_id["id"], PDO::PARAM_INT);
-    //print($user_id["id"]);
-    $job_seeker->bindParam(':membership_id', $_POST["membership_id"], PDO::PARAM_INT);
-    $job_seeker->bindParam(':first_name', $_POST["first_name"]);
-    $job_seeker->bindParam(':last_name', $_POST["last_name"]);
-    $job_seeker->bindParam(':city', $_POST["city"]);
-    $job_seeker->bindParam(':province', $_POST["province"]);
-    $job_seeker->bindParam(':country', $_POST["country"]);
-    $job_seeker->bindParam(':current_title', $_POST["current_title"]);
-    $job_seeker->bindParam(':years_of_experience', $_POST["years_of_experience"], PDO::PARAM_INT);
+  // 2.Insert Job Seeker
+  $job_seeker = $conn->prepare("INSERT INTO ric55311.job_seekers (user_id, membership_id,
+  first_name, last_name, city, province, country, current_title, years_of_experience) VALUES (:user_id, :membership_id,
+  :first_name, :last_name, :city, :province, :country, :current_title, :years_of_experience);");
+  $query = $conn->prepare("SELECT id FROM ric55311.users WHERE email=:email;");
+  $query->bindParam(":email",$email);
+  $query->execute();
+  $user_id=$query->fetch();
+  $job_seeker->bindParam(':user_id', $user_id["id"], PDO::PARAM_INT);
+  $job_seeker->bindParam(':membership_id', $_POST["membership_id"], PDO::PARAM_INT);
+  $job_seeker->bindParam(':first_name', $_POST["first_name"]);
+  $job_seeker->bindParam(':last_name', $_POST["last_name"]);
+  $job_seeker->bindParam(':city', $_POST["city"]);
+  $job_seeker->bindParam(':province', $_POST["province"]);
+  $job_seeker->bindParam(':country', $_POST["country"]);
+  $job_seeker->bindParam(':current_title', $_POST["current_title"]);
+  $job_seeker->bindParam(':years_of_experience', $_POST["years_of_experience"], PDO::PARAM_INT);
 
-    //print ("<h2>We got here</h2>");
     if($job_seeker->execute()){
       // print ("<h2>Job Seeker creation successful</h2>");
     }
@@ -60,28 +74,24 @@ password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :em
     //On Education Page
     $_SESSION['job_seeker_id'] = $job_seeker_id;
 
+  //accountId for payment methods Page
+  $query2 = $conn->prepare("SELECT id FROM ric55311.accounts WHERE user_id=:user_id;");
+  $query2->bindParam(":user_id",$user_id["id"]);
+  $query2->execute();
+  $account_id=$query2->fetch();
+  $_SESSION['account_id'] = $account_id;
 
-    //accountId for payment methods Page
-    $query2 = $conn->prepare("SELECT id FROM ric55311.accounts WHERE user_id=:user_id;");
-    $query2->bindParam(":user_id",$user_id["id"]);
-    $query2->execute();
-    $account_id=$query2->fetch();
-    $_SESSION['account_id'] = $account_id;
-
-    $membership_id =  $_POST["membership_id"];
-    //print $membership_id;
-   //page redirection    
-    if($membership_id > 3){
-      //payment page redirect
-      header("Location: PaymentInfo.php");
-    }
-    if($membership_id < 4 && $membership_id != 0){
-      //payment page redirect
-      header("Location: EducationHistory.php");
-    }
-    
-
-   
+  $membership_id =  $_POST["membership_id"];
+  //print $membership_id;
+  //page redirection    
+  if($membership_id > 3){
+    //payment page redirect
+    header("Location: PaymentInfo.php");
+  }
+  if($membership_id < 4 && $membership_id != 0){
+    //payment page redirect
+    header("Location: EducationHistory.php");
+  }
 ?>
 
 <!DOCTYPE html>

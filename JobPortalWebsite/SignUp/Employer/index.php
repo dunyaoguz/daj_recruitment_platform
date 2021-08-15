@@ -6,26 +6,45 @@
 $user = $conn->prepare("INSERT INTO users (user_type, login_name,
 password, phone, email) VALUES (:user_type, :login_name, :password , :phone, :email)
 ;");
-    $user->bindParam(':user_type', $_POST["user_type"]);
-    $user->bindParam(':login_name', $_POST["login_name"]);
-    $user->bindParam(':password', $_POST["password"]);
-    $user->bindParam(':phone', $_POST["phone"]);
-    $user->bindParam(':email', $_POST["email"]);
+$user->bindParam(':user_type', $_POST["user_type"]);
+$user->bindParam(':login_name', $_POST["login_name"]);
+$user->bindParam(':password', $_POST["password"]);
+$user->bindParam(':phone', $_POST["phone"]);
+$user->bindParam(':email', $_POST["email"]);
 
-    // checking if email already exists
-    $email = $_POST["email"];
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email=?;");
-    $stmt->execute([$email]);
-    $check = $stmt->fetch();
-    if ($check) {
-      // need to fix the logic with what happens when email in use
-        print("<h2>You already have an active account. Please login.</h2>");
-        // header("Location: /nfs/groups/r/ri_comp5531_1/COMP5531_final_project/Job_Portal_Website/Login");
-        exit();
-    }
-    if($user->execute()){
-        print ("<h2>User creation successful</h2>");
-    }
+// checking if email already exists
+$email = $_POST["email"];
+$stmt = $conn->prepare("SELECT * FROM users WHERE email=?;");
+$stmt->execute([$email]);
+$check = $stmt->fetch();
+if ($check) {
+  header("Location: ../FailureMessage.php");
+    exit();
+}
+
+//checking if phone already exists
+$phone = $_POST["phone"];
+$stmt2 = $conn->prepare("SELECT * FROM users WHERE phone=?;");
+$stmt2->execute([$phone]);
+$check2 = $stmt2->fetch();
+if ($check2) {
+  header("Location: ../FailureMessage.php");
+    exit();
+}
+
+  //checking if login already exists
+  $login_name = $_POST["login_name"];
+  $stmt3 = $conn->prepare("SELECT * FROM users WHERE login_name=?;");
+  $stmt3->execute([$login_name]);
+  $check3 = $stmt3->fetch();
+  if ($check3) {
+    header("Location: ../FailureMessage.php");
+      exit();
+  }
+
+if($user->execute()){
+    // print ("<h2>User creation successful</h2>");
+}
 
 // 2.insert employeee (check credentials)
 // need to get the userID and resulting membership_ID so we can enter the Employer
@@ -41,34 +60,8 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
     $employer->bindParam(':membership_id', $_POST["membership_id"], PDO::PARAM_INT);
 
     if($employer->execute()){
-        print("<h2>Employer Creation Successful</h2>");
+       // print("<h2>Employer Creation Successful</h2>");
     }
-
-// 3.create payment method
-// if(isset($_POST["withdrawal_method"])){
-//   print($_POST["withdrawal_method"]);
-// }
-// if(isset($_POST["payment_method_type"])){
-//   print("<h2>Payment test 2</h2>");
-// }
-// if(isset($_POST["billing_address"])){
-//   print("<h2>Payment test 3</h2>");
-// }
-// if(isset($_POST["postal_code"])){
-//   print("<h2>Payment test 4</h2>");
-// }
-// if(isset($_POST["card_number"])){
-//   print("<h2>Payment test 5</h2>");
-// }
-// if(isset($_POST["security_code"])){
-//   print("<h2>Payment test 6</h2>");
-// }
-// if(isset($_POST["expiration_month"])){
-//   print("<h2>Payment test 7</h2>");
-// }
-// if(isset($_POST["expiration_year"])){
-//   print("<h2>Payment test 8</h2>");
-// }
 
     $payment = $conn->prepare("INSERT INTO payment_methods (account_id, payment_method_type,
     billing_address, postal_code, card_number, security_code, expiration_month, expiration_year,
@@ -95,8 +88,12 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
     $payment->bindParam(':withdrawal_method', $_POST["withdrawal_method"]);
 
     if($payment->execute()){
-        print("<h2>Your the payment method for account " . $account_id["id"] . " was successfuly added</h2>");
+        //print("<h2>Your the payment method for account " . $account_id["id"] . " was successfuly added</h2>");
     }
+
+    if (isset($_POST["submitform"])){
+      header("Location: ../SuccessMessage.php");
+    };
 ?>
 
 <!DOCTYPE html>
@@ -194,7 +191,7 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
         <label class="form-check-label" for="Manual">Manual</label>
       </div>
 
-      <p><button type="submit" class="btn btn-outline-success">Submit</button></p>
+      <p><button type="submit" name="submitform" class="btn btn-outline-success">Submit</button></p>
       <br>
     </form>
 
