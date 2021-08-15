@@ -152,7 +152,8 @@ CREATE TRIGGER transactions_insert_trigger AFTER INSERT
     INSERT INTO system_logs (table_name, activity, new_value)
     VALUES ('transactions', 'new transaction was recorded', JSON_OBJECT("transaction_date", NEW.transaction_date,
                                                                         "transaction_type", NEW.transaction_type,
-                                                                        "amount", NEW.amount));
+                                                                        "amount", NEW.amount,
+                                                                        "account_id", NEW.account_id));
     -- Following trigger updates the balance attribute in the accounts table
     UPDATE accounts SET balance = balance + NEW.amount WHERE id = NEW.account_id;
     -- Following trigger sends emails when there is a charge on the account
@@ -268,8 +269,11 @@ CREATE TRIGGER jobs_insert_trigger AFTER INSERT
   ON jobs FOR EACH ROW
     BEGIN
     INSERT INTO system_logs (table_name, activity, new_value)
-    VALUES ('jobs', 'new job was posted', JSON_OBJECT("title", NEW.title,
+    VALUES ('jobs', 'new job was posted', JSON_OBJECT("id", NEW.id,
+                                                      "recruiter_id", NEW.recruiter_id,
+                                                      "title", NEW.title,
                                                       "description", NEW.description,
+                                                      "date_posted", NEW.date_posted,
                                                       "city", NEW.city,
                                                       "province", NEW.province,
                                                       "country", NEW.country,
@@ -279,13 +283,25 @@ CREATE TRIGGER jobs_update_trigger BEFORE UPDATE
   ON jobs FOR EACH ROW
     BEGIN
     INSERT INTO system_logs (table_name, activity, new_value, old_value)
-    VALUES ('jobs', 'job was updated', JSON_OBJECT("title", NEW.title,
+    VALUES ('jobs', 'job was updated', JSON_OBJECT("id", NEW.id,
+                                                   "recruiter_id", NEW.recruiter_id,
+                                                   "title", NEW.title,
                                                    "description", NEW.description,
                                                    "is_remote_eligible", NEW.is_remote_eligible,
+                                                   "required_experience", NEW.required_experience,
+                                                   "city", NEW.city,
+                                                   "province", NEW.province,
+                                                   "country", NEW.country,
                                                    "status", NEW.status),
-                                       JSON_OBJECT("title", OLD.title,
+                                       JSON_OBJECT("id", OLD.id,
+                                                   "recruiter_id", OLD.recruiter_id,
+                                                   "title", OLD.title,
                                                    "description", OLD.description,
                                                    "is_remote_eligible", OLD.is_remote_eligible,
+                                                   "required_experience", NEW.required_experience,
+                                                   "city", OLD.city,
+                                                   "province", OLD.province,
+                                                   "country", OLD.country,
                                                    "status", OLD.status));
     END;
 
