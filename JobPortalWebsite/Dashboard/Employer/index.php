@@ -6,17 +6,23 @@ include_once('../../database.php');
 $user_id = "1";
 
 
-$employeerInfoStmt = $conn->prepare("SELECT id, name FROM employers WHERE user_id = ?");
+$employeerInfoStmt = $conn->prepare("SELECT e.id, e.name 
+                                        FROM employers e 
+                                        WHERE e.user_id = ?");
 $employeerInfoStmt->execute([$user_id]);
 $result = $employeerInfoStmt->fetch();
-$employeerName = $result['name'];
-$employeerId = $result['id'];
+$employeerName = $result['e.name'];
+$employeerId = $result['e.id'];
 
-$jobListingStmt = $conn->prepare("SELECT id, recruiter_id, date_posted, title, description, required_experience, status FROM jobs WHERE employer_id = ?");
+$jobListingStmt = $conn->prepare("SELECT j.id, j.recruiter_id, j.date_posted, j.title, j.description, j.required_experience, j.status 
+                                      FROM jobs j
+                                      WHERE j.employer_id = ?");
 $jobListingStmt->execute([$employeerId]);
 
 
-$recruiterListingStmt = $conn->prepare("SELECT * FROM recruiters WHERE employer_id = ?");
+$recruiterListingStmt = $conn->prepare("SELECT r.id, r.user_id, r.employer_id, r.first_name, r.last_name 
+                                          FROM recruiters r 
+                                          WHERE r.employer_id = ?");
 $recruiterListingStmt->execute([$employeerId]);
 
 ?>
@@ -68,13 +74,13 @@ $recruiterListingStmt->execute([$employeerId]);
           <tbody>
               <?php while ($row = $jobListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
                   <tr>
-                  <td> <?php echo $row['id']; ?> </td>
-                  <td> <?php echo $row['recruiter_id']; ?> </td>
-                  <td> <?php echo $row['date_posted']; ?> </td>
-                  <td> <?php echo $row['title']; ?> </td>
-                  <td> <?php echo $row['description']; ?> </td>
-                  <td> <?php echo $row['required_experience']; ?> </td>
-                  <td> <?php echo $row['status']; ?> </td>
+                  <td> <?php echo $row['j.id']; ?> </td>
+                  <td> <?php echo $row['j.recruiter_id']; ?> </td>
+                  <td> <?php echo $row['j.date_posted']; ?> </td>
+                  <td> <?php echo $row['j.title']; ?> </td>
+                  <td> <?php echo $row['j.description']; ?> </td>
+                  <td> <?php echo $row['j.required_experience']; ?> </td>
+                  <td> <?php echo $row['j.status']; ?> </td>
                   </tr>
               <?php } ?>
           </tbody>
@@ -95,14 +101,14 @@ $recruiterListingStmt->execute([$employeerId]);
           </thead>
 
           <tbody>
-              <?php while ($row = $recruiterListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
+              <?php while ($data = $recruiterListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
                   <tr>
-                  <td> <?php echo $row['id']; ?> </td>
-                  <td> <?php echo $row['first_name']; ?> </td>
-                  <td> <?php echo $row['last_name']; ?> </td>
+                  <td> <?php echo $data['r.id']; ?> </td>
+                  <td> <?php echo $data['r.first_name']; ?> </td>
+                  <td> <?php echo $data['r.last_name']; ?> </td>
                   <td>
-                    <a href="./edit.php?recruiter_id=<?= $row["id"] ?>">Edit</a><br>    
-                    <a href="./delete.php?recruiter_id=<?= $row["id"] ?>">Delete</a>
+                    <a href="./edit.php?recruiter_id=<?= $data["r.id"] ?>">Edit</a><br>    
+                    <a href="./delete.php?recruiter_id=<?= $data["r.id"] ?>">Delete</a>
                   </td>
                   </tr>
               <?php } ?>
