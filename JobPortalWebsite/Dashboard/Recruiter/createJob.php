@@ -47,7 +47,7 @@ if(isset($_POST["new_job_title"]) && isset($_POST["new_job_description"]) && iss
       $getNewlyCreatedJobIdInfoStmt->bindParam(':j_employer_id', $getemployerIdInfo['rec_employer_id'], PDO::PARAM_INT);
       $getNewlyCreatedJobIdInfoStmt->bindParam(':j_recruiter_id', $getemployerIdInfo['rec_id'], PDO::PARAM_INT);
       $getNewlyCreatedJobIdInfoStmt->execute();
-      $getNewlyCreatedJobIdInfo-> $getNewlyCreatedJobIdInfoStmt->fetch()['j_id'];
+      $getNewlyCreatedJobIdInfo = $getNewlyCreatedJobIdInfoStmt->fetch()['j_id'];
     
     
     
