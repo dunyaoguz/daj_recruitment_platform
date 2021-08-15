@@ -8,7 +8,7 @@
     $canPostJob = FALSE;
 
     // Obtain Recruiter's Name, Recruiter ID, Recruiter's Employer ID
-    $getRecruiterInfoStmt = $conn->prepare("SELECT r.id, r.user_id, r.employer_id, r.first_name AS recruiter_first_name, r.last_name
+    $getRecruiterInfoStmt = $conn->prepare("SELECT r.id AS recruiter_id, r.user_id, r.employer_id AS recruiter_employer_id, r.first_name AS recruiter_first_name, r.last_name
                                                 FROM recruiters r 
                                                 WHERE r.user_id = :r_user_id");
 
@@ -16,30 +16,30 @@
     $getRecruiterInfoStmt->execute();
     $recruiterInfo = $getRecruiterInfoStmt->fetch();
     $recruiterName = $recruiterInfo['recruiter_first_name'];
-    $recruiterId = $recruiterInfo['r.id'];
-    $recruiterEmployerId = $recruiterInfo['r.employer_id'];
+    $recruiterId = $recruiterInfo['recruiter_id'];
+    $recruiterEmployerId = $recruiterInfo['recruiter_employer_id'];
 
     // Obtain Recruiter ID -> Obtain all Jobs for the Recruiter
-    $getJobListingStmt = $conn->prepare("SELECT j.id, j.employer_id, j.recruiter_id, j.date_posted, j.title, j.description, j.required_experience, j.status, j.city, j.province, j.country, j.is_remote_eligible 
+    $getJobListingStmt = $conn->prepare("SELECT j.id AS job_id, j.employer_id AS job_employer_id, j.recruiter_id AS job_recruiter_id, j.date_posted AS job_date_posted, j.title AS job_title, j.description AS job_description, j.required_experience AS job_required_experience, j.status AS job_status, j.city, j.province, j.country, j.is_remote_eligible 
                                             FROM jobs j
                                             WHERE j.recruiter_id = :j_recruiter_id");
     $getJobListingStmt->bindParam(':j_recruiter_id', $recruiterId, PDO::PARAM_INT);
     $getJobListingStmt->execute();
 
     // Obtain Membership ID of Employer -> fetch the Employer's membership Type
-    $getEmployerMembershipIdStmt = $conn->prepare("SELECT e.id, e.user_id, e.membership_id, e.name 
+    $getEmployerMembershipIdStmt = $conn->prepare("SELECT e.id, e.user_id, e.membership_id AS employer_membership_id, e.name 
                                                         FROM employers e 
                                                         WHERE e.user_id = :e_user_id");
     $getEmployerMembershipIdStmt->bindParam(':e_user_id', $recruiterEmployerId, PDO::PARAM_INT);
     $getEmployerMembershipIdStmt->execute();
-    $getEmployerMembershipId = $getEmployerMembershipIdStmt->fetch()['e.membership_id'];
+    $getEmployerMembershipId = $getEmployerMembershipIdStmt->fetch()['employer_membership_id'];
 
-    $getEmployerMembershipInfoStmt = $conn->prepare("SELECT m.id, m.user_type, m.membership_type, m.monthly_fee, m.job_posting_limit, m.job_application_limit
+    $getEmployerMembershipInfoStmt = $conn->prepare("SELECT m.id AS membership_id, m.user_type, m.membership_type, m.monthly_fee, m.job_posting_limit, m.job_application_limit
                                                         FROM memberships m 
                                                         WHERE m.id = :m_id");
     $getEmployerMembershipInfoStmt->bindParam(':m_id', $getEmployerMembershipId, PDO::PARAM_INT);
     $getEmployerMembershipInfoStmt->execute();
-    $getEmployerMembershipInfo = $getEmployerMembershipInfoStmt->fetch()['m.id'];
+    $getEmployerMembershipInfo = $getEmployerMembershipInfoStmt->fetch()['membership_id'];
 
     // Get Total Number of Jobs For Employer
     $getTotalNumberOfJobsStmt = $conn->prepare("SELECT COUNT(job.id) 
@@ -59,7 +59,7 @@
     }
 
     // Get Application Data for a Given Recruiter
-    $getApplicationInfoStmt = $conn->prepare("SELECT a.id, a.job_seeker_id, a.job_id, a.date_applied, a.status
+    $getApplicationInfoStmt = $conn->prepare("SELECT a.id AS app_id, a.job_seeker_id AS app_job_seeker_id, a.job_id AS app_job_id, a.date_applied AS job_date_applied, a.status AS app_status
                                                 FROM applications a 
                                                 LEFT JOIN jobs jo
                                                 ON a.job_id = jo.id
@@ -121,15 +121,15 @@
           <tbody>
               <?php while ($row = $getJobListingStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)) { ?>
                   <tr>
-                        <td> <?php echo $row['j.id']; ?> </td>
-                        <td> <?php echo $row['j.date_posted']; ?> </td>
-                        <td> <?php echo $row['j.title']; ?> </td>
-                        <td> <?php echo $row['j.description']; ?> </td>
-                        <td> <?php echo $row['j.required_experience']; ?> </td>
-                        <td> <?php echo $row['j.status']; ?> </td>
+                        <td> <?php echo $row['job_id']; ?> </td>
+                        <td> <?php echo $row['job_date_posted']; ?> </td>
+                        <td> <?php echo $row['job_title']; ?> </td>
+                        <td> <?php echo $row['job_description']; ?> </td>
+                        <td> <?php echo $row['job_required_experience']; ?> </td>
+                        <td> <?php echo $row['job_status']; ?> </td>
                         <td>
-                            <a href="./editJob.php?job_id=<?= $row["j.id"] ?>">Edit</a><br>    
-                            <a href="./deleteJob.php?job_id=<?= $row["j.id"] ?>">Delete</a>
+                            <a href="./editJob.php?job_id=<?= $row["job_id"] ?>">Edit</a><br>    
+                            <a href="./deleteJob.php?job_id=<?= $row["job_id"] ?>">Delete</a>
                         </td>
                   </tr>
               <?php } ?>
@@ -163,13 +163,13 @@
           <tbody>
              <?php while ($data = $getApplicationInfoStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_NEXT)){?>
                         <tr>
-                            <td> <?php echo $data['a.id']; ?> </td>
-                            <td> <?php echo $data['a.job_id']; ?> </td>
-                            <td> <?php echo $data['a.job_seeker_id']; ?> </td>
-                            <td> <?php echo $data['a.date_applied']; ?> </td>
-                            <td> <?php echo $data['a.status']; ?> </td>
+                            <td> <?php echo $data['app_id']; ?> </td>
+                            <td> <?php echo $data['app_job_id']; ?> </td>
+                            <td> <?php echo $data['app_job_seeker_id']; ?> </td>
+                            <td> <?php echo $data['app_date_applied']; ?> </td>
+                            <td> <?php echo $data['app_status']; ?> </td>
                             <td>
-                                <a href="./editApplication.php?application_id=<?= $data["a.id"] ?>">Edit</a><br>    
+                                <a href="./editApplication.php?application_id=<?= $data["app_id"] ?>">Edit</a><br>    
                             </td>
                         </tr>
             <?php  } ?>
