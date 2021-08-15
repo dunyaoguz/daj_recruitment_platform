@@ -1,16 +1,15 @@
 <?php require_once '../../database.php';
-//put this on the dashboard page that leads to this page 
-$_SESSION['account_id'] = $account_id;
 
  $account_id = $_SESSION['account_id'];
 
- $payment = $conn->prepare("INSERT INTO payment_methods (account_id, payment_method_type,
+ $payment2 = $conn->prepare("INSERT INTO payment_methods (account_id, payment_method_type,
  billing_address, postal_code, card_number, security_code, expiration_month, expiration_year,
  withdrawal_method)
  VALUES (:account_id, :payment_method_type,
  :billing_address, :postal_code, :card_number, :security_code, :expiration_month, :expiration_year,
  :withdrawal_method);");
- $payment2->bindParam(':account_id', $account_id["id"], PDO::PARAM_INT);
+//  <!-- change account_id below to $account_id["id"] when ready for session vars -->
+ $payment2->bindParam(':account_id', $account_id, PDO::PARAM_INT);
  $payment2->bindParam(':payment_method_type', $_POST["payment_method_type"]);
  $payment2->bindParam(':billing_address', $_POST["billing_address"]);
  $payment2->bindParam(':postal_code', $_POST["postal_code"]);
@@ -25,7 +24,7 @@ $_SESSION['account_id'] = $account_id;
  $payment2->bindParam(':withdrawal_method', $_POST["withdrawal_method"]);
 
 if($payment2->execute()){
-  header("Location: EducationHistory.php");
+  header("Location: ./payments.php");
 }
 ?>
 
