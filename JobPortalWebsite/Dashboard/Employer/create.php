@@ -103,7 +103,7 @@ if(isset($_POST["new_user_type"]) && isset($_POST["new_first_name"]) && isset($_
         <span class="navbar-brand mb-0 h1">DAJ Recruitment Platform</span>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/../Dashboard/Employer/">Dashboard</a>
+            <a class="nav-item nav-link" href="/../Dashboard/Employer/index.php">Dashboard</a>
           </div>
         </div>
         <span class="logo-image"><img src="../../logo.png" class="logo"></span>
