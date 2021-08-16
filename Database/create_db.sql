@@ -31,9 +31,9 @@ DROP PROCEDURE IF EXISTS check_account_balance_loop;
 DROP EVENT IF EXISTS check_account_balance_schedule;
 DROP PROCEDURE IF EXISTS charge_account;
 DROP PROCEDURE IF EXISTS charge_accounts_loop;
-DROP PROCEDURE IF EXISTS charge_accounts_schedule;
+DROP EVENT IF EXISTS charge_accounts_schedule;
 DROP PROCEDURE IF EXISTS pay_account;
-DROP EVENT IF EXISTS pay_accounts_loop;
+DROP PROCEDURE IF EXISTS pay_accounts_loop;
 DROP EVENT IF EXISTS pay_accounts_schedule;
 
 CREATE TABLE users (
@@ -120,7 +120,7 @@ BEGIN
   END IF;
 END;
 -- This procedure loops over accounts table and checks balance
-CREATE PROCEDURE check_accounts_balance_loop()
+CREATE PROCEDURE check_account_balance_loop()
 BEGIN
 SET @max = (SELECT max(id) FROM accounts);
 SET @min = (SELECT min(id) FROM accounts);
