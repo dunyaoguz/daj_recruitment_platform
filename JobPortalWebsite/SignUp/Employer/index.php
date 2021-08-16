@@ -51,7 +51,7 @@ if($user->execute()){
 $employer = $conn->prepare("INSERT INTO employers (user_id,
 name, membership_id) VALUES (:user_id, :name, :membership_id);");
 
-    $query = $conn->prepare("SELECT id FROM ric55311.users WHERE email=:email;");
+    $query = $conn->prepare("SELECT id FROM users WHERE email=:email;");
     $query->bindParam(":email",$email);
     $query->execute();
     $user_id=$query->fetch();
@@ -69,7 +69,7 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
     VALUES (:account_id, :payment_method_type,
     :billing_address, :postal_code, :card_number, :security_code, :expiration_month, :expiration_year,
     :withdrawal_method);");
-    $query2 = $conn->prepare("SELECT id FROM ric55311.accounts WHERE user_id=:user_id;");
+    $query2 = $conn->prepare("SELECT id FROM accounts WHERE user_id=:user_id;");
     $query2->bindParam(":user_id",$user_id["id"]);
     $query2->execute();
     $account_id=$query2->fetch();
@@ -102,14 +102,14 @@ name, membership_id) VALUES (:user_id, :name, :membership_id);");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../../../style.css">
+    <link rel="stylesheet" href="../../style.css">
     <title>Employer Sign Up</title>
-    <link rel="icon" href="../../../logo.png" type="penguin">
+    <link rel="icon" href="../../logo.png" type="penguin">
 </head>
 <body>
   <nav class="navbar navbar-light bg-light">
     <span class="navbar-brand mb-0 h1">DAJ Recruitment Platform</span>
-    <span class="logo-image"><img src="../../../logo.png" class="logo"></span>
+    <span class="logo-image"><img src="../../logo.png" class="logo"></span>
   </nav>
   <h2>Sign Up</h2>
   <h6>Fill the form below to sign up for a membership.</h6>
