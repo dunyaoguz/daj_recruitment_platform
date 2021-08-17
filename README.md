@@ -1,4 +1,4 @@
-# COMP5531_final_project
+# DAJ Recruitment Platform
 
 This is a simple job portal website, built as the final project for a Files & Databases course. 
 
