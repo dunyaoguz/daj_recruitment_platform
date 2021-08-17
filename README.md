@@ -9,7 +9,7 @@ To run the website locally, do the following:
 4. Access your local mysql instance from terminal or a DBMS software of choice (I reccommend TablePlus), and run the two .sql files inside the `Database/` folder. 
 5. Edit the database.php file with your local mysql creds.
 6. Enter `php -S 127.0.0.1:8080` from terminal.
-7. Go to localhost:8080 from your browser of choice.
+7. Go to `localhost:8080` from your browser of choice.
 
 ## Screenshots:
 Here are some sneak peaks from the final product!
