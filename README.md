@@ -1,5 +1,7 @@
 # COMP5531_final_project
 
+This is a simple job portal website, built as the final project for a Files & Databases course. 
+
 To run the website locally, do the following:
 1. Clone this repo.
 2. cd to the clone.
