@@ -1,9 +1,9 @@
 INSERT INTO users (user_type, login_name, password, phone, email) VALUES
   ('Employer', 'spotify', 'spotify123456', '4385016383', 'spotify@spotify.com'),
-  ('Employer', 'renorun', 'renorun123456', '5145016383', 'renorun@renorun.com'),
+  ('Employer', 'renofun', 'renofun123456', '5145016383', 'renofun@renofun.com'),
   ('Employer', 'busbud', 'busbud123456', '4385026383', 'busbud@busbud.com'),
   ('Recruiter', 'ally_giordino', 'ally123456', '4385016393', 'ally@spotify.com'),
-  ('Recruiter', 'karen_banahora', 'karen123456', '4585016383', 'karen@renorun.com'),
+  ('Recruiter', 'karen_banahora', 'karen123456', '4585016383', 'karen@renofun.com'),
   ('Recruiter', 'emily_tetzal', 'emily123456', '4375016383', 'emily@busbud.com'),
   ('Job Seeker', 'dunya_oguz', 'dunyas_password', '6385016383', 'dunya@concordia.ca'),
   ('Job Seeker', 'azman_akhter', 'azmans_password', '4385096383', 'azman@concordia.ca'),
